@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "shopify_lakehouse",
+  "project_id": "4b03a8c1-a263-4df3-bdb3-f66c55592b92"
+}
