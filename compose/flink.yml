@@ -1,0 +1,69 @@
+services:
+  flink-jobmanager:
+    build:
+      context: ../flink
+      args:
+        FLINK_VERSION: ${FLINK_VERSION:-1.20.1}
+        SCALA_VERSION: ${FLINK_SCALA_VERSION:-2.12}
+        JAVA_VERSION: ${FLINK_JAVA_VERSION:-17}
+        ICEBERG_VERSION: ${ICEBERG_VERSION:-1.9.1}
+        KAFKA_CONNECTOR_VERSION: ${FLINK_KAFKA_CONNECTOR_VERSION:-3.4.0-1.20}
+        AVRO_CONFLUENT_VERSION: ${FLINK_AVRO_CONFLUENT_VERSION:-1.20.1}
+        HADOOP_VERSION: ${FLINK_HADOOP_VERSION:-3.3.4}
+    image: shopify-lakehouse/flink:${FLINK_VERSION:-1.20.1}
+    container_name: flink-jobmanager
+    command: jobmanager
+    ports:
+      - "${FLINK_UI_PORT:-8082}:8081"
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        state.checkpoints.dir: file:///tmp/flink-checkpoints
+    volumes:
+      - ../flink/sql:/opt/flink/usrlib/sql:ro
+    networks:
+      - lakehouse
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/config"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  flink-taskmanager:
+    image: shopify-lakehouse/flink:${FLINK_VERSION:-1.20.1}
+    container_name: flink-taskmanager
+    command: taskmanager
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 2
+    networks:
+      - lakehouse
+
+  flink-sql-submit:
+    image: shopify-lakehouse/flink:${FLINK_VERSION:-1.20.1}
+    container_name: flink-sql-submit
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+      flink-taskmanager:
+        condition: service_started
+    volumes:
+      - ../flink/sql:/opt/flink/usrlib/sql:ro
+    networks:
+      - lakehouse
+    entrypoint: ["/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/ingest.sql"]
+    environment:
+      FLINK_PROPERTIES: |
+        rest.address: flink-jobmanager
+        rest.port: 8081
+    restart: "no"
+
+networks:
+  lakehouse:
+    external: true

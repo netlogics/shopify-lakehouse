@@ -1,0 +1,43 @@
+services:
+  nessie-init:
+    image: busybox:latest
+    container_name: nessie-init
+    command: ["chown", "-R", "10000:10001", "/nessie-data"]
+    volumes:
+      - nessie-data:/nessie-data
+    networks:
+      - lakehouse
+
+  nessie:
+    image: ghcr.io/projectnessie/nessie:${NESSIE_VERSION}
+    hostname: nessie
+    container_name: nessie
+    depends_on:
+      nessie-init:
+        condition: service_completed_successfully
+    ports:
+      - "${NESSIE_HOST_PORT}:19120"
+    environment:
+      NESSIE_VERSION_STORE_TYPE: ${NESSIE_VERSION_STORE_TYPE}
+      NESSIE_VERSION_STORE_PERSIST_ROCKS_DATABASE_PATH: /nessie-data
+      QUARKUS_HTTP_PORT: "19120"
+      NESSIE_CATALOG_DEFAULT_WAREHOUSE: warehouse
+      NESSIE_CATALOG_WAREHOUSES_WAREHOUSE_LOCATION: s3a://${WAREHOUSE_BUCKET}/
+      NESSIE_CATALOG_SERVICE_S3_DEFAULT_OPTIONS_ENDPOINT: ${S3_ENDPOINT}
+      NESSIE_CATALOG_SERVICE_S3_DEFAULT_OPTIONS_PATH_STYLE_ACCESS: ${S3_PATH_STYLE_ACCESS}
+      NESSIE_CATALOG_SERVICE_S3_DEFAULT_OPTIONS_REGION: ${AWS_REGION}
+      NESSIE_CATALOG_SECRETS_ACCESS_KEY_NAME: ${AWS_ACCESS_KEY_ID}
+      NESSIE_CATALOG_SECRETS_ACCESS_KEY_SECRET: ${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - nessie-data:/nessie-data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:19120/api/v1/config >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 15s
+    networks:
+      - lakehouse
+
+volumes:
+  nessie-data:
