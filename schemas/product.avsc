@@ -1,0 +1,30 @@
+{
+  "type": "record",
+  "name": "Product",
+  "namespace": "com.shopify.lakehouse",
+  "fields": [
+    { "name": "id", "type": "long" },
+    { "name": "title", "type": "string" },
+    { "name": "vendor", "type": "string" },
+    { "name": "product_type", "type": "string" },
+    { "name": "tags", "type": { "type": "array", "items": "string" } },
+    {
+      "name": "variants",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Variant",
+          "fields": [
+            { "name": "id", "type": "long" },
+            { "name": "sku", "type": "string" },
+            { "name": "price", "type": "string" },
+            { "name": "inventory_item_id", "type": "long" }
+          ]
+        }
+      }
+    },
+    { "name": "created_at", "type": { "type": "long", "logicalType": "timestamp-millis" } },
+    { "name": "updated_at", "type": { "type": "long", "logicalType": "timestamp-millis" } }
+  ]
+}

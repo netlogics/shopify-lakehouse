@@ -1,0 +1,22 @@
+services:
+  generator:
+    build:
+      context: ..
+      dockerfile: generator/Dockerfile
+    environment:
+      KAFKA_BOOTSTRAP: ${KAFKA_BOOTSTRAP}
+      SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+    volumes:
+      - ../generator/config.yaml:/app/config.yaml:ro
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+      schema-registry:
+        condition: service_healthy
+    networks:
+      - lakehouse
+    restart: unless-stopped
+
+networks:
+  lakehouse:
+    external: true
