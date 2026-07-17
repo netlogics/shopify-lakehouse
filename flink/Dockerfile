@@ -9,11 +9,14 @@
 #   - flink-sql-connector-kafka   3.4.0-1.20
 #   - flink-sql-avro-confluent-registry 1.20.1
 #   - iceberg-flink-runtime-1.20  1.9.1
-#   - iceberg-aws-bundle          1.9.1  (S3FileIO, replaces hadoop-aws)
+#   - iceberg-flink-runtime-1.20  1.9.1  (Flink SQL connector; bundles iceberg-core)
+#     NOTE: iceberg-aws-bundle NOT added — it duplicates iceberg-core and causes
+#     AbstractMethodError (Jackson interface mismatch). Use HadoopFileIO instead.
+#   - hadoop-aws                  3.3.4  (S3AFileSystem for HadoopFileIO)
+#   - aws-java-sdk-bundle         1.12.780 (AWS SDK v1 used by hadoop-aws 3.3.4)
 #   - iceberg-nessie              1.9.1  (NessieCatalog; unshaded, needs deps)
-#   - hadoop-client-api/-runtime  3.3.4  (Iceberg's Flink catalog loader still
-#     instantiates org.apache.hadoop.conf.Configuration even when the actual
-#     FileIO is S3FileIO, not HadoopFileIO)
+#   - hadoop-client-api/-runtime  3.3.4  (Hadoop Configuration used by NessieCatalog)
+#   - core-site.xml               baked into /opt/flink/conf/ for S3A → MinIO config
 
 ARG FLINK_VERSION=1.20.1
 ARG SCALA_VERSION=2.12
@@ -43,7 +46,16 @@ RUN cat <<EOF > pom.xml
 EOF
 # Resolve iceberg-nessie's runtime transitive closure (nessie-client,
 # nessie-model, jackson, immutables, protobuf, etc.) into flat jars.
+# Exclude org.apache.iceberg.* — iceberg-flink-runtime already bundles them
+# and having duplicates causes AbstractMethodError via Jackson class conflict.
 RUN mvn -B dependency:copy-dependencies \
+      -DincludeScope=runtime \
+      -DexcludeGroupIds=org.apache.iceberg \
+      -DoutputDirectory=/build/lib
+# Download iceberg-nessie itself (excluded above by group, but needed)
+RUN mvn -B dependency:copy-dependencies \
+      -DincludeGroupIds=org.apache.iceberg \
+      -DincludeArtifactIds=iceberg-nessie \
       -DincludeScope=runtime \
       -DoutputDirectory=/build/lib
 
@@ -62,14 +74,22 @@ RUN set -eux; \
       "https://repo1.maven.org/maven2/org/apache/flink/flink-sql-avro-confluent-registry/${AVRO_CONFLUENT_VERSION}/flink-sql-avro-confluent-registry-${AVRO_CONFLUENT_VERSION}.jar"; \
     curl -fL -o /opt/flink/lib/iceberg-flink-runtime-1.20-${ICEBERG_VERSION}.jar \
       "https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-flink-runtime-1.20/${ICEBERG_VERSION}/iceberg-flink-runtime-1.20-${ICEBERG_VERSION}.jar"; \
-    curl -fL -o /opt/flink/lib/iceberg-aws-bundle-${ICEBERG_VERSION}.jar \
-      "https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar"; \
     curl -fL -o /opt/flink/lib/hadoop-client-api-${HADOOP_VERSION}.jar \
       "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-api/${HADOOP_VERSION}/hadoop-client-api-${HADOOP_VERSION}.jar"; \
     curl -fL -o /opt/flink/lib/hadoop-client-runtime-${HADOOP_VERSION}.jar \
-      "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/${HADOOP_VERSION}/hadoop-client-runtime-${HADOOP_VERSION}.jar"
+      "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/${HADOOP_VERSION}/hadoop-client-runtime-${HADOOP_VERSION}.jar"; \
+    curl -fL -o /opt/flink/lib/hadoop-aws-${HADOOP_VERSION}.jar \
+      "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar"; \
+    curl -fL -o /opt/flink/lib/aws-java-sdk-bundle-1.12.780.jar \
+      "https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.780/aws-java-sdk-bundle-1.12.780.jar"; \
+    curl -fL -o /opt/flink/lib/commons-logging-1.2.jar \
+      "https://repo1.maven.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"
 
 # iceberg-nessie itself + its resolved transitive deps (nessie-client, etc.)
 COPY --from=deps /build/lib/*.jar /opt/flink/lib/
+
+# S3A → MinIO config: set HADOOP_CONF_DIR so Hadoop picks up core-site.xml
+COPY core-site.xml /opt/flink/conf/core-site.xml
+ENV HADOOP_CONF_DIR=/opt/flink/conf
 
 USER flink

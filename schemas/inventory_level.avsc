@@ -4,10 +4,8 @@
   "namespace": "com.shopify.lakehouse",
   "fields": [
     { "name": "inventory_item_id", "type": "long" },
-    { "name": "sku", "type": "string" },
-    { "name": "product_id", "type": "long" },
     { "name": "location_id", "type": "long" },
-    { "name": "available", "type": "int" },
-    { "name": "updated_at", "type": { "type": "long", "logicalType": "timestamp-millis" } }
+    { "name": "available", "type": ["null", "int"], "default": null },
+    { "name": "updated_at", "type": "string" }
   ]
 }

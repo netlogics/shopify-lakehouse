@@ -132,7 +132,7 @@ func (p *Producer) PublishInventoryLevel(level model.InventoryLevel) error {
 	}
 
 	topic := p.inventoryTopic
-	key := level.SKU
+	key := strconv.FormatInt(level.InventoryItemID, 10)
 	return p.kafka.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),

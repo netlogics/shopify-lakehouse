@@ -5,9 +5,15 @@
   "fields": [
     { "name": "id", "type": "long" },
     { "name": "title", "type": "string" },
+    { "name": "body_html", "type": "string" },
     { "name": "vendor", "type": "string" },
     { "name": "product_type", "type": "string" },
-    { "name": "tags", "type": { "type": "array", "items": "string" } },
+    { "name": "handle", "type": "string" },
+    { "name": "status", "type": "string" },
+    { "name": "tags", "type": "string" },
+    { "name": "created_at", "type": "string" },
+    { "name": "updated_at", "type": "string" },
+    { "name": "published_at", "type": ["null", "string"], "default": null },
     {
       "name": "variants",
       "type": {
@@ -17,14 +23,31 @@
           "name": "Variant",
           "fields": [
             { "name": "id", "type": "long" },
-            { "name": "sku", "type": "string" },
+            { "name": "product_id", "type": "long" },
+            { "name": "title", "type": "string" },
             { "name": "price", "type": "string" },
-            { "name": "inventory_item_id", "type": "long" }
+            { "name": "sku", "type": "string" },
+            { "name": "position", "type": "int" },
+            { "name": "inventory_policy", "type": "string" },
+            { "name": "compare_at_price", "type": ["null", "string"], "default": null },
+            { "name": "fulfillment_service", "type": "string" },
+            { "name": "inventory_management", "type": ["null", "string"], "default": null },
+            { "name": "option1", "type": ["null", "string"], "default": null },
+            { "name": "option2", "type": ["null", "string"], "default": null },
+            { "name": "option3", "type": ["null", "string"], "default": null },
+            { "name": "taxable", "type": "boolean" },
+            { "name": "barcode", "type": ["null", "string"], "default": null },
+            { "name": "grams", "type": "int" },
+            { "name": "weight", "type": "double" },
+            { "name": "weight_unit", "type": "string" },
+            { "name": "inventory_item_id", "type": "long" },
+            { "name": "inventory_quantity", "type": "int" },
+            { "name": "requires_shipping", "type": "boolean" },
+            { "name": "created_at", "type": "string" },
+            { "name": "updated_at", "type": "string" }
           ]
         }
       }
-    },
-    { "name": "created_at", "type": { "type": "long", "logicalType": "timestamp-millis" } },
-    { "name": "updated_at", "type": { "type": "long", "logicalType": "timestamp-millis" } }
+    }
   ]
 }

@@ -57,7 +57,7 @@ services:
       - ../flink/sql:/opt/flink/usrlib/sql:ro
     networks:
       - lakehouse
-    entrypoint: ["/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/ingest.sql"]
+    entrypoint: ["/docker-entrypoint.sh", "/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/ingest.sql"]
     environment:
       FLINK_PROPERTIES: |
         rest.address: flink-jobmanager
