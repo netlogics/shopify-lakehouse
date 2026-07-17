@@ -5,8 +5,13 @@
 --   nessie.lakehouse.product_variants  one row per variant (UNNEST)
 --   nessie.lakehouse.inventory_levels  one row per inventory level event
 --
--- Timestamps arrive as ISO 8601 UTC strings ("2024-01-15T10:30:00Z").
--- Parsed with: TO_TIMESTAMP(LEFT(ts, 19), 'yyyy-MM-dd''T''HH:mm:ss')
+-- Transformations applied vs raw Kafka payload:
+--   products.tags        STRING (CSV) — ARRAY<STRING> split needs a custom UDF; kept as-is
+--   products.body_html   dropped (no analytics value)
+--   variants.price       STRING → DECIMAL(10,2)
+--   variants.compare_at_price STRING → DECIMAL(10,2) (nullable)
+--   variants.grams       dropped (redundant with weight + weight_unit)
+--   timestamps           ISO 8601 UTC strings → TIMESTAMP(3) via TO_TIMESTAMP + LEFT
 --
 -- Two EXECUTE blocks → two Flink jobs.  Jobs 1+2 read the same Kafka topics
 -- independently (separate consumer groups).  Avoids the shared-source +
@@ -151,7 +156,6 @@ DROP TABLE IF EXISTS nessie.lakehouse.inventory_levels;
 CREATE TABLE nessie.lakehouse.products (
   id            BIGINT,
   title         STRING,
-  body_html     STRING,
   vendor        STRING,
   product_type  STRING,
   handle        STRING,
@@ -169,11 +173,11 @@ CREATE TABLE nessie.lakehouse.product_variants (
   product_id           BIGINT,
   variant_id           BIGINT,
   title                STRING,
-  price                STRING,
+  price                DECIMAL(10,2),
   sku                  STRING,
   `position`           INT,
   inventory_policy     STRING,
-  compare_at_price     STRING,
+  compare_at_price     DECIMAL(10,2),
   fulfillment_service  STRING,
   inventory_management STRING,
   option1              STRING,
@@ -181,7 +185,6 @@ CREATE TABLE nessie.lakehouse.product_variants (
   option3              STRING,
   taxable              BOOLEAN,
   barcode              STRING,
-  grams                INT,
   weight               DOUBLE,
   weight_unit          STRING,
   inventory_item_id    BIGINT,
@@ -215,7 +218,6 @@ BEGIN
   SELECT
     id,
     title,
-    body_html,
     vendor,
     product_type,
     handle,
@@ -245,27 +247,26 @@ END;
 
 INSERT INTO nessie.lakehouse.product_variants
 SELECT
-  p.id                    AS product_id,
-  v.id                    AS variant_id,
-  v.title                 AS title,
-  v.price                 AS price,
-  v.sku                   AS sku,
-  v.`position`            AS `position`,
-  v.inventory_policy      AS inventory_policy,
-  v.compare_at_price      AS compare_at_price,
-  v.fulfillment_service   AS fulfillment_service,
-  v.inventory_management  AS inventory_management,
-  v.option1               AS option1,
-  v.option2               AS option2,
-  v.option3               AS option3,
-  v.taxable               AS taxable,
-  v.barcode               AS barcode,
-  v.grams                 AS grams,
-  v.weight                AS weight,
-  v.weight_unit           AS weight_unit,
-  v.inventory_item_id     AS inventory_item_id,
-  v.inventory_quantity    AS inventory_quantity,
-  v.requires_shipping     AS requires_shipping,
+  p.id                                        AS product_id,
+  v.id                                        AS variant_id,
+  v.title                                     AS title,
+  CAST(v.price AS DECIMAL(10,2))              AS price,
+  v.sku                                       AS sku,
+  v.`position`                                AS `position`,
+  v.inventory_policy                          AS inventory_policy,
+  CAST(v.compare_at_price AS DECIMAL(10,2))   AS compare_at_price,
+  v.fulfillment_service                       AS fulfillment_service,
+  v.inventory_management                      AS inventory_management,
+  v.option1                                   AS option1,
+  v.option2                                   AS option2,
+  v.option3                                   AS option3,
+  v.taxable                                   AS taxable,
+  v.barcode                                   AS barcode,
+  v.weight                                    AS weight,
+  v.weight_unit                               AS weight_unit,
+  v.inventory_item_id                         AS inventory_item_id,
+  v.inventory_quantity                        AS inventory_quantity,
+  v.requires_shipping                         AS requires_shipping,
   TO_TIMESTAMP(LEFT(v.created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
   TO_TIMESTAMP(LEFT(v.updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
 FROM products_source_variants AS p
