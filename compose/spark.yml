@@ -1,0 +1,25 @@
+services:
+  spark-compaction:
+    build:
+      context: ../spark
+      args:
+        SPARK_VERSION: ${SPARK_VERSION:-3.5.4}
+    image: shopify-lakehouse/spark:${SPARK_VERSION:-3.5.4}
+    container_name: spark-compaction
+    entrypoint: ["/opt/spark/work-dir/entrypoint.sh"]
+    environment:
+      NESSIE_URI: ${NESSIE_URI}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      COMPACTION_INTERVAL: ${COMPACTION_INTERVAL:-600}
+    depends_on:
+      - nessie
+      - minio
+    networks:
+      - lakehouse
+    restart: unless-stopped
+
+networks:
+  lakehouse:
+    external: true

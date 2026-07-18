@@ -1,0 +1,15 @@
+name: shopify-lakehouse
+
+include:
+  - compose/kafka.yml
+  - compose/minio.yml
+  - compose/nessie.yml
+  - compose/flink.yml
+  - compose/generator.yml
+  - compose/dremio.yml
+  - compose/spark.yml
+
+networks:
+  lakehouse:
+    name: lakehouse
+    driver: bridge

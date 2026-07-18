@@ -1,0 +1,41 @@
+services:
+  minio:
+    image: minio/minio:${MINIO_VERSION}
+    hostname: minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "${MINIO_HOST_PORT}:9000"
+      - "${MINIO_CONSOLE_HOST_PORT}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 15s
+    networks:
+      - lakehouse
+
+  minio-init:
+    image: minio/mc:${MINIO_MC_VERSION}
+    container_name: minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ../minio/init-bucket.sh:/init-bucket.sh:ro
+    entrypoint: ["sh", "/init-bucket.sh"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      WAREHOUSE_BUCKET: ${WAREHOUSE_BUCKET}
+    networks:
+      - lakehouse
+
+volumes:
+  minio-data:

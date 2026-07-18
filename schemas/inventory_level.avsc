@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "InventoryLevel",
+  "namespace": "com.shopify.lakehouse",
+  "fields": [
+    { "name": "inventory_item_id", "type": "long" },
+    { "name": "location_id", "type": "long" },
+    { "name": "available", "type": ["null", "int"], "default": null },
+    { "name": "updated_at", "type": "string" }
+  ]
+}

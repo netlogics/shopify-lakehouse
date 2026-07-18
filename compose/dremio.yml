@@ -1,0 +1,54 @@
+services:
+  dremio:
+    image: dremio/dremio-oss:${DREMIO_VERSION:-25.2}
+    container_name: dremio
+    ports:
+      - "${DREMIO_UI_HOST_PORT:-9047}:9047"   # UI + REST API
+      - "31010:31010"   # ODBC/JDBC
+      - "32010:32010"   # Arrow Flight
+    environment:
+      DREMIO_MAX_MEMORY_SIZE_MB: ${DREMIO_MAX_MEMORY_SIZE_MB:-4096}
+      DREMIO_MAX_DIRECT_MEMORY_SIZE_MB: ${DREMIO_MAX_DIRECT_MEMORY_SIZE_MB:-2048}
+    volumes:
+      - dremio-data:/opt/dremio/data
+    depends_on:
+      - nessie
+      - minio
+    networks:
+      - lakehouse
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9047/apiv2/server_status"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+
+  dremio-bootstrap:
+    image: curlimages/curl:8.11.1
+    container_name: dremio-bootstrap
+    depends_on:
+      dremio:
+        condition: service_healthy
+    volumes:
+      - ../dremio/bootstrap.sh:/bootstrap.sh:ro
+    entrypoint: ["sh", "/bootstrap.sh"]
+    environment:
+      DREMIO_HOST: dremio
+      DREMIO_PORT: "9047"
+      DREMIO_ADMIN_USER: ${DREMIO_ADMIN_USER:-admin}
+      DREMIO_ADMIN_PASSWORD: ${DREMIO_ADMIN_PASSWORD:-dremio123}
+      NESSIE_ENDPOINT: ${NESSIE_URI_V2:-http://nessie:19120/api/v2}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-minioadmin}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-minioadmin}
+      S3_ENDPOINT: ${S3_ENDPOINT:-http://minio:9000}
+    networks:
+      - lakehouse
+    restart: "no"
+
+volumes:
+  dremio-data:
+
+networks:
+  lakehouse:
+    external: true
