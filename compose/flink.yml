@@ -53,6 +53,14 @@ services:
         condition: service_healthy
       flink-taskmanager:
         condition: service_started
+      kafka-init:
+        condition: service_completed_successfully
+      schema-registry:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      nessie:
+        condition: service_healthy
     volumes:
       - ../flink/sql:/opt/flink/usrlib/sql:ro
     networks:
