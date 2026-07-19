@@ -16,6 +16,8 @@ services:
     ports:
       - "${FLINK_UI_PORT:-8082}:8081"
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: flink-jobmanager
         taskmanager.numberOfTaskSlots: 2
@@ -39,6 +41,8 @@ services:
       flink-jobmanager:
         condition: service_healthy
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: flink-jobmanager
         taskmanager.numberOfTaskSlots: 2
@@ -67,6 +71,8 @@ services:
       - lakehouse
     entrypoint: ["/docker-entrypoint.sh", "/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/ingest.sql"]
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       FLINK_PROPERTIES: |
         rest.address: flink-jobmanager
         rest.port: 8081
