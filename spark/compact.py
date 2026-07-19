@@ -22,6 +22,7 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
 TABLES = [
     "nessie.lakehouse.products",
+    "nessie.lakehouse.product_variants",
     "nessie.lakehouse.inventory_levels",
 ]
 
