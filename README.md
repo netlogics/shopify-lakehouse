@@ -67,6 +67,8 @@ A self-contained reference implementation of a streaming ELT lakehouse pipeline 
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+> **Interactive graph:** [Explore the codebase knowledge graph](https://netlogics.github.io/shopify-lakehouse/graphify-out/graph.html) — nodes, communities, and cross-cutting connections, powered by [graphify](https://pypi.org/project/graphifyy/).
+
 ### Data flow summary
 
 1. **Generator** seeds 100 products on startup, then continuously emits product and inventory events to two Kafka topics encoded as Avro using the Confluent wire format. Schemas are registered with Schema Registry on first run.
