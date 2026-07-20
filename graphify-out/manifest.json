@@ -1,0 +1,207 @@
+{
+  ".beads/hooks/post-checkout": {
+    "mtime": 1784071903.2675946,
+    "ast_hash": "3544ca2ca545aee03375d2d09b02aabb",
+    "semantic_hash": "3544ca2ca545aee03375d2d09b02aabb"
+  },
+  ".beads/hooks/post-merge": {
+    "mtime": 1784071903.2675946,
+    "ast_hash": "e1c7845dcc73d1cf008d6546ad532faf",
+    "semantic_hash": "e1c7845dcc73d1cf008d6546ad532faf"
+  },
+  ".beads/hooks/pre-commit": {
+    "mtime": 1784071903.2675946,
+    "ast_hash": "5fe1bc25d249ee673378751351589b07",
+    "semantic_hash": "5fe1bc25d249ee673378751351589b07"
+  },
+  ".beads/hooks/pre-push": {
+    "mtime": 1784071903.2675946,
+    "ast_hash": "f2ba51d944c05470786df8b664aa0a69",
+    "semantic_hash": "f2ba51d944c05470786df8b664aa0a69"
+  },
+  ".beads/hooks/prepare-commit-msg": {
+    "mtime": 1784071903.2675946,
+    "ast_hash": "e414b7d865c0d03d952d78426d490445",
+    "semantic_hash": "e414b7d865c0d03d952d78426d490445"
+  },
+  ".beads/metadata.json": {
+    "mtime": 1784071903.2265956,
+    "ast_hash": "a0d753181d0dc833aea41fb00e3cf368",
+    "semantic_hash": "a0d753181d0dc833aea41fb00e3cf368"
+  },
+  ".claude/settings.json": {
+    "mtime": 1784071903.2715945,
+    "ast_hash": "357f71cd5e3346deb0eaf776f51b9d06",
+    "semantic_hash": "357f71cd5e3346deb0eaf776f51b9d06"
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1784215596.5058568,
+    "ast_hash": "518e1905856d441121ef895351a14a43",
+    "semantic_hash": "518e1905856d441121ef895351a14a43"
+  },
+  ".codex/hooks.json": {
+    "mtime": 1784071903.2732182,
+    "ast_hash": "6ab111cb0ebd91918bed9fa0805d8a31",
+    "semantic_hash": "6ab111cb0ebd91918bed9fa0805d8a31"
+  },
+  "dremio/bootstrap.sh": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "5e3491bf1a187dcb30f714ce49f96a56",
+    "semantic_hash": "5e3491bf1a187dcb30f714ce49f96a56"
+  },
+  "flink/sql/ingest.sql": {
+    "mtime": 1784400219.470804,
+    "ast_hash": "1ae98631b9e6b95e4809483a64ab12e5",
+    "semantic_hash": "1ae98631b9e6b95e4809483a64ab12e5"
+  },
+  "generator/cmd/generator/main.go": {
+    "mtime": 1784400219.4709277,
+    "ast_hash": "29ef305c9b2956ad81f59aa6dc5ee1b0",
+    "semantic_hash": "29ef305c9b2956ad81f59aa6dc5ee1b0"
+  },
+  "generator/go.mod": {
+    "mtime": 1784400219.4709277,
+    "ast_hash": "01f249fed38db0cba5172a1270cec0f1",
+    "semantic_hash": "01f249fed38db0cba5172a1270cec0f1"
+  },
+  "generator/internal/config/config.go": {
+    "mtime": 1784400219.4710467,
+    "ast_hash": "5a13cc4538b4db44fddab508de00db45",
+    "semantic_hash": "5a13cc4538b4db44fddab508de00db45"
+  },
+  "generator/internal/config/config_test.go": {
+    "mtime": 1784400219.4710808,
+    "ast_hash": "6baa43fa3f531a898011f0a3e1ad1082",
+    "semantic_hash": "6baa43fa3f531a898011f0a3e1ad1082"
+  },
+  "generator/internal/gen/gen.go": {
+    "mtime": 1784400219.4710808,
+    "ast_hash": "db6472ef2bacfd7c13dd45d2065876f0",
+    "semantic_hash": "db6472ef2bacfd7c13dd45d2065876f0"
+  },
+  "generator/internal/gen/gen_test.go": {
+    "mtime": 1784400219.4711356,
+    "ast_hash": "de003f32e8b96b7841c964d8e127565b",
+    "semantic_hash": "de003f32e8b96b7841c964d8e127565b"
+  },
+  "generator/internal/model/model.go": {
+    "mtime": 1784400219.4711356,
+    "ast_hash": "b8cac9ed30951d366a7626e13dc1e98e",
+    "semantic_hash": "b8cac9ed30951d366a7626e13dc1e98e"
+  },
+  "generator/internal/producer/producer.go": {
+    "mtime": 1784400219.4711356,
+    "ast_hash": "418a32f0c8777cfcb412cea6db0043b6",
+    "semantic_hash": "418a32f0c8777cfcb412cea6db0043b6"
+  },
+  "kafka/init-topics.sh": {
+    "mtime": 1784400219.4711356,
+    "ast_hash": "26a5f84f3c10846c1698b102e5926842",
+    "semantic_hash": "26a5f84f3c10846c1698b102e5926842"
+  },
+  "minio/init-bucket.sh": {
+    "mtime": 1784400219.4711356,
+    "ast_hash": "256d4fb9eda16b19b06507b6b10599c7",
+    "semantic_hash": "256d4fb9eda16b19b06507b6b10599c7"
+  },
+  "spark/compact.py": {
+    "mtime": 1784400219.471301,
+    "ast_hash": "1d9116067d005e50d26548491c6237a0",
+    "semantic_hash": "1d9116067d005e50d26548491c6237a0"
+  },
+  "spark/entrypoint.sh": {
+    "mtime": 1784400219.471301,
+    "ast_hash": "7ca5186609c5ffe952bbac19e4606b89",
+    "semantic_hash": "7ca5186609c5ffe952bbac19e4606b89"
+  },
+  ".agents/skills/beads/SKILL.md": {
+    "mtime": 1784071903.2729847,
+    "ast_hash": "4eba59bd27c18667fbbed3d5942b40ef",
+    "semantic_hash": "4eba59bd27c18667fbbed3d5942b40ef"
+  },
+  ".agents/skills/beads/agents/openai.yaml": {
+    "mtime": 1784071903.2730486,
+    "ast_hash": "075f32133b20f796e271f03cd50cd03e",
+    "semantic_hash": "075f32133b20f796e271f03cd50cd03e"
+  },
+  ".beads/README.md": {
+    "mtime": 1784071903.2345953,
+    "ast_hash": "7b562344dfbbf12388c3032ba0aa4d4e",
+    "semantic_hash": "7b562344dfbbf12388c3032ba0aa4d4e"
+  },
+  ".beads/config.yaml": {
+    "mtime": 1784071903.2345953,
+    "ast_hash": "3c94c1e569447dfbfcb9e71498b6cbc6",
+    "semantic_hash": "3c94c1e569447dfbfcb9e71498b6cbc6"
+  },
+  ".beads/orchestrator.yml": {
+    "mtime": 1784400219.4698627,
+    "ast_hash": "24a6ebc1cb626aaff60f295bb1562b17",
+    "semantic_hash": "24a6ebc1cb626aaff60f295bb1562b17"
+  },
+  "AGENTS.md": {
+    "mtime": 1784071903.2732182,
+    "ast_hash": "f560abcc9eddc9775a5099a1596698cb",
+    "semantic_hash": "f560abcc9eddc9775a5099a1596698cb"
+  },
+  "CLAUDE.md": {
+    "mtime": 1784071903.2715945,
+    "ast_hash": "6e3c092ad818b965525089a33a0924d0",
+    "semantic_hash": "6e3c092ad818b965525089a33a0924d0"
+  },
+  "README.md": {
+    "mtime": 1783392799.105319,
+    "ast_hash": "9d3b8760c5c51326f62a0a98b10035f2",
+    "semantic_hash": "9d3b8760c5c51326f62a0a98b10035f2"
+  },
+  "compose/dremio.yml": {
+    "mtime": 1784400219.4698627,
+    "ast_hash": "b2b6bc4971b5368321f21ff19045ffd2",
+    "semantic_hash": "b2b6bc4971b5368321f21ff19045ffd2"
+  },
+  "compose/flink.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "424ed92172c6de7e57064e419bcacd4a",
+    "semantic_hash": "424ed92172c6de7e57064e419bcacd4a"
+  },
+  "compose/generator.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "65b957eeb3970f2fa417e971556d2f46",
+    "semantic_hash": "65b957eeb3970f2fa417e971556d2f46"
+  },
+  "compose/kafka.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "94e7c08e372da796db8764fecf41733c",
+    "semantic_hash": "94e7c08e372da796db8764fecf41733c"
+  },
+  "compose/minio.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4",
+    "semantic_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4"
+  },
+  "compose/nessie.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "00da11be29521d69d989fef818f38abc",
+    "semantic_hash": "00da11be29521d69d989fef818f38abc"
+  },
+  "compose/spark.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "42e92d2332d1005ce061fe9ca6053ccf",
+    "semantic_hash": "42e92d2332d1005ce061fe9ca6053ccf"
+  },
+  "docker-compose.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "4643572127f00c4561d7111f0e96a577",
+    "semantic_hash": "4643572127f00c4561d7111f0e96a577"
+  },
+  "dremio/setup.md": {
+    "mtime": 1784400219.4706786,
+    "ast_hash": "b7152f11f33c3312a8d9290ac4cbdecd",
+    "semantic_hash": "b7152f11f33c3312a8d9290ac4cbdecd"
+  },
+  "generator/config.yaml": {
+    "mtime": 1784400219.4709277,
+    "ast_hash": "1de8e86456ba9b0f54127c6266d71c20",
+    "semantic_hash": "1de8e86456ba9b0f54127c6266d71c20"
+  }
+}

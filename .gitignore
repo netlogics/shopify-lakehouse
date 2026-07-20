@@ -36,3 +36,8 @@ go.work.sum
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# graphify: keep the portable artifacts (graph.json, graph.html, GRAPH_REPORT.md,
+# manifest.json, cost.json); ignore machine-specific scratch and regenerable cache
+graphify-out/cache/
+graphify-out/.graphify_*
