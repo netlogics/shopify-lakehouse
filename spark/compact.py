@@ -4,7 +4,7 @@ Spark compaction script for Iceberg/Nessie tables.
 Runs three maintenance procedures for each table:
   1. rewrite_data_files  — bin-pack small files into 128 MB files
   2. rewrite_manifests   — clean up manifest metadata
-  3. expire_snapshots    — drop snapshots older than 30 days, keep at least 5
+  3. expire_snapshots    — drop snapshots older than 1 hour, keep at least 5
 """
 
 import os
@@ -95,8 +95,10 @@ def compact_table(table: str) -> None:
     # Enable GC before expiry (NessieCatalog disables it by default)
     run_sql("enable_gc", f"ALTER TABLE {table} SET TBLPROPERTIES ('gc.enabled'='true')")
 
-    # 3. Expire snapshots older than 30 days, retain at least 5
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).strftime(
+    # 3. Expire snapshots older than 1 hour, retain at least 5.
+    # Flink writes ~1 snapshot/min; a 30-day window accumulates thousands of
+    # snapshots and produces multi-MB metadata.json files that choke query engines.
+    cutoff = (datetime.now(timezone.utc) - timedelta(hours=1)).strftime(
         "%Y-%m-%d %H:%M:%S"
     )
     run_sql(
