@@ -10,6 +10,16 @@ AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-minioadmin}"
 AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-minioadmin}"
 S3_ENDPOINT="${S3_ENDPOINT:-http://minio:9000}"
 
+# Dremio's native S3 client wants the endpoint as a bare host:port; the http/https
+# choice is driven by the source "secure" flag, NOT by a scheme prefix. Passing a
+# scheme-prefixed URL makes the client fall back to real AWS and time out (186s) on
+# every query. Strip the scheme and derive `secure` from it.
+case "${S3_ENDPOINT}" in
+  https://*) S3_SECURE="true";  S3_ENDPOINT_HOSTPORT="${S3_ENDPOINT#https://}" ;;
+  http://*)  S3_SECURE="false"; S3_ENDPOINT_HOSTPORT="${S3_ENDPOINT#http://}" ;;
+  *)         S3_SECURE="false"; S3_ENDPOINT_HOSTPORT="${S3_ENDPOINT}" ;;
+esac
+
 BASE_URL="http://${DREMIO_HOST}:${DREMIO_PORT}"
 
 # ---------------------------------------------------------------------------
@@ -105,13 +115,12 @@ create_status=$(curl -s -o /tmp/create_response.txt -w '%{http_code}' \
       \"awsAccessSecret\": \"${AWS_SECRET_ACCESS_KEY}\",
       \"awsRootPath\": \"warehouse\",
       \"propertyList\": [
-        {\"name\": \"fs.s3a.endpoint\", \"value\": \"${S3_ENDPOINT}\"},
+        {\"name\": \"fs.s3a.endpoint\", \"value\": \"${S3_ENDPOINT_HOSTPORT}\"},
         {\"name\": \"fs.s3a.path.style.access\", \"value\": \"true\"},
-        {\"name\": \"dremio.s3.compat\", \"value\": \"true\"},
-        {\"name\": \"fs.s3a.impl\", \"value\": \"org.apache.hadoop.fs.s3a.S3AFileSystem\"}
+        {\"name\": \"dremio.s3.compat\", \"value\": \"true\"}
       ],
       \"credentialType\": \"ACCESS_KEY\",
-      \"secure\": false
+      \"secure\": ${S3_SECURE}
     }
   }" \
   "${BASE_URL}/api/v3/catalog" || true)
