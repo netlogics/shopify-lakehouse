@@ -1,0 +1,32 @@
+{
+  "type": "record",
+  "name": "OrderDetail",
+  "namespace": "com.shopify.lakehouse",
+  "doc": "A single line item as it appears on a Shopify order, matching the Shopify REST Admin API Order resource line_items array member.",
+  "fields": [
+    { "name": "order_id",                    "type": "long",                      "doc": "ID of the parent order." },
+    { "name": "id",                          "type": "long",                      "doc": "ID of the line item." },
+    { "name": "variant_id",                  "type": ["null", "long"],            "doc": "ID of the product variant.", "default": null },
+    { "name": "product_id",                  "type": ["null", "long"],            "doc": "ID of the product.", "default": null },
+    { "name": "title",                       "type": "string",                    "doc": "Product title at time of purchase." },
+    { "name": "variant_title",               "type": ["null", "string"],          "doc": "Variant title at time of purchase.", "default": null },
+    { "name": "name",                        "type": "string",                    "doc": "Full product+variant name, e.g. 'T-Shirt - Blue / Large'." },
+    { "name": "sku",                         "type": ["null", "string"],          "doc": "Variant SKU.", "default": null },
+    { "name": "vendor",                      "type": ["null", "string"],          "doc": "Product vendor.", "default": null },
+    { "name": "quantity",                    "type": "int",                       "doc": "Number of units ordered." },
+    { "name": "fulfillable_quantity",        "type": "int",                       "doc": "Quantity still available to fulfil." },
+    { "name": "current_quantity",            "type": "int",                       "doc": "Quantity after returns and removals." },
+    { "name": "price",                       "type": "string",                    "doc": "Unit price as a decimal string, e.g. '74.99'." },
+    { "name": "total_discount",              "type": "string",                    "doc": "Total discount applied to this line item, e.g. '0.00'." },
+    { "name": "fulfillment_service",         "type": "string",                    "doc": "Fulfillment service, e.g. 'manual'." },
+    { "name": "fulfillment_status",          "type": ["null", "string"],          "doc": "Fulfillment status: null, 'fulfilled', 'partial', 'not_eligible'.", "default": null },
+    { "name": "grams",                       "type": "int",                       "doc": "Weight of the line item in grams." },
+    { "name": "requires_shipping",           "type": "boolean",                   "doc": "Whether the line item requires shipping." },
+    { "name": "taxable",                     "type": "boolean",                   "doc": "Whether the line item is taxable." },
+    { "name": "gift_card",                   "type": "boolean",                   "doc": "Whether the line item is a gift card." },
+    { "name": "product_exists",              "type": "boolean",                   "doc": "Whether the product still exists in the store." },
+    { "name": "variant_inventory_management","type": ["null", "string"],          "doc": "Inventory management system, e.g. 'shopify'.", "default": null },
+    { "name": "created_at",                  "type": "string",                    "doc": "ISO 8601 UTC timestamp when the order was created." },
+    { "name": "updated_at",                  "type": "string",                    "doc": "ISO 8601 UTC timestamp when the order was last updated." }
+  ]
+}
