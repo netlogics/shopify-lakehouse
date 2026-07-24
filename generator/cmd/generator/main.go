@@ -1,6 +1,6 @@
 // Command generator seeds fake Shopify products and continuously emits new
-// products and inventory-level updates to Kafka, Avro-encoded via Schema
-// Registry.
+// products, inventory-level updates, and order details to Kafka, Avro-encoded
+// via Schema Registry.
 package main
 
 import (
@@ -17,6 +17,7 @@ import (
 
 	"generator/internal/config"
 	"generator/internal/gen"
+	"generator/internal/model"
 	"generator/internal/producer"
 )
 
@@ -49,6 +50,11 @@ func main() {
 		slog.Error("parsing inventory rate", "error", err)
 		os.Exit(1)
 	}
+	orderDetailsInterval, err := config.ParseRate(cfg.OrderDetails.Rate)
+	if err != nil {
+		slog.Error("parsing order_details rate", "error", err)
+		os.Exit(1)
+	}
 
 	prod, err := producer.New(cfg, schemasDir)
 	if err != nil {
@@ -57,11 +63,15 @@ func main() {
 	}
 	defer prod.Close()
 
-	var productsSent, inventorySent, deliveryErrors atomic.Int64
+	var productsSent, inventorySent, orderDetailsSent, deliveryErrors atomic.Int64
 	go logDeliveryEvents(prod.Events(), &deliveryErrors)
 
 	registry := gen.NewRegistry()
 	generator := gen.NewGenerator(gofakeit.New(0), registry)
+
+	// seedProducts keeps a local copy so NewOrderDetail can resolve variant
+	// fields (price, grams, SKU, etc.) by inventory_item_id.
+	seedProducts := make([]model.Product, 0, cfg.Products.SeedCount)
 
 	slog.Info("seeding products", "count", cfg.Products.SeedCount)
 	for i := 0; i < cfg.Products.SeedCount; i++ {
@@ -70,6 +80,7 @@ func main() {
 			slog.Error("publishing seed product", "error", err)
 			continue
 		}
+		seedProducts = append(seedProducts, p)
 		productsSent.Add(1)
 	}
 	prod.Flush(10_000)
@@ -81,6 +92,8 @@ func main() {
 	defer productsTicker.Stop()
 	inventoryTicker := time.NewTicker(inventoryInterval)
 	defer inventoryTicker.Stop()
+	orderDetailsTicker := time.NewTicker(orderDetailsInterval)
+	defer orderDetailsTicker.Stop()
 
 	statsTicker := time.NewTicker(10 * time.Second)
 	defer statsTicker.Stop()
@@ -88,6 +101,7 @@ func main() {
 	slog.Info("generator running",
 		"products_topic", cfg.Products.Topic, "products_rate", cfg.Products.Rate,
 		"inventory_topic", cfg.Inventory.Topic, "inventory_rate", cfg.Inventory.Rate,
+		"order_details_topic", cfg.OrderDetails.Topic, "order_details_rate", cfg.OrderDetails.Rate,
 	)
 
 	for {
@@ -98,6 +112,7 @@ func main() {
 			slog.Info("shutdown complete",
 				"products_sent", productsSent.Load(),
 				"inventory_sent", inventorySent.Load(),
+				"order_details_sent", orderDetailsSent.Load(),
 				"delivery_errors", deliveryErrors.Load(),
 			)
 			return
@@ -108,6 +123,7 @@ func main() {
 				slog.Error("publishing product", "error", err)
 				continue
 			}
+			seedProducts = append(seedProducts, p)
 			productsSent.Add(1)
 
 		case <-inventoryTicker.C:
@@ -121,10 +137,22 @@ func main() {
 			}
 			inventorySent.Add(1)
 
+		case <-orderDetailsTicker.C:
+			detail, ok := generator.NewOrderDetail(seedProducts)
+			if !ok {
+				continue
+			}
+			if err := prod.PublishOrderDetail(detail); err != nil {
+				slog.Error("publishing order detail", "error", err)
+				continue
+			}
+			orderDetailsSent.Add(1)
+
 		case <-statsTicker.C:
 			slog.Info("emit counts",
 				"products_sent", productsSent.Load(),
 				"inventory_sent", inventorySent.Load(),
+				"order_details_sent", orderDetailsSent.Load(),
 				"delivery_errors", deliveryErrors.Load(),
 			)
 		}

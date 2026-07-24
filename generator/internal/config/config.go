@@ -14,9 +14,10 @@ import (
 
 // Config is the top-level generator configuration.
 type Config struct {
-	Kafka     KafkaConfig     `yaml:"kafka"`
-	Products  ProductsConfig  `yaml:"products"`
-	Inventory InventoryConfig `yaml:"inventory"`
+	Kafka        KafkaConfig        `yaml:"kafka"`
+	Products     ProductsConfig     `yaml:"products"`
+	Inventory    InventoryConfig    `yaml:"inventory"`
+	OrderDetails OrderDetailsConfig `yaml:"order_details"`
 }
 
 // KafkaConfig holds broker and schema registry connection settings.
@@ -39,6 +40,12 @@ type InventoryConfig struct {
 	Locations int    `yaml:"locations"`
 }
 
+// OrderDetailsConfig controls order-detail event emission.
+type OrderDetailsConfig struct {
+	Topic string `yaml:"topic"`
+	Rate  string `yaml:"rate"`
+}
+
 func defaults() Config {
 	return Config{
 		Kafka: KafkaConfig{
@@ -54,6 +61,10 @@ func defaults() Config {
 			Topic:     "shopify.inventory",
 			Rate:      "10/s",
 			Locations: 3,
+		},
+		OrderDetails: OrderDetailsConfig{
+			Topic: "shopify.order_details",
+			Rate:  "2/s",
 		},
 	}
 }
@@ -86,6 +97,9 @@ func Load(path string) (*Config, error) {
 	if _, err := ParseRate(cfg.Inventory.Rate); err != nil {
 		return nil, fmt.Errorf("inventory.rate: %w", err)
 	}
+	if _, err := ParseRate(cfg.OrderDetails.Rate); err != nil {
+		return nil, fmt.Errorf("order_details.rate: %w", err)
+	}
 
 	return &cfg, nil
 }
@@ -114,6 +128,12 @@ func applyNonZero(dst, src *Config) {
 	}
 	if src.Inventory.Locations != 0 {
 		dst.Inventory.Locations = src.Inventory.Locations
+	}
+	if src.OrderDetails.Topic != "" {
+		dst.OrderDetails.Topic = src.OrderDetails.Topic
+	}
+	if src.OrderDetails.Rate != "" {
+		dst.OrderDetails.Rate = src.OrderDetails.Rate
 	}
 }
 
@@ -148,6 +168,12 @@ func applyEnvOverrides(cfg *Config) {
 		if n, err := strconv.Atoi(v); err == nil {
 			cfg.Inventory.Locations = n
 		}
+	}
+	if v := os.Getenv("ORDER_DETAILS_TOPIC"); v != "" {
+		cfg.OrderDetails.Topic = v
+	}
+	if v := os.Getenv("ORDER_DETAILS_RATE"); v != "" {
+		cfg.OrderDetails.Rate = v
 	}
 }
 
