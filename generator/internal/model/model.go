@@ -45,6 +45,35 @@ type Product struct {
 	Variants    []Variant `json:"variants" avro:"variants"`
 }
 
+// OrderDetail matches schemas/order_detail.avsc and the Shopify REST Admin API
+// Order resource line_items array member.
+type OrderDetail struct {
+	OrderID                   int64   `json:"order_id" avro:"order_id"`
+	ID                        int64   `json:"id" avro:"id"`
+	VariantID                 *int64  `json:"variant_id" avro:"variant_id"`
+	ProductID                 *int64  `json:"product_id" avro:"product_id"`
+	Title                     string  `json:"title" avro:"title"`
+	VariantTitle              *string `json:"variant_title" avro:"variant_title"`
+	Name                      string  `json:"name" avro:"name"`
+	SKU                       *string `json:"sku" avro:"sku"`
+	Vendor                    *string `json:"vendor" avro:"vendor"`
+	Quantity                  int32   `json:"quantity" avro:"quantity"`
+	FulfillableQuantity       int32   `json:"fulfillable_quantity" avro:"fulfillable_quantity"`
+	CurrentQuantity           int32   `json:"current_quantity" avro:"current_quantity"`
+	Price                     string  `json:"price" avro:"price"`
+	TotalDiscount             string  `json:"total_discount" avro:"total_discount"`
+	FulfillmentService        string  `json:"fulfillment_service" avro:"fulfillment_service"`
+	FulfillmentStatus         *string `json:"fulfillment_status" avro:"fulfillment_status"`
+	Grams                     int32   `json:"grams" avro:"grams"`
+	RequiresShipping          bool    `json:"requires_shipping" avro:"requires_shipping"`
+	Taxable                   bool    `json:"taxable" avro:"taxable"`
+	GiftCard                  bool    `json:"gift_card" avro:"gift_card"`
+	ProductExists             bool    `json:"product_exists" avro:"product_exists"`
+	VariantInventoryManagement *string `json:"variant_inventory_management" avro:"variant_inventory_management"`
+	CreatedAt                 string  `json:"created_at" avro:"created_at"`
+	UpdatedAt                 string  `json:"updated_at" avro:"updated_at"`
+}
+
 // InventoryLevel matches schemas/inventory_level.avsc and the Shopify REST API
 // inventory_level object. Note: sku and product_id are not part of the API
 // response — use a join with products/variants to enrich downstream.

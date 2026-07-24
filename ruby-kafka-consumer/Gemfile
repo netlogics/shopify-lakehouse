@@ -1,0 +1,10 @@
+source "https://rubygems.org"
+
+gem "karafka", "~> 2.4"
+gem "activerecord", "~> 7.2"
+gem "sqlite3", "~> 2.0"
+
+# Confluent Avro wire-format decoding (magic byte + 4-byte schema ID + Avro binary).
+# avro decodes the binary payload; net-http is stdlib so no extra gem needed for
+# fetching schemas from the Schema Registry.
+gem "avro", "~> 1.12"

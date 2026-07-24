@@ -252,6 +252,96 @@ func (g *Generator) NewProduct() model.Product {
 	}
 }
 
+// NewOrderDetail picks a random known variant and emits an order detail (line
+// item) event for a fake order. ok is false if no variant has been registered
+// yet.
+func (g *Generator) NewOrderDetail(products []model.Product) (detail model.OrderDetail, ok bool) {
+	ref, ok := g.Registry.RandomVariant(g.Faker)
+	if !ok {
+		return model.OrderDetail{}, false
+	}
+
+	// Find the matching variant to carry its fields through.
+	var variant *model.Variant
+	for i := range products {
+		for j := range products[i].Variants {
+			if products[i].Variants[j].InventoryItemID == ref.InventoryItemID {
+				v := products[i].Variants[j]
+				variant = &v
+				break
+			}
+		}
+		if variant != nil {
+			break
+		}
+	}
+
+	f := g.Faker
+	now := time.Now()
+	createdAt := now.Add(-time.Duration(f.IntRange(1, 30*24)) * time.Hour)
+	updatedAt := createdAt.Add(time.Duration(f.IntRange(0, 48)) * time.Hour)
+	if updatedAt.After(now) {
+		updatedAt = now
+	}
+
+	quantity := int32(f.IntRange(1, 10))
+	orderID := int64(f.IntRange(1_000_000, 9_999_999))
+	lineItemID := int64(f.IntRange(1_000_000_000, 9_999_999_999))
+
+	price := fmt.Sprintf("%.2f", f.Price(5, 500))
+	grams := int32(f.IntRange(100, 5000))
+	title := f.ProductName()
+	sku := fmt.Sprintf("SKU-%d-%d", ref.ProductID, ref.InventoryItemID)
+	vendor := f.Company()
+	variantTitle := "Default Title"
+	variantInvMgmt := "shopify"
+
+	var variantID, productID *int64
+	if variant != nil {
+		price = variant.Price
+		grams = variant.Grams
+		sku = variant.SKU
+		if variant.Option1 != nil {
+			variantTitle = *variant.Option1
+			if variant.Option2 != nil {
+				variantTitle += " / " + *variant.Option2
+			}
+		}
+		variantID = &variant.ID
+		productID = &variant.ProductID
+		if variant.InventoryManagement != nil {
+			variantInvMgmt = *variant.InventoryManagement
+		}
+	}
+
+	return model.OrderDetail{
+		OrderID:                    orderID,
+		ID:                         lineItemID,
+		VariantID:                  variantID,
+		ProductID:                  productID,
+		Title:                      title,
+		VariantTitle:               &variantTitle,
+		Name:                       fmt.Sprintf("%s - %s", title, variantTitle),
+		SKU:                        &sku,
+		Vendor:                     &vendor,
+		Quantity:                   quantity,
+		FulfillableQuantity:        quantity,
+		CurrentQuantity:            quantity,
+		Price:                      price,
+		TotalDiscount:              "0.00",
+		FulfillmentService:         fulfillmentService,
+		FulfillmentStatus:          nil,
+		Grams:                      grams,
+		RequiresShipping:           true,
+		Taxable:                    true,
+		GiftCard:                   false,
+		ProductExists:              true,
+		VariantInventoryManagement: &variantInvMgmt,
+		CreatedAt:                  shopifyTime(createdAt),
+		UpdatedAt:                  shopifyTime(updatedAt),
+	}, true
+}
+
 // NewInventoryLevel picks a random known variant and emits an inventory update
 // for a random location. ok is false if no variant has been registered yet.
 func (g *Generator) NewInventoryLevel(locations int) (level model.InventoryLevel, ok bool) {

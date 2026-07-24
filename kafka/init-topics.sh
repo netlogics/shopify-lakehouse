@@ -5,7 +5,7 @@ BOOTSTRAP="${KAFKA_BOOTSTRAP:-kafka:9092}"
 PARTITIONS="${KAFKA_TOPIC_PARTITIONS:-3}"
 REPLICATION="${KAFKA_TOPIC_REPLICATION:-1}"
 RETENTION_MS="${KAFKA_TOPIC_RETENTION_MS:-604800000}"
-TOPICS=("${KAFKA_TOPIC_PRODUCTS:-shopify.products}" "${KAFKA_TOPIC_INVENTORY:-shopify.inventory}")
+TOPICS=("${KAFKA_TOPIC_PRODUCTS:-shopify.products}" "${KAFKA_TOPIC_INVENTORY:-shopify.inventory}" "${KAFKA_TOPIC_ORDER_DETAILS:-shopify.order_details}")
 
 for topic in "${TOPICS[@]}"; do
   if kafka-topics --bootstrap-server "$BOOTSTRAP" --describe --topic "$topic" >/dev/null 2>&1; then

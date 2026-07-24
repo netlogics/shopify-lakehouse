@@ -1,9 +1,10 @@
 -- Flink SQL: transform raw Shopify API events (Kafka/Avro) → Iceberg/Nessie.
 --
--- Three Iceberg sinks:
+-- Four Iceberg sinks:
 --   nessie.lakehouse.products          one row per product event
 --   nessie.lakehouse.product_variants  one row per variant (UNNEST)
 --   nessie.lakehouse.inventory_levels  one row per inventory level event
+--   nessie.lakehouse.order_details     one row per order detail (line item) event
 --
 -- Transformations applied vs raw Kafka payload:
 --   products.tags        STRING (CSV) — ARRAY<STRING> split needs a custom UDF; kept as-is
@@ -11,12 +12,16 @@
 --   variants.price       STRING → DECIMAL(10,2)
 --   variants.compare_at_price STRING → DECIMAL(10,2) (nullable)
 --   variants.grams       dropped (redundant with weight + weight_unit)
+--   order_details.price         STRING → DECIMAL(10,2)
+--   order_details.total_discount STRING → DECIMAL(10,2)
+--   order_details.grams  dropped (redundant with variant weight)
 --   timestamps           ISO 8601 UTC strings → TIMESTAMP(3) via TO_TIMESTAMP + LEFT
 --
 -- Two EXECUTE blocks → two Flink jobs.  Jobs 1+2 read the same Kafka topics
 -- independently (separate consumer groups).  Avoids the shared-source +
 -- UNNEST interaction inside a single STATEMENT SET which is unreliable in
 -- Flink 1.20.
+-- Job 3 reads the order_details topic independently.
 --
 -- KNOWN RISK: CROSS JOIN UNNEST on ARRAY<ROW<...>> — if Flink cannot resolve
 -- named ROW fields via v.field_name, fall back to positional access v.f0,
@@ -114,6 +119,41 @@ CREATE TABLE products_source_variants (
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );
 
+CREATE TABLE order_details_source (
+  order_id                     BIGINT,
+  id                           BIGINT,
+  variant_id                   BIGINT,
+  product_id                   BIGINT,
+  title                        STRING,
+  variant_title                STRING,
+  name                         STRING,
+  sku                          STRING,
+  vendor                       STRING,
+  quantity                     INT,
+  fulfillable_quantity         INT,
+  current_quantity             INT,
+  price                        STRING,
+  total_discount               STRING,
+  fulfillment_service          STRING,
+  fulfillment_status           STRING,
+  grams                        INT,
+  requires_shipping            BOOLEAN,
+  taxable                      BOOLEAN,
+  gift_card                    BOOLEAN,
+  product_exists               BOOLEAN,
+  variant_inventory_management STRING,
+  created_at                   STRING,
+  updated_at                   STRING
+) WITH (
+  'connector'                    = 'kafka',
+  'topic'                        = 'shopify.order_details',
+  'properties.bootstrap.servers' = 'kafka:9092',
+  'properties.group.id'          = 'flink-ingest-order-details',
+  'scan.startup.mode'            = 'earliest-offset',
+  'format'                       = 'avro-confluent',
+  'avro-confluent.url'           = 'http://schema-registry:8081'
+);
+
 CREATE TABLE inventory_source (
   inventory_item_id  BIGINT,
   location_id        BIGINT,
@@ -152,6 +192,7 @@ CREATE DATABASE IF NOT EXISTS nessie.lakehouse;
 DROP TABLE IF EXISTS nessie.lakehouse.products;
 DROP TABLE IF EXISTS nessie.lakehouse.product_variants;
 DROP TABLE IF EXISTS nessie.lakehouse.inventory_levels;
+DROP TABLE IF EXISTS nessie.lakehouse.order_details;
 
 CREATE TABLE nessie.lakehouse.products (
   id            BIGINT,
@@ -203,6 +244,35 @@ CREATE TABLE nessie.lakehouse.inventory_levels (
   available          INT,
   updated_at         TIMESTAMP(3)
 ) PARTITIONED BY (location_id) WITH (
+  'format-version' = '2',
+  'gc.enabled'     = 'true'
+);
+
+CREATE TABLE nessie.lakehouse.order_details (
+  order_id                     BIGINT,
+  id                           BIGINT,
+  variant_id                   BIGINT,
+  product_id                   BIGINT,
+  title                        STRING,
+  variant_title                STRING,
+  name                         STRING,
+  sku                          STRING,
+  vendor                       STRING,
+  quantity                     INT,
+  fulfillable_quantity         INT,
+  current_quantity             INT,
+  price                        DECIMAL(10,2),
+  total_discount               DECIMAL(10,2),
+  fulfillment_service          STRING,
+  fulfillment_status           STRING,
+  requires_shipping            BOOLEAN,
+  taxable                      BOOLEAN,
+  gift_card                    BOOLEAN,
+  product_exists               BOOLEAN,
+  variant_inventory_management STRING,
+  created_at                   TIMESTAMP(3),
+  updated_at                   TIMESTAMP(3)
+) PARTITIONED BY (fulfillment_status) WITH (
   'format-version' = '2',
   'gc.enabled'     = 'true'
 );
@@ -271,3 +341,36 @@ SELECT
   TO_TIMESTAMP(LEFT(v.updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
 FROM products_source_variants AS p
 CROSS JOIN UNNEST(p.variants) AS v;
+
+-- ---------------------------------------------------------------------------
+-- Job 3: order_details
+-- Separate job so it runs independently and can be restarted without
+-- affecting the product/inventory jobs.
+-- ---------------------------------------------------------------------------
+
+INSERT INTO nessie.lakehouse.order_details
+SELECT
+  order_id,
+  id,
+  variant_id,
+  product_id,
+  title,
+  variant_title,
+  name,
+  sku,
+  vendor,
+  quantity,
+  fulfillable_quantity,
+  current_quantity,
+  CAST(price AS DECIMAL(10,2))          AS price,
+  CAST(total_discount AS DECIMAL(10,2)) AS total_discount,
+  fulfillment_service,
+  fulfillment_status,
+  requires_shipping,
+  taxable,
+  gift_card,
+  product_exists,
+  variant_inventory_management,
+  TO_TIMESTAMP(LEFT(created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
+  TO_TIMESTAMP(LEFT(updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
+FROM order_details_source;
