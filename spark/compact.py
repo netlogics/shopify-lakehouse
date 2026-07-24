@@ -24,6 +24,7 @@ TABLES = [
     "nessie.lakehouse.products",
     "nessie.lakehouse.product_variants",
     "nessie.lakehouse.inventory_levels",
+    "nessie.lakehouse.order_details",
 ]
 
 # ---------------------------------------------------------------------------

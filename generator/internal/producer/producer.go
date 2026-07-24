@@ -19,26 +19,29 @@ import (
 	"generator/internal/model"
 )
 
-// Producer publishes product and inventory events to their configured
-// Kafka topics, encoded per the Confluent wire format (magic byte + 4-byte
-// schema ID + Avro binary).
+// Producer publishes product, inventory, and order-detail events to their
+// configured Kafka topics, encoded per the Confluent wire format (magic byte +
+// 4-byte schema ID + Avro binary).
 type Producer struct {
 	kafka *kafka.Producer
 	sr    schemaregistry.Client
 
-	productsTopic  string
-	inventoryTopic string
+	productsTopic     string
+	inventoryTopic    string
+	orderDetailsTopic string
 
-	productSchema     avro.Schema
-	productSchemaID   int
-	inventorySchema   avro.Schema
-	inventorySchemaID int
+	productSchema        avro.Schema
+	productSchemaID      int
+	inventorySchema      avro.Schema
+	inventorySchemaID    int
+	orderDetailSchema    avro.Schema
+	orderDetailSchemaID  int
 }
 
 // New builds a Producer: it connects to Kafka and the Schema Registry,
-// registers the two schemas loaded from schemasDir (product.avsc and
-// inventory_level.avsc) under the standard "<topic>-value" subjects, and
-// returns a ready-to-use Producer.
+// registers the three schemas loaded from schemasDir (product.avsc,
+// inventory_level.avsc, and order_detail.avsc) under the standard
+// "<topic>-value" subjects, and returns a ready-to-use Producer.
 func New(cfg *config.Config, schemasDir string) (*Producer, error) {
 	kp, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": cfg.Kafka.Brokers,
@@ -67,15 +70,25 @@ func New(cfg *config.Config, schemasDir string) (*Producer, error) {
 		return nil, err
 	}
 
+	orderDetailSchema, orderDetailSchemaID, err := loadAndRegister(
+		srClient, filepath.Join(schemasDir, "order_detail.avsc"), cfg.OrderDetails.Topic+"-value")
+	if err != nil {
+		kp.Close()
+		return nil, err
+	}
+
 	return &Producer{
-		kafka:             kp,
-		sr:                srClient,
-		productsTopic:     cfg.Products.Topic,
-		inventoryTopic:    cfg.Inventory.Topic,
-		productSchema:     productSchema,
-		productSchemaID:   productSchemaID,
-		inventorySchema:   inventorySchema,
-		inventorySchemaID: inventorySchemaID,
+		kafka:               kp,
+		sr:                  srClient,
+		productsTopic:       cfg.Products.Topic,
+		inventoryTopic:      cfg.Inventory.Topic,
+		orderDetailsTopic:   cfg.OrderDetails.Topic,
+		productSchema:       productSchema,
+		productSchemaID:     productSchemaID,
+		inventorySchema:     inventorySchema,
+		inventorySchemaID:   inventorySchemaID,
+		orderDetailSchema:   orderDetailSchema,
+		orderDetailSchemaID: orderDetailSchemaID,
 	}, nil
 }
 
@@ -121,6 +134,22 @@ func (p *Producer) PublishProduct(product model.Product) error {
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),
 		Value:          encode(p.productSchemaID, avroBytes),
+	}, nil)
+}
+
+// PublishOrderDetail encodes and produces an order detail event, keyed by order_id.
+func (p *Producer) PublishOrderDetail(detail model.OrderDetail) error {
+	avroBytes, err := avro.Marshal(p.orderDetailSchema, detail)
+	if err != nil {
+		return fmt.Errorf("encoding order detail: %w", err)
+	}
+
+	topic := p.orderDetailsTopic
+	key := strconv.FormatInt(detail.OrderID, 10)
+	return p.kafka.Produce(&kafka.Message{
+		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+		Key:            []byte(key),
+		Value:          encode(p.orderDetailSchemaID, avroBytes),
 	}, nil)
 }
 
