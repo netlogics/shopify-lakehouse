@@ -11,3 +11,7 @@ inventory:
   topic: shopify.inventory
   rate: 10/s
   locations: 3
+
+order_details:
+  topic: shopify.order_details
+  rate: 2/s
