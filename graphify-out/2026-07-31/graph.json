@@ -59,8 +59,7 @@
       "_origin": "ast",
       "community": 10,
       "norm_label": "post-checkout",
-      "id": "beads_hooks_post_checkout",
-      "community_name": "post-checkout"
+      "id": "beads_hooks_post_checkout"
     },
     {
       "label": "post-checkout script",
@@ -74,8 +73,7 @@
       "_origin": "ast",
       "community": 10,
       "norm_label": "post-checkout script",
-      "id": "beads_hooks_post_checkout__entry",
-      "community_name": "post-checkout"
+      "id": "beads_hooks_post_checkout__entry"
     },
     {
       "label": "post-merge",
@@ -89,8 +87,7 @@
       "_origin": "ast",
       "community": 11,
       "norm_label": "post-merge",
-      "id": "beads_hooks_post_merge",
-      "community_name": "post-merge"
+      "id": "beads_hooks_post_merge"
     },
     {
       "label": "post-merge script",
@@ -104,8 +101,7 @@
       "_origin": "ast",
       "community": 11,
       "norm_label": "post-merge script",
-      "id": "beads_hooks_post_merge__entry",
-      "community_name": "post-merge"
+      "id": "beads_hooks_post_merge__entry"
     },
     {
       "label": "pre-commit",
@@ -119,8 +115,7 @@
       "_origin": "ast",
       "community": 12,
       "norm_label": "pre-commit",
-      "id": "beads_hooks_pre_commit",
-      "community_name": "pre-commit"
+      "id": "beads_hooks_pre_commit"
     },
     {
       "label": "pre-commit script",
@@ -134,8 +129,7 @@
       "_origin": "ast",
       "community": 12,
       "norm_label": "pre-commit script",
-      "id": "beads_hooks_pre_commit__entry",
-      "community_name": "pre-commit"
+      "id": "beads_hooks_pre_commit__entry"
     },
     {
       "label": "pre-push",
@@ -149,8 +143,7 @@
       "_origin": "ast",
       "community": 13,
       "norm_label": "pre-push",
-      "id": "beads_hooks_pre_push",
-      "community_name": "pre-push"
+      "id": "beads_hooks_pre_push"
     },
     {
       "label": "pre-push script",
@@ -164,8 +157,7 @@
       "_origin": "ast",
       "community": 13,
       "norm_label": "pre-push script",
-      "id": "beads_hooks_pre_push__entry",
-      "community_name": "pre-push"
+      "id": "beads_hooks_pre_push__entry"
     },
     {
       "label": "prepare-commit-msg",
@@ -179,8 +171,7 @@
       "_origin": "ast",
       "community": 14,
       "norm_label": "prepare-commit-msg",
-      "id": "beads_hooks_prepare_commit_msg",
-      "community_name": "prepare-commit-msg"
+      "id": "beads_hooks_prepare_commit_msg"
     },
     {
       "label": "prepare-commit-msg script",
@@ -194,8 +185,7 @@
       "_origin": "ast",
       "community": 14,
       "norm_label": "prepare-commit-msg script",
-      "id": "beads_hooks_prepare_commit_msg__entry",
-      "community_name": "prepare-commit-msg"
+      "id": "beads_hooks_prepare_commit_msg__entry"
     },
     {
       "label": "Event",
@@ -205,8 +195,7 @@
       "_origin": "ast",
       "community": 7,
       "norm_label": "event",
-      "id": "generator_cmd_generator_main_go_event",
-      "community_name": "main"
+      "id": "generator_cmd_generator_main_go_event"
     },
     {
       "label": "Int64",
@@ -216,8 +205,7 @@
       "_origin": "ast",
       "community": 7,
       "norm_label": "int64",
-      "id": "int64",
-      "community_name": "main"
+      "id": "int64"
     },
     {
       "label": "generator",
@@ -229,8 +217,7 @@
       "_origin": "ast",
       "community": 20,
       "norm_label": "generator",
-      "id": "pkg_generator",
-      "community_name": "generator"
+      "id": "pkg_generator"
     },
     {
       "label": "Duration",
@@ -240,8 +227,7 @@
       "_origin": "ast",
       "community": 5,
       "norm_label": "duration",
-      "id": "duration",
-      "community_name": ".NewOrderDetail"
+      "id": "duration"
     },
     {
       "label": "config_test.go",
@@ -251,8 +237,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "config_test.go",
-      "id": "generator_internal_config_config_test",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test"
     },
     {
       "label": "TestParseRate()",
@@ -262,8 +247,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "testparserate()",
-      "id": "generator_internal_config_config_test_testparserate",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_testparserate"
     },
     {
       "label": "T",
@@ -273,8 +257,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "t",
-      "id": "generator_internal_config_config_test_go_t",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_go_t"
     },
     {
       "label": "TestLoadDefaults()",
@@ -284,8 +267,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "testloaddefaults()",
-      "id": "generator_internal_config_config_test_testloaddefaults",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_testloaddefaults"
     },
     {
       "label": "TestLoadFromFile()",
@@ -295,8 +277,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "testloadfromfile()",
-      "id": "generator_internal_config_config_test_testloadfromfile",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_testloadfromfile"
     },
     {
       "label": "TestLoadEnvOverrides()",
@@ -306,8 +287,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "testloadenvoverrides()",
-      "id": "generator_internal_config_config_test_testloadenvoverrides",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_testloadenvoverrides"
     },
     {
       "label": "TestLoadInvalidRate()",
@@ -317,8 +297,7 @@
       "_origin": "ast",
       "community": 2,
       "norm_label": "testloadinvalidrate()",
-      "id": "generator_internal_config_config_test_testloadinvalidrate",
-      "community_name": "Load"
+      "id": "generator_internal_config_config_test_testloadinvalidrate"
     },
     {
       "label": "Mutex",
@@ -328,8 +307,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "mutex",
-      "id": "mutex",
-      "community_name": "Registry"
+      "id": "mutex"
     },
     {
       "label": "Faker",
@@ -339,8 +317,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "faker",
-      "id": "faker",
-      "community_name": "Registry"
+      "id": "faker"
     },
     {
       "label": "Time",
@@ -350,8 +327,7 @@
       "_origin": "ast",
       "community": 5,
       "norm_label": "time",
-      "id": "time",
-      "community_name": ".NewOrderDetail"
+      "id": "time"
     },
     {
       "label": "gen_test.go",
@@ -361,8 +337,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "gen_test.go",
-      "id": "generator_internal_gen_gen_test",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test"
     },
     {
       "label": "TestNewProduct()",
@@ -372,8 +347,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "testnewproduct()",
-      "id": "generator_internal_gen_gen_test_testnewproduct",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test_testnewproduct"
     },
     {
       "label": "T",
@@ -383,8 +357,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "t",
-      "id": "generator_internal_gen_gen_test_go_t",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test_go_t"
     },
     {
       "label": "TestNewProductUniqueIDsAcrossCalls()",
@@ -394,8 +367,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "testnewproductuniqueidsacrosscalls()",
-      "id": "generator_internal_gen_gen_test_testnewproductuniqueidsacrosscalls",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test_testnewproductuniqueidsacrosscalls"
     },
     {
       "label": "TestNewInventoryLevelEmptyRegistry()",
@@ -405,8 +377,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "testnewinventorylevelemptyregistry()",
-      "id": "generator_internal_gen_gen_test_testnewinventorylevelemptyregistry",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test_testnewinventorylevelemptyregistry"
     },
     {
       "label": "TestNewInventoryLevelReferencesKnownVariant()",
@@ -416,8 +387,7 @@
       "_origin": "ast",
       "community": 1,
       "norm_label": "testnewinventorylevelreferencesknownvariant()",
-      "id": "generator_internal_gen_gen_test_testnewinventorylevelreferencesknownvariant",
-      "community_name": "Registry"
+      "id": "generator_internal_gen_gen_test_testnewinventorylevelreferencesknownvariant"
     },
     {
       "label": "Client",
@@ -427,8 +397,7 @@
       "_origin": "ast",
       "community": 3,
       "norm_label": "client",
-      "id": "client",
-      "community_name": "Producer"
+      "id": "client"
     },
     {
       "label": "Schema",
@@ -438,8 +407,7 @@
       "_origin": "ast",
       "community": 3,
       "norm_label": "schema",
-      "id": "schema",
-      "community_name": "Producer"
+      "id": "schema"
     },
     {
       "label": "Event",
@@ -449,8 +417,7 @@
       "_origin": "ast",
       "community": 3,
       "norm_label": "event",
-      "id": "generator_internal_producer_producer_go_event",
-      "community_name": "Producer"
+      "id": "generator_internal_producer_producer_go_event"
     },
     {
       "label": "init-bucket.sh",
@@ -464,8 +431,7 @@
       "_origin": "ast",
       "community": 17,
       "norm_label": "init-bucket.sh",
-      "id": "minio_init_bucket",
-      "community_name": "init-bucket.sh"
+      "id": "minio_init_bucket"
     },
     {
       "label": "init-bucket.sh script",
@@ -479,8 +445,7 @@
       "_origin": "ast",
       "community": 17,
       "norm_label": "init-bucket.sh script",
-      "id": "minio_init_bucket_sh__entry",
-      "community_name": "init-bucket.sh"
+      "id": "minio_init_bucket_sh__entry"
     },
     {
       "label": "entrypoint.sh",
@@ -494,8 +459,7 @@
       "_origin": "ast",
       "community": 18,
       "norm_label": "entrypoint.sh",
-      "id": "spark_entrypoint",
-      "community_name": "entrypoint.sh"
+      "id": "spark_entrypoint"
     },
     {
       "label": "entrypoint.sh script",
@@ -509,8 +473,7 @@
       "_origin": "ast",
       "community": 18,
       "norm_label": "entrypoint.sh script",
-      "id": "spark_entrypoint_sh__entry",
-      "community_name": "entrypoint.sh"
+      "id": "spark_entrypoint_sh__entry"
     },
     {
       "label": "Beads Skill - Task Tracking Workflow",
@@ -523,8 +486,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads skill - task tracking workflow",
-      "id": "agents_skills_beads_skill_beads_skill",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "agents_skills_beads_skill_beads_skill"
     },
     {
       "label": "Beads OpenAI Agent Interface",
@@ -537,8 +499,7 @@
       "contributor": null,
       "community": 19,
       "norm_label": "beads openai agent interface",
-      "id": "agents_skills_beads_agents_openai_beads_openai_agent",
-      "community_name": "Beads OpenAI Agent Interface"
+      "id": "agents_skills_beads_agents_openai_beads_openai_agent"
     },
     {
       "label": "Beads Issue Tracker - AI-Native Issue Tracking",
@@ -551,8 +512,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads issue tracker - ai-native issue tracking",
-      "id": "_beads_readme_beads_issue_tracker",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "_beads_readme_beads_issue_tracker"
     },
     {
       "label": "Beads Configuration",
@@ -565,8 +525,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads configuration",
-      "id": "_beads_config_beads_config",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "_beads_config_beads_config"
     },
     {
       "label": "Beads Orchestrator Config",
@@ -579,8 +538,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads orchestrator config",
-      "id": "_beads_orchestrator_beads_orchestrator",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "_beads_orchestrator_beads_orchestrator"
     },
     {
       "label": "Agent Instructions (AGENTS.md)",
@@ -593,8 +551,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "agent instructions (agents.md)",
-      "id": "agents_md_agent_instructions",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "agents_md_agent_instructions"
     },
     {
       "label": "Project Instructions for AI Agents (CLAUDE.md)",
@@ -607,8 +564,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "project instructions for ai agents (claude.md)",
-      "id": "claude_md_claude_instructions",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "claude_md_claude_instructions"
     },
     {
       "label": "shopify-lakehouse Project README",
@@ -621,8 +577,7 @@
       "contributor": null,
       "community": 21,
       "norm_label": "shopify-lakehouse project readme",
-      "id": "readme_shopify_lakehouse",
-      "community_name": "shopify-lakehouse Project README"
+      "id": "readme_shopify_lakehouse"
     },
     {
       "label": "Dremio Query Engine Service",
@@ -635,8 +590,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "dremio query engine service",
-      "id": "compose_dremio_dremio_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_dremio_dremio_service"
     },
     {
       "label": "Dremio Bootstrap Auto-Configuration Service",
@@ -649,8 +603,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "dremio bootstrap auto-configuration service",
-      "id": "compose_dremio_dremio_bootstrap_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_dremio_dremio_bootstrap_service"
     },
     {
       "label": "Flink JobManager Service",
@@ -663,8 +616,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "flink jobmanager service",
-      "id": "compose_flink_flink_jobmanager",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_flink_flink_jobmanager"
     },
     {
       "label": "Flink TaskManager Service",
@@ -677,8 +629,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "flink taskmanager service",
-      "id": "compose_flink_flink_taskmanager",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_flink_flink_taskmanager"
     },
     {
       "label": "Flink SQL Submit Service (ingest.sql runner)",
@@ -691,8 +642,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "flink sql submit service (ingest.sql runner)",
-      "id": "compose_flink_flink_sql_submit",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_flink_flink_sql_submit"
     },
     {
       "label": "Shopify Data Generator Service",
@@ -705,8 +655,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "shopify data generator service",
-      "id": "compose_generator_generator_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_generator_generator_service"
     },
     {
       "label": "Kafka Broker Service (KRaft mode)",
@@ -719,8 +668,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "kafka broker service (kraft mode)",
-      "id": "compose_kafka_kafka_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_kafka_kafka_service"
     },
     {
       "label": "Confluent Schema Registry Service",
@@ -733,8 +681,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "confluent schema registry service",
-      "id": "compose_kafka_schema_registry",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_kafka_schema_registry"
     },
     {
       "label": "Kafka Topic Initialization Service",
@@ -747,8 +694,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "kafka topic initialization service",
-      "id": "compose_kafka_kafka_init",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_kafka_kafka_init"
     },
     {
       "label": "MinIO Object Storage Service",
@@ -761,8 +707,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "minio object storage service",
-      "id": "compose_minio_minio_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_minio_minio_service"
     },
     {
       "label": "MinIO Bucket Initialization Service",
@@ -775,8 +720,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "minio bucket initialization service",
-      "id": "compose_minio_minio_init",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_minio_minio_init"
     },
     {
       "label": "Nessie Iceberg Catalog Service",
@@ -789,8 +733,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "nessie iceberg catalog service",
-      "id": "compose_nessie_nessie_service",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_nessie_nessie_service"
     },
     {
       "label": "Nessie Data Directory Init Service",
@@ -803,8 +746,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "nessie data directory init service",
-      "id": "compose_nessie_nessie_init",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_nessie_nessie_init"
     },
     {
       "label": "Spark Iceberg Compaction Service",
@@ -817,8 +759,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "spark iceberg compaction service",
-      "id": "compose_spark_spark_compaction",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "compose_spark_spark_compaction"
     },
     {
       "label": "Shopify Lakehouse Docker Compose Stack",
@@ -831,8 +772,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "shopify lakehouse docker compose stack",
-      "id": "docker_compose_lakehouse_stack",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "docker_compose_lakehouse_stack"
     },
     {
       "label": "Dremio Manual Setup Guide",
@@ -845,8 +785,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "dremio manual setup guide",
-      "id": "dremio_setup_dremio_manual_setup",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "dremio_setup_dremio_manual_setup"
     },
     {
       "label": "Generator Config - Shopify Topics and Rates",
@@ -859,8 +798,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generator config - shopify topics and rates",
-      "id": "generator_config_generator_config",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "generator_config_generator_config"
     },
     {
       "label": "Beads Dolt Sync Architecture",
@@ -873,8 +811,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads dolt sync architecture",
-      "id": "concept_beads_dolt_sync",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "concept_beads_dolt_sync"
     },
     {
       "label": "Lakehouse Data Flow: Generator -> Kafka -> Flink -> Iceberg -> Dremio",
@@ -887,8 +824,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "lakehouse data flow: generator -> kafka -> flink -> iceberg -> dremio",
-      "id": "concept_lakehouse_data_flow",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "concept_lakehouse_data_flow"
     },
     {
       "label": "Apache Iceberg Table Format",
@@ -901,8 +837,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "apache iceberg table format",
-      "id": "concept_iceberg_table_format",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "concept_iceberg_table_format"
     },
     {
       "label": "Avro Schema Registry Integration",
@@ -915,8 +850,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "avro schema registry integration",
-      "id": "concept_avro_schema_registry",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "concept_avro_schema_registry"
     },
     {
       "label": "Beads Conservative Agent Profile",
@@ -929,8 +863,7 @@
       "contributor": null,
       "community": 6,
       "norm_label": "beads conservative agent profile",
-      "id": "concept_beads_conservative_profile",
-      "community_name": "Agent Instructions (AGENTS.md)"
+      "id": "concept_beads_conservative_profile"
     },
     {
       "label": "Spark Compaction of Flink Small Files",
@@ -943,8 +876,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "spark compaction of flink small files",
-      "id": "concept_spark_compaction_rationale",
-      "community_name": "Nessie Iceberg Catalog Service"
+      "id": "concept_spark_compaction_rationale"
     },
     {
       "label": "bootstrap.sh",
@@ -956,10 +888,9 @@
         "kind": "file"
       },
       "_origin": "ast",
-      "community": 15,
-      "norm_label": "bootstrap.sh",
       "id": "dremio_bootstrap",
-      "community_name": "bootstrap.sh"
+      "community": 15,
+      "norm_label": "bootstrap.sh"
     },
     {
       "label": "bootstrap.sh script",
@@ -971,10 +902,9 @@
         "kind": "bash_entrypoint"
       },
       "_origin": "ast",
-      "community": 15,
-      "norm_label": "bootstrap.sh script",
       "id": "dremio_bootstrap_sh__entry",
-      "community_name": "bootstrap.sh"
+      "community": 15,
+      "norm_label": "bootstrap.sh script"
     },
     {
       "label": "main.go",
@@ -982,10 +912,9 @@
       "source_file": "generator/cmd/generator/main.go",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 7,
-      "norm_label": "main.go",
       "id": "generator_cmd_generator_main",
-      "community_name": "main"
+      "community": 7,
+      "norm_label": "main.go"
     },
     {
       "label": "main()",
@@ -993,10 +922,9 @@
       "source_file": "generator/cmd/generator/main.go",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 7,
-      "norm_label": "main()",
       "id": "generator_cmd_generator_main_main",
-      "community_name": "main"
+      "community": 7,
+      "norm_label": "main()"
     },
     {
       "label": "logDeliveryEvents()",
@@ -1004,10 +932,9 @@
       "source_file": "generator/cmd/generator/main.go",
       "source_location": "L164",
       "_origin": "ast",
-      "community": 7,
-      "norm_label": "logdeliveryevents()",
       "id": "generator_cmd_generator_main_logdeliveryevents",
-      "community_name": "main"
+      "community": 7,
+      "norm_label": "logdeliveryevents()"
     },
     {
       "label": "config.go",
@@ -1015,10 +942,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "config.go",
       "id": "generator_internal_config_config",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "config.go"
     },
     {
       "label": "Config",
@@ -1026,10 +952,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L16",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "config",
       "id": "config_config",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "config"
     },
     {
       "label": "KafkaConfig",
@@ -1037,10 +962,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "kafkaconfig",
       "id": "config_kafkaconfig",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "kafkaconfig"
     },
     {
       "label": "ProductsConfig",
@@ -1048,10 +972,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L30",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "productsconfig",
       "id": "config_productsconfig",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "productsconfig"
     },
     {
       "label": "InventoryConfig",
@@ -1059,10 +982,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L37",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "inventoryconfig",
       "id": "config_inventoryconfig",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "inventoryconfig"
     },
     {
       "label": "OrderDetailsConfig",
@@ -1070,10 +992,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "orderdetailsconfig",
       "id": "config_orderdetailsconfig",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "orderdetailsconfig"
     },
     {
       "label": "defaults()",
@@ -1081,10 +1002,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L49",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "defaults()",
       "id": "generator_internal_config_config_defaults",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "defaults()"
     },
     {
       "label": "Load()",
@@ -1092,10 +1012,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L74",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "load()",
       "id": "generator_internal_config_config_load",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "load()"
     },
     {
       "label": "applyNonZero()",
@@ -1103,10 +1022,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L107",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "applynonzero()",
       "id": "generator_internal_config_config_applynonzero",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "applynonzero()"
     },
     {
       "label": "applyEnvOverrides()",
@@ -1114,10 +1032,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L143",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "applyenvoverrides()",
       "id": "generator_internal_config_config_applyenvoverrides",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "applyenvoverrides()"
     },
     {
       "label": "ParseRate()",
@@ -1125,10 +1042,9 @@
       "source_file": "generator/internal/config/config.go",
       "source_location": "L182",
       "_origin": "ast",
-      "community": 2,
-      "norm_label": "parserate()",
       "id": "generator_internal_config_config_parserate",
-      "community_name": "Load"
+      "community": 2,
+      "norm_label": "parserate()"
     },
     {
       "label": "gen.go",
@@ -1136,10 +1052,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "gen.go",
       "id": "generator_internal_gen_gen",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "gen.go"
     },
     {
       "label": "VariantRef",
@@ -1147,10 +1062,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L18",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "variantref",
       "id": "gen_variantref",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "variantref"
     },
     {
       "label": "Registry",
@@ -1158,10 +1072,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "registry",
       "id": "gen_registry",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "registry"
     },
     {
       "label": "NewRegistry()",
@@ -1169,10 +1082,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "newregistry()",
       "id": "generator_internal_gen_gen_newregistry",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "newregistry()"
     },
     {
       "label": ".Len()",
@@ -1180,10 +1092,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L38",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": ".len()",
       "id": "gen_registry_len",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": ".len()"
     },
     {
       "label": ".addVariants()",
@@ -1191,10 +1102,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L44",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": ".addvariants()",
       "id": "gen_registry_addvariants",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": ".addvariants()"
     },
     {
       "label": ".RandomVariant()",
@@ -1202,10 +1112,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L52",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": ".randomvariant()",
       "id": "gen_registry_randomvariant",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": ".randomvariant()"
     },
     {
       "label": ".nextIDs()",
@@ -1213,10 +1122,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L62",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": ".nextids()",
       "id": "gen_registry_nextids",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": ".nextids()"
     },
     {
       "label": "Generator",
@@ -1224,10 +1132,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L79",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "generator",
       "id": "gen_generator",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "generator"
     },
     {
       "label": "NewGenerator()",
@@ -1235,10 +1142,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L85",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "newgenerator()",
       "id": "generator_internal_gen_gen_newgenerator",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "newgenerator()"
     },
     {
       "label": "strPtr()",
@@ -1246,10 +1152,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L97",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "strptr()",
       "id": "generator_internal_gen_gen_strptr",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "strptr()"
     },
     {
       "label": "handle()",
@@ -1257,10 +1162,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L100",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": "handle()",
       "id": "generator_internal_gen_gen_handle",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": "handle()"
     },
     {
       "label": "shopifyTime()",
@@ -1268,10 +1172,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L113",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "shopifytime()",
       "id": "generator_internal_gen_gen_shopifytime",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "shopifytime()"
     },
     {
       "label": ".NewProduct()",
@@ -1279,10 +1182,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L119",
       "_origin": "ast",
-      "community": 1,
-      "norm_label": ".newproduct()",
       "id": "gen_generator_newproduct",
-      "community_name": "Registry"
+      "community": 1,
+      "norm_label": ".newproduct()"
     },
     {
       "label": ".NewOrderDetail()",
@@ -1290,10 +1192,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L258",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": ".neworderdetail()",
       "id": "gen_generator_neworderdetail",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": ".neworderdetail()"
     },
     {
       "label": "OrderDetail",
@@ -1301,10 +1202,9 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "orderdetail",
       "id": "generator_internal_gen_gen_go_orderdetail",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "orderdetail"
     },
     {
       "label": ".NewInventoryLevel()",
@@ -1312,10 +1212,9 @@
       "source_file": "generator/internal/gen/gen.go",
       "source_location": "L347",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": ".newinventorylevel()",
       "id": "gen_generator_newinventorylevel",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": ".newinventorylevel()"
     },
     {
       "label": "model.go",
@@ -1323,10 +1222,9 @@
       "source_file": "generator/internal/model/model.go",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "model.go",
       "id": "generator_internal_model_model",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "model.go"
     },
     {
       "label": "Variant",
@@ -1334,10 +1232,9 @@
       "source_file": "generator/internal/model/model.go",
       "source_location": "L6",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "variant",
       "id": "model_variant",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "variant"
     },
     {
       "label": "Product",
@@ -1345,10 +1242,9 @@
       "source_file": "generator/internal/model/model.go",
       "source_location": "L33",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "product",
       "id": "model_product",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "product"
     },
     {
       "label": "OrderDetail",
@@ -1356,10 +1252,9 @@
       "source_file": "generator/internal/model/model.go",
       "source_location": "L50",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "orderdetail",
       "id": "model_orderdetail",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "orderdetail"
     },
     {
       "label": "InventoryLevel",
@@ -1367,10 +1262,9 @@
       "source_file": "generator/internal/model/model.go",
       "source_location": "L80",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": "inventorylevel",
       "id": "model_inventorylevel",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": "inventorylevel"
     },
     {
       "label": "producer.go",
@@ -1378,10 +1272,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "producer.go",
       "id": "generator_internal_producer_producer",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "producer.go"
     },
     {
       "label": "Producer",
@@ -1389,10 +1282,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L25",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "producer",
       "id": "producer_producer",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "producer"
     },
     {
       "label": "New()",
@@ -1400,10 +1292,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L45",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "new()",
       "id": "generator_internal_producer_producer_new",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "new()"
     },
     {
       "label": "loadAndRegister()",
@@ -1411,10 +1302,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L95",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "loadandregister()",
       "id": "generator_internal_producer_producer_loadandregister",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "loadandregister()"
     },
     {
       "label": "encode()",
@@ -1422,10 +1312,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L116",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "encode()",
       "id": "generator_internal_producer_producer_encode",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "encode()"
     },
     {
       "label": ".PublishProduct()",
@@ -1433,10 +1322,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L125",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": ".publishproduct()",
       "id": "producer_producer_publishproduct",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": ".publishproduct()"
     },
     {
       "label": ".PublishOrderDetail()",
@@ -1444,10 +1332,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L141",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": ".publishorderdetail()",
       "id": "producer_producer_publishorderdetail",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": ".publishorderdetail()"
     },
     {
       "label": "OrderDetail",
@@ -1455,10 +1342,9 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": "orderdetail",
       "id": "generator_internal_producer_producer_go_orderdetail",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": "orderdetail"
     },
     {
       "label": ".PublishInventoryLevel()",
@@ -1466,10 +1352,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L157",
       "_origin": "ast",
-      "community": 5,
-      "norm_label": ".publishinventorylevel()",
       "id": "producer_producer_publishinventorylevel",
-      "community_name": ".NewOrderDetail"
+      "community": 5,
+      "norm_label": ".publishinventorylevel()"
     },
     {
       "label": ".Events()",
@@ -1477,10 +1362,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L174",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": ".events()",
       "id": "producer_producer_events",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": ".events()"
     },
     {
       "label": ".Flush()",
@@ -1488,10 +1372,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L181",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": ".flush()",
       "id": "producer_producer_flush",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": ".flush()"
     },
     {
       "label": ".Close()",
@@ -1499,10 +1382,9 @@
       "source_file": "generator/internal/producer/producer.go",
       "source_location": "L187",
       "_origin": "ast",
-      "community": 3,
-      "norm_label": ".close()",
       "id": "producer_producer_close",
-      "community_name": "Producer"
+      "community": 3,
+      "norm_label": ".close()"
     },
     {
       "label": "init-topics.sh",
@@ -1514,10 +1396,9 @@
         "kind": "file"
       },
       "_origin": "ast",
-      "community": 16,
-      "norm_label": "init-topics.sh",
       "id": "kafka_init_topics",
-      "community_name": "init-topics.sh"
+      "community": 16,
+      "norm_label": "init-topics.sh"
     },
     {
       "label": "init-topics.sh script",
@@ -1529,10 +1410,9 @@
         "kind": "bash_entrypoint"
       },
       "_origin": "ast",
-      "community": 16,
-      "norm_label": "init-topics.sh script",
       "id": "kafka_init_topics_sh__entry",
-      "community_name": "init-topics.sh"
+      "community": 16,
+      "norm_label": "init-topics.sh script"
     },
     {
       "label": "application_consumer.rb",
@@ -1540,10 +1420,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/application_consumer.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "application_consumer.rb",
       "id": "ruby_kafka_consumer_app_consumers_application_consumer",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "application_consumer.rb"
     },
     {
       "label": "ApplicationConsumer",
@@ -1551,10 +1430,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/application_consumer.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "applicationconsumer",
       "id": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "applicationconsumer"
     },
     {
       "label": "BaseConsumer",
@@ -1562,10 +1440,9 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "baseconsumer",
       "id": "baseconsumer",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "baseconsumer"
     },
     {
       "label": "order_details_consumer.rb",
@@ -1573,10 +1450,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "order_details_consumer.rb",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "order_details_consumer.rb"
     },
     {
       "label": "OrderDetailsConsumer",
@@ -1584,10 +1460,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "orderdetailsconsumer",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "orderdetailsconsumer"
     },
     {
       "label": ".consume()",
@@ -1595,10 +1470,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L14",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": ".consume()",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": ".consume()"
     },
     {
       "label": ".decode()",
@@ -1606,10 +1480,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L60",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": ".decode()",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": ".decode()"
     },
     {
       "label": ".fetch_schema()",
@@ -1617,10 +1490,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L74",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": ".fetch_schema()",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": ".fetch_schema()"
     },
     {
       "label": ".parse_timestamp()",
@@ -1628,10 +1500,9 @@
       "source_file": "ruby-kafka-consumer/app/consumers/order_details_consumer.rb",
       "source_location": "L86",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": ".parse_timestamp()",
       "id": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": ".parse_timestamp()"
     },
     {
       "label": "database.rb",
@@ -1639,10 +1510,9 @@
       "source_file": "ruby-kafka-consumer/app/models/database.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 22,
-      "norm_label": "database.rb",
       "id": "ruby_kafka_consumer_app_models_database",
-      "community_name": "database.rb"
+      "community": 22,
+      "norm_label": "database.rb"
     },
     {
       "label": "order_detail.rb",
@@ -1650,10 +1520,9 @@
       "source_file": "ruby-kafka-consumer/app/models/order_detail.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "order_detail.rb",
       "id": "ruby_kafka_consumer_app_models_order_detail",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "order_detail.rb"
     },
     {
       "label": "OrderDetail",
@@ -1661,10 +1530,9 @@
       "source_file": "ruby-kafka-consumer/app/models/order_detail.rb",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "orderdetail",
       "id": "ruby_kafka_consumer_app_models_order_detail_orderdetail",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "orderdetail"
     },
     {
       "label": "Base",
@@ -1672,10 +1540,9 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 4,
-      "norm_label": "base",
       "id": "base",
-      "community_name": "OrderDetailsConsumer"
+      "community": 4,
+      "norm_label": "base"
     },
     {
       "label": "karafka.rb",
@@ -1683,10 +1550,9 @@
       "source_file": "ruby-kafka-consumer/karafka.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 9,
-      "norm_label": "karafka.rb",
       "id": "ruby_kafka_consumer_karafka",
-      "community_name": "KarafkaApp"
+      "community": 9,
+      "norm_label": "karafka.rb"
     },
     {
       "label": "KarafkaApp",
@@ -1694,10 +1560,9 @@
       "source_file": "ruby-kafka-consumer/karafka.rb",
       "source_location": "L11",
       "_origin": "ast",
-      "community": 9,
-      "norm_label": "karafkaapp",
       "id": "ruby_kafka_consumer_karafka_karafkaapp",
-      "community_name": "KarafkaApp"
+      "community": 9,
+      "norm_label": "karafkaapp"
     },
     {
       "label": "App",
@@ -1705,10 +1570,9 @@
       "source_file": "",
       "source_location": "",
       "_origin": "ast",
-      "community": 9,
-      "norm_label": "app",
       "id": "app",
-      "community_name": "KarafkaApp"
+      "community": 9,
+      "norm_label": "app"
     },
     {
       "label": "run.rb",
@@ -1716,10 +1580,9 @@
       "source_file": "ruby-kafka-consumer/run.rb",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 23,
-      "norm_label": "run.rb",
       "id": "ruby_kafka_consumer_run",
-      "community_name": "run.rb"
+      "community": 23,
+      "norm_label": "run.rb"
     },
     {
       "label": "compact.py",
@@ -1727,10 +1590,9 @@
       "source_file": "spark/compact.py",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
-      "norm_label": "compact.py",
       "id": "spark_compact",
-      "community_name": "compact.py"
+      "community": 8,
+      "norm_label": "compact.py"
     },
     {
       "label": "run_sql()",
@@ -1738,10 +1600,9 @@
       "source_file": "spark/compact.py",
       "source_location": "L68",
       "_origin": "ast",
-      "community": 8,
-      "norm_label": "run_sql()",
       "id": "spark_compact_run_sql",
-      "community_name": "compact.py"
+      "community": 8,
+      "norm_label": "run_sql()"
     },
     {
       "label": "compact_table()",
@@ -1749,10 +1610,9 @@
       "source_file": "spark/compact.py",
       "source_location": "L76",
       "_origin": "ast",
-      "community": 8,
-      "norm_label": "compact_table()",
       "id": "spark_compact_compact_table",
-      "community_name": "compact.py"
+      "community": 8,
+      "norm_label": "compact_table()"
     },
     {
       "label": "Spark compaction script for Iceberg/Nessie tables.  Runs three maintenance proce",
@@ -1760,10 +1620,9 @@
       "source_file": "spark/compact.py",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 8,
-      "norm_label": "spark compaction script for iceberg/nessie tables.  runs three maintenance proce",
       "id": "spark_compact_rationale_1",
-      "community_name": "compact.py"
+      "community": 8,
+      "norm_label": "spark compaction script for iceberg/nessie tables.  runs three maintenance proce"
     },
     {
       "label": "Execute a SQL statement, print a summary, and return the result DataFrame.",
@@ -1771,10 +1630,9 @@
       "source_file": "spark/compact.py",
       "source_location": "L69",
       "_origin": "ast",
-      "community": 8,
-      "norm_label": "execute a sql statement, print a summary, and return the result dataframe.",
       "id": "spark_compact_rationale_69",
-      "community_name": "compact.py"
+      "community": 8,
+      "norm_label": "execute a sql statement, print a summary, and return the result dataframe."
     }
   ],
   "links": [
@@ -1841,9 +1699,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_cmd_generator_main_logdeliveryevents",
-      "target": "generator_cmd_generator_main_go_event"
+      "target": "generator_cmd_generator_main_go_event",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -1853,9 +1711,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_cmd_generator_main_logdeliveryevents",
-      "target": "int64"
+      "target": "int64",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -1889,9 +1747,9 @@
       "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_parserate",
-      "target": "duration"
+      "target": "duration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2076,9 +1934,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "mutex"
+      "target": "mutex",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2088,9 +1946,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator",
-      "target": "faker"
+      "target": "faker",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2100,9 +1958,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry_randomvariant",
-      "target": "faker"
+      "target": "faker",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2112,9 +1970,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen_newgenerator",
-      "target": "faker"
+      "target": "faker",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2124,9 +1982,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen_shopifytime",
-      "target": "time"
+      "target": "time",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2324,9 +2182,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_loadandregister",
-      "target": "client"
+      "target": "client",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2336,9 +2194,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "client"
+      "target": "client",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2348,9 +2206,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_loadandregister",
-      "target": "schema"
+      "target": "schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2360,9 +2218,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "schema"
+      "target": "schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -2372,9 +2230,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_events",
-      "target": "generator_internal_producer_producer_go_event"
+      "target": "generator_internal_producer_producer_go_event",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2855,9 +2713,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "dremio_bootstrap",
-      "target": "dremio_bootstrap_sh__entry"
+      "target": "dremio_bootstrap_sh__entry",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2866,9 +2724,9 @@
       "source_location": "L164",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_cmd_generator_main",
-      "target": "generator_cmd_generator_main_logdeliveryevents"
+      "target": "generator_cmd_generator_main_logdeliveryevents",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2877,9 +2735,9 @@
       "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_cmd_generator_main",
-      "target": "generator_cmd_generator_main_main"
+      "target": "generator_cmd_generator_main_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2889,9 +2747,9 @@
       "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_cmd_generator_main_main",
-      "target": "generator_cmd_generator_main_logdeliveryevents"
+      "target": "generator_cmd_generator_main_logdeliveryevents",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -2960,9 +2818,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2971,9 +2829,9 @@
       "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "config_inventoryconfig"
+      "target": "config_inventoryconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2982,9 +2840,9 @@
       "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "config_kafkaconfig"
+      "target": "config_kafkaconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -2993,9 +2851,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "config_orderdetailsconfig"
+      "target": "config_orderdetailsconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3004,9 +2862,9 @@
       "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "config_productsconfig"
+      "target": "config_productsconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3015,9 +2873,9 @@
       "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "generator_internal_config_config_applyenvoverrides"
+      "target": "generator_internal_config_config_applyenvoverrides",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3026,9 +2884,9 @@
       "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "generator_internal_config_config_applynonzero"
+      "target": "generator_internal_config_config_applynonzero",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3037,9 +2895,9 @@
       "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "generator_internal_config_config_defaults"
+      "target": "generator_internal_config_config_defaults",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3048,9 +2906,9 @@
       "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "generator_internal_config_config_load"
+      "target": "generator_internal_config_config_load",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3059,9 +2917,9 @@
       "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config",
-      "target": "generator_internal_config_config_parserate"
+      "target": "generator_internal_config_config_parserate",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3071,9 +2929,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "config_config",
-      "target": "config_inventoryconfig"
+      "target": "config_inventoryconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3083,9 +2941,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "config_config",
-      "target": "config_kafkaconfig"
+      "target": "config_kafkaconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3095,9 +2953,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "config_config",
-      "target": "config_orderdetailsconfig"
+      "target": "config_orderdetailsconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3107,9 +2965,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "config_config",
-      "target": "config_productsconfig"
+      "target": "config_productsconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3119,9 +2977,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_applyenvoverrides",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3131,9 +2989,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_applynonzero",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3143,9 +3001,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_defaults",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3155,9 +3013,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_load",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3167,9 +3025,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_new",
-      "target": "config_config"
+      "target": "config_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3179,9 +3037,9 @@
       "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_load",
-      "target": "generator_internal_config_config_defaults"
+      "target": "generator_internal_config_config_defaults",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3191,9 +3049,9 @@
       "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_load",
-      "target": "generator_internal_config_config_applyenvoverrides"
+      "target": "generator_internal_config_config_applyenvoverrides",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3203,9 +3061,9 @@
       "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_load",
-      "target": "generator_internal_config_config_applynonzero"
+      "target": "generator_internal_config_config_applynonzero",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3215,9 +3073,9 @@
       "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_config_config_load",
-      "target": "generator_internal_config_config_parserate"
+      "target": "generator_internal_config_config_parserate",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3226,9 +3084,9 @@
       "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "gen_generator"
+      "target": "gen_generator",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3237,9 +3095,9 @@
       "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "gen_registry"
+      "target": "gen_registry",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3248,9 +3106,9 @@
       "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "gen_variantref"
+      "target": "gen_variantref",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3259,9 +3117,9 @@
       "source_location": "L100",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "generator_internal_gen_gen_handle"
+      "target": "generator_internal_gen_gen_handle",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3270,9 +3128,9 @@
       "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "generator_internal_gen_gen_newgenerator"
+      "target": "generator_internal_gen_gen_newgenerator",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3281,9 +3139,9 @@
       "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "generator_internal_gen_gen_newregistry"
+      "target": "generator_internal_gen_gen_newregistry",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3292,9 +3150,9 @@
       "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "generator_internal_gen_gen_shopifytime"
+      "target": "generator_internal_gen_gen_shopifytime",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3303,9 +3161,9 @@
       "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen",
-      "target": "generator_internal_gen_gen_strptr"
+      "target": "generator_internal_gen_gen_strptr",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3315,9 +3173,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "gen_variantref"
+      "target": "gen_variantref",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3327,9 +3185,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry_addvariants",
-      "target": "gen_variantref"
+      "target": "gen_variantref",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3339,9 +3197,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry_randomvariant",
-      "target": "gen_variantref"
+      "target": "gen_variantref",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3351,9 +3209,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator",
-      "target": "gen_registry"
+      "target": "gen_registry",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3362,9 +3220,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "gen_registry_addvariants"
+      "target": "gen_registry_addvariants",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3373,9 +3231,9 @@
       "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "gen_registry_len"
+      "target": "gen_registry_len",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3384,9 +3242,9 @@
       "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "gen_registry_nextids"
+      "target": "gen_registry_nextids",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3395,9 +3253,9 @@
       "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_registry",
-      "target": "gen_registry_randomvariant"
+      "target": "gen_registry_randomvariant",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3407,9 +3265,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen_newgenerator",
-      "target": "gen_registry"
+      "target": "gen_registry",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3419,9 +3277,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen_newregistry",
-      "target": "gen_registry"
+      "target": "gen_registry",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3431,9 +3289,9 @@
       "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "gen_registry_addvariants"
+      "target": "gen_registry_addvariants",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3443,9 +3301,9 @@
       "source_location": "L348",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newinventorylevel",
-      "target": "gen_registry_randomvariant"
+      "target": "gen_registry_randomvariant",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3455,9 +3313,9 @@
       "source_location": "L259",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_neworderdetail",
-      "target": "gen_registry_randomvariant"
+      "target": "gen_registry_randomvariant",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3467,9 +3325,9 @@
       "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "gen_registry_nextids"
+      "target": "gen_registry_nextids",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3478,9 +3336,9 @@
       "source_location": "L347",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator",
-      "target": "gen_generator_newinventorylevel"
+      "target": "gen_generator_newinventorylevel",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3489,9 +3347,9 @@
       "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator",
-      "target": "gen_generator_neworderdetail"
+      "target": "gen_generator_neworderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3500,9 +3358,9 @@
       "source_location": "L119",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator",
-      "target": "gen_generator_newproduct"
+      "target": "gen_generator_newproduct",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3512,9 +3370,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_gen_gen_newgenerator",
-      "target": "gen_generator"
+      "target": "gen_generator",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3524,9 +3382,9 @@
       "source_location": "L172",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "generator_internal_gen_gen_strptr"
+      "target": "generator_internal_gen_gen_strptr",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3536,9 +3394,9 @@
       "source_location": "L245",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "generator_internal_gen_gen_handle"
+      "target": "generator_internal_gen_gen_handle",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3548,9 +3406,9 @@
       "source_location": "L360",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newinventorylevel",
-      "target": "generator_internal_gen_gen_shopifytime"
+      "target": "generator_internal_gen_gen_shopifytime",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3560,9 +3418,9 @@
       "source_location": "L340",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_neworderdetail",
-      "target": "generator_internal_gen_gen_shopifytime"
+      "target": "generator_internal_gen_gen_shopifytime",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3572,9 +3430,9 @@
       "source_location": "L223",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "generator_internal_gen_gen_shopifytime"
+      "target": "generator_internal_gen_gen_shopifytime",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3584,9 +3442,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newproduct",
-      "target": "model_product"
+      "target": "model_product",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3596,9 +3454,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_neworderdetail",
-      "target": "generator_internal_gen_gen_go_orderdetail"
+      "target": "generator_internal_gen_gen_go_orderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3608,9 +3466,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_neworderdetail",
-      "target": "model_product"
+      "target": "model_product",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3620,9 +3478,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "gen_generator_newinventorylevel",
-      "target": "model_inventorylevel"
+      "target": "model_inventorylevel",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3631,9 +3489,9 @@
       "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_model_model",
-      "target": "model_inventorylevel"
+      "target": "model_inventorylevel",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3642,9 +3500,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_model_model",
-      "target": "model_orderdetail"
+      "target": "model_orderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3653,9 +3511,9 @@
       "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_model_model",
-      "target": "model_product"
+      "target": "model_product",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3664,9 +3522,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_model_model",
-      "target": "model_variant"
+      "target": "model_variant",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3676,9 +3534,9 @@
       "weight": 1.0,
       "context": "field",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "model_product",
-      "target": "model_variant"
+      "target": "model_variant",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3688,9 +3546,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishproduct",
-      "target": "model_product"
+      "target": "model_product",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3700,9 +3558,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishinventorylevel",
-      "target": "model_inventorylevel"
+      "target": "model_inventorylevel",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3711,9 +3569,9 @@
       "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer",
-      "target": "generator_internal_producer_producer_encode"
+      "target": "generator_internal_producer_producer_encode",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3722,9 +3580,9 @@
       "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer",
-      "target": "generator_internal_producer_producer_loadandregister"
+      "target": "generator_internal_producer_producer_loadandregister",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3733,9 +3591,9 @@
       "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer",
-      "target": "generator_internal_producer_producer_new"
+      "target": "generator_internal_producer_producer_new",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3744,9 +3602,9 @@
       "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer",
-      "target": "producer_producer"
+      "target": "producer_producer",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3756,9 +3614,9 @@
       "weight": 1.0,
       "context": "return_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_new",
-      "target": "producer_producer"
+      "target": "producer_producer",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3767,9 +3625,9 @@
       "source_location": "L187",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_close"
+      "target": "producer_producer_close",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3778,9 +3636,9 @@
       "source_location": "L174",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_events"
+      "target": "producer_producer_events",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3789,9 +3647,9 @@
       "source_location": "L181",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_flush"
+      "target": "producer_producer_flush",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3800,9 +3658,9 @@
       "source_location": "L157",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_publishinventorylevel"
+      "target": "producer_producer_publishinventorylevel",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3811,9 +3669,9 @@
       "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_publishorderdetail"
+      "target": "producer_producer_publishorderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3822,9 +3680,9 @@
       "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer",
-      "target": "producer_producer_publishproduct"
+      "target": "producer_producer_publishproduct",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3834,9 +3692,9 @@
       "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_new",
-      "target": "generator_internal_producer_producer_loadandregister"
+      "target": "generator_internal_producer_producer_loadandregister",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3846,9 +3704,9 @@
       "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "generator_internal_producer_producer_new",
-      "target": "producer_producer_close"
+      "target": "producer_producer_close",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3858,9 +3716,9 @@
       "source_location": "L168",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishinventorylevel",
-      "target": "generator_internal_producer_producer_encode"
+      "target": "generator_internal_producer_producer_encode",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3870,9 +3728,9 @@
       "source_location": "L152",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishorderdetail",
-      "target": "generator_internal_producer_producer_encode"
+      "target": "generator_internal_producer_producer_encode",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3882,9 +3740,9 @@
       "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishproduct",
-      "target": "generator_internal_producer_producer_encode"
+      "target": "generator_internal_producer_producer_encode",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3894,9 +3752,9 @@
       "weight": 1.0,
       "context": "parameter_type",
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_publishorderdetail",
-      "target": "generator_internal_producer_producer_go_orderdetail"
+      "target": "generator_internal_producer_producer_go_orderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -3906,9 +3764,9 @@
       "source_location": "L188",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "producer_producer_close",
-      "target": "producer_producer_flush"
+      "target": "producer_producer_flush",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3917,9 +3775,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "kafka_init_topics",
-      "target": "kafka_init_topics_sh__entry"
+      "target": "kafka_init_topics_sh__entry",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3928,9 +3786,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_application_consumer",
-      "target": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer"
+      "target": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer",
+      "confidence_score": 1.0
     },
     {
       "relation": "inherits",
@@ -3939,9 +3797,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer",
-      "target": "baseconsumer"
+      "target": "baseconsumer",
+      "confidence_score": 1.0
     },
     {
       "relation": "inherits",
@@ -3950,9 +3808,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "target": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer"
+      "target": "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3961,9 +3819,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3972,9 +3830,9 @@
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3983,9 +3841,9 @@
       "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -3994,9 +3852,9 @@
       "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -4005,9 +3863,9 @@
       "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4017,9 +3875,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4029,9 +3887,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4053,9 +3911,9 @@
       "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode",
-      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema"
+      "target": "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4064,9 +3922,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_models_order_detail",
-      "target": "ruby_kafka_consumer_app_models_order_detail_orderdetail"
+      "target": "ruby_kafka_consumer_app_models_order_detail_orderdetail",
+      "confidence_score": 1.0
     },
     {
       "relation": "inherits",
@@ -4075,9 +3933,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_app_models_order_detail_orderdetail",
-      "target": "base"
+      "target": "base",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4086,9 +3944,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_karafka",
-      "target": "ruby_kafka_consumer_karafka_karafkaapp"
+      "target": "ruby_kafka_consumer_karafka_karafkaapp",
+      "confidence_score": 1.0
     },
     {
       "relation": "inherits",
@@ -4097,9 +3955,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "ruby_kafka_consumer_karafka_karafkaapp",
-      "target": "app"
+      "target": "app",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4108,9 +3966,9 @@
       "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "spark_compact",
-      "target": "spark_compact_compact_table"
+      "target": "spark_compact_compact_table",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4119,9 +3977,9 @@
       "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "spark_compact",
-      "target": "spark_compact_run_sql"
+      "target": "spark_compact_run_sql",
+      "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
@@ -4130,9 +3988,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "spark_compact_rationale_1",
-      "target": "spark_compact"
+      "target": "spark_compact",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -4142,9 +4000,9 @@
       "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "spark_compact_compact_table",
-      "target": "spark_compact_run_sql"
+      "target": "spark_compact_run_sql",
+      "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
@@ -4153,9 +4011,9 @@
       "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
-      "confidence_score": 1.0,
       "source": "spark_compact_rationale_69",
-      "target": "spark_compact_run_sql"
+      "target": "spark_compact_run_sql",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [
