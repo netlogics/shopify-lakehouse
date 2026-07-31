@@ -1,0 +1,333 @@
+{
+  "communities": {
+    "0": [
+      "compose_dremio_dremio_bootstrap_service",
+      "compose_dremio_dremio_service",
+      "compose_flink_flink_jobmanager",
+      "compose_flink_flink_sql_submit",
+      "compose_flink_flink_taskmanager",
+      "compose_generator_generator_service",
+      "compose_kafka_kafka_init",
+      "compose_kafka_kafka_service",
+      "compose_kafka_schema_registry",
+      "compose_minio_minio_init",
+      "compose_minio_minio_service",
+      "compose_nessie_nessie_init",
+      "compose_nessie_nessie_service",
+      "compose_spark_spark_compaction",
+      "concept_avro_schema_registry",
+      "concept_iceberg_table_format",
+      "concept_lakehouse_data_flow",
+      "concept_spark_compaction_rationale",
+      "docker_compose_lakehouse_stack",
+      "dremio_setup_dremio_manual_setup",
+      "generator_config_generator_config"
+    ],
+    "1": [
+      "faker",
+      "gen_generator",
+      "gen_generator_newproduct",
+      "gen_registry",
+      "gen_registry_addvariants",
+      "gen_registry_len",
+      "gen_registry_nextids",
+      "gen_registry_randomvariant",
+      "gen_variantref",
+      "generator_internal_gen_gen",
+      "generator_internal_gen_gen_handle",
+      "generator_internal_gen_gen_newgenerator",
+      "generator_internal_gen_gen_newregistry",
+      "generator_internal_gen_gen_strptr",
+      "generator_internal_gen_gen_test",
+      "generator_internal_gen_gen_test_go_t",
+      "generator_internal_gen_gen_test_testnewinventorylevelemptyregistry",
+      "generator_internal_gen_gen_test_testnewinventorylevelreferencesknownvariant",
+      "generator_internal_gen_gen_test_testnewproduct",
+      "generator_internal_gen_gen_test_testnewproductuniqueidsacrosscalls",
+      "mutex"
+    ],
+    "2": [
+      "config_config",
+      "config_inventoryconfig",
+      "config_kafkaconfig",
+      "config_orderdetailsconfig",
+      "config_productsconfig",
+      "generator_internal_config_config",
+      "generator_internal_config_config_applyenvoverrides",
+      "generator_internal_config_config_applynonzero",
+      "generator_internal_config_config_defaults",
+      "generator_internal_config_config_load",
+      "generator_internal_config_config_parserate",
+      "generator_internal_config_config_test",
+      "generator_internal_config_config_test_go_t",
+      "generator_internal_config_config_test_testloaddefaults",
+      "generator_internal_config_config_test_testloadenvoverrides",
+      "generator_internal_config_config_test_testloadfromfile",
+      "generator_internal_config_config_test_testloadinvalidrate",
+      "generator_internal_config_config_test_testparserate"
+    ],
+    "3": [
+      "client",
+      "generator_internal_producer_producer",
+      "generator_internal_producer_producer_encode",
+      "generator_internal_producer_producer_go_event",
+      "generator_internal_producer_producer_go_orderdetail",
+      "generator_internal_producer_producer_loadandregister",
+      "generator_internal_producer_producer_new",
+      "producer_producer",
+      "producer_producer_close",
+      "producer_producer_events",
+      "producer_producer_flush",
+      "producer_producer_publishorderdetail",
+      "producer_producer_publishproduct",
+      "schema"
+    ],
+    "4": [
+      "base",
+      "baseconsumer",
+      "ruby_kafka_consumer_app_consumers_application_consumer",
+      "ruby_kafka_consumer_app_consumers_application_consumer_applicationconsumer",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_consume",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_decode",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_fetch_schema",
+      "ruby_kafka_consumer_app_consumers_order_details_consumer_orderdetailsconsumer_parse_timestamp",
+      "ruby_kafka_consumer_app_models_order_detail",
+      "ruby_kafka_consumer_app_models_order_detail_orderdetail"
+    ],
+    "5": [
+      "duration",
+      "gen_generator_newinventorylevel",
+      "gen_generator_neworderdetail",
+      "generator_internal_gen_gen_go_orderdetail",
+      "generator_internal_gen_gen_shopifytime",
+      "generator_internal_model_model",
+      "model_inventorylevel",
+      "model_orderdetail",
+      "model_product",
+      "model_variant",
+      "producer_producer_publishinventorylevel",
+      "time"
+    ],
+    "6": [
+      "_beads_config_beads_config",
+      "_beads_orchestrator_beads_orchestrator",
+      "_beads_readme_beads_issue_tracker",
+      "agents_md_agent_instructions",
+      "agents_skills_beads_skill_beads_skill",
+      "claude_md_claude_instructions",
+      "concept_beads_conservative_profile",
+      "concept_beads_dolt_sync"
+    ],
+    "7": [
+      "generator_cmd_generator_main",
+      "generator_cmd_generator_main_go_event",
+      "generator_cmd_generator_main_logdeliveryevents",
+      "generator_cmd_generator_main_main",
+      "int64"
+    ],
+    "8": [
+      "spark_compact",
+      "spark_compact_compact_table",
+      "spark_compact_rationale_1",
+      "spark_compact_rationale_69",
+      "spark_compact_run_sql"
+    ],
+    "9": [
+      "app",
+      "ruby_kafka_consumer_karafka",
+      "ruby_kafka_consumer_karafka_karafkaapp"
+    ],
+    "10": [
+      "beads_hooks_post_checkout",
+      "beads_hooks_post_checkout__entry"
+    ],
+    "11": [
+      "beads_hooks_post_merge",
+      "beads_hooks_post_merge__entry"
+    ],
+    "12": [
+      "beads_hooks_pre_commit",
+      "beads_hooks_pre_commit__entry"
+    ],
+    "13": [
+      "beads_hooks_pre_push",
+      "beads_hooks_pre_push__entry"
+    ],
+    "14": [
+      "beads_hooks_prepare_commit_msg",
+      "beads_hooks_prepare_commit_msg__entry"
+    ],
+    "15": [
+      "dremio_bootstrap",
+      "dremio_bootstrap_sh__entry"
+    ],
+    "16": [
+      "kafka_init_topics",
+      "kafka_init_topics_sh__entry"
+    ],
+    "17": [
+      "minio_init_bucket",
+      "minio_init_bucket_sh__entry"
+    ],
+    "18": [
+      "spark_entrypoint",
+      "spark_entrypoint_sh__entry"
+    ],
+    "19": [
+      "agents_skills_beads_agents_openai_beads_openai_agent"
+    ],
+    "20": [
+      "pkg_generator"
+    ],
+    "21": [
+      "readme_shopify_lakehouse"
+    ],
+    "22": [
+      "ruby_kafka_consumer_app_models_database"
+    ],
+    "23": [
+      "ruby_kafka_consumer_run"
+    ]
+  },
+  "cohesion": {
+    "0": 0.18095238095238095,
+    "1": 0.20476190476190476,
+    "2": 0.24183006535947713,
+    "3": 0.23076923076923078,
+    "4": 0.21212121212121213,
+    "5": 0.19696969696969696,
+    "6": 0.25,
+    "7": 0.5,
+    "8": 0.5,
+    "9": 0.6666666666666666,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0
+  },
+  "gods": [
+    {
+      "id": "generator_internal_config_config_load",
+      "label": "Load()",
+      "degree": 11
+    },
+    {
+      "id": "config_config",
+      "label": "Config",
+      "degree": 10
+    },
+    {
+      "id": "gen_registry",
+      "label": "Registry",
+      "degree": 10
+    },
+    {
+      "id": "producer_producer",
+      "label": "Producer",
+      "degree": 10
+    },
+    {
+      "id": "generator_internal_gen_gen_newgenerator",
+      "label": "NewGenerator()",
+      "degree": 9
+    },
+    {
+      "id": "compose_nessie_nessie_service",
+      "label": "Nessie Iceberg Catalog Service",
+      "degree": 8
+    },
+    {
+      "id": "compose_minio_minio_service",
+      "label": "MinIO Object Storage Service",
+      "degree": 7
+    },
+    {
+      "id": "docker_compose_lakehouse_stack",
+      "label": "Shopify Lakehouse Docker Compose Stack",
+      "degree": 7
+    },
+    {
+      "id": "generator_cmd_generator_main_main",
+      "label": "main()",
+      "degree": 7
+    },
+    {
+      "id": "generator_internal_gen_gen_newregistry",
+      "label": "NewRegistry()",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Beads Skill - Task Tracking Workflow",
+      "target": "Agent Instructions (AGENTS.md)",
+      "source_files": [
+        ".agents/skills/beads/SKILL.md",
+        "AGENTS.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Beads Orchestrator Config",
+      "target": "Beads Skill - Task Tracking Workflow",
+      "source_files": [
+        ".beads/orchestrator.yml",
+        ".agents/skills/beads/SKILL.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "Beads Skill - Task Tracking Workflow",
+      "target": "Beads Issue Tracker - AI-Native Issue Tracking",
+      "source_files": [
+        ".agents/skills/beads/SKILL.md",
+        ".beads/README.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "Agent Instructions (AGENTS.md)",
+      "target": "Project Instructions for AI Agents (CLAUDE.md)",
+      "source_files": [
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "Lakehouse Data Flow: Generator -> Kafka -> Flink -> Iceberg -> Dremio",
+      "target": "Dremio Query Engine Service",
+      "source_files": [
+        "README.md",
+        "compose/dremio.yml"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
