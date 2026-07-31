@@ -1,53 +1,45 @@
-# Graph Report - .  (2026-07-31)
+# Graph Report - .  (2026-07-19)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- Corpus is ~10,120 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 142 nodes · 212 edges · 24 communities (11 shown, 13 thin omitted)
-- Extraction: 84% EXTRACTED · 16% INFERRED · 0% AMBIGUOUS · INFERRED: 33 edges (avg confidence: 0.84)
+- 119 nodes · 184 edges · 19 communities (7 shown, 12 thin omitted)
+- Extraction: 83% EXTRACTED · 17% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
-## Graph Freshness
-- Built from commit: `8f629c84`
-- Run `git rev-parse HEAD` and compare to check if the graph is stale.
-- Run `graphify update .` after code changes (no API cost).
-
 ## Community Hubs (Navigation)
-- Nessie Iceberg Catalog Service
-- Registry
-- Load
-- Producer
-- OrderDetailsConsumer
-- .NewOrderDetail
-- Agent Instructions (AGENTS.md)
-- main
-- compact.py
-- KarafkaApp
-- post-checkout
-- post-merge
-- pre-commit
-- pre-push
-- prepare-commit-msg
-- bootstrap.sh
-- init-topics.sh
-- init-bucket.sh
-- entrypoint.sh
-- Beads OpenAI Agent Interface
-- generator
-- shopify-lakehouse Project README
+- Docker Service Orchestration
+- Shopify Event Producer
+- Config & Kafka Settings
+- Data Generators & Faker
+- Generator CLI Entrypoint
+- Agent & Beads Workflow Config
+- Spark Iceberg Compaction
+- Beads Post-Checkout Hook
+- Beads Post-Merge Hook
+- Beads Pre-Commit Hook
+- Beads Pre-Push Hook
+- Beads Prepare-Commit-Msg Hook
+- Dremio Bootstrap Script
+- Kafka Init Topics Script
+- MinIO Init Bucket Script
+- Spark Entrypoint Script
+- OpenAI Beads Agent
+- Generator Package Root
+- Project README
 
 ## God Nodes (most connected - your core abstractions)
 1. `Load()` - 11 edges
-2. `Config` - 10 edges
-3. `Registry` - 10 edges
-4. `Producer` - 10 edges
-5. `NewGenerator()` - 9 edges
+2. `Registry` - 10 edges
+3. `Config` - 9 edges
+4. `NewGenerator()` - 9 edges
+5. `Producer` - 9 edges
 6. `Nessie Iceberg Catalog Service` - 8 edges
-7. `MinIO Object Storage Service` - 7 edges
-8. `Shopify Lakehouse Docker Compose Stack` - 7 edges
-9. `main()` - 7 edges
-10. `NewRegistry()` - 7 edges
+7. `main()` - 7 edges
+8. `NewRegistry()` - 7 edges
+9. `MinIO Object Storage Service` - 7 edges
+10. `Shopify Lakehouse Docker Compose Stack` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Beads Skill - Task Tracking Workflow` --semantically_similar_to--> `Agent Instructions (AGENTS.md)`  [INFERRED] [semantically similar]
@@ -69,61 +61,53 @@
 - **Kafka Ingestion Pipeline: Generator -> Kafka -> Schema Registry -> Flink** — compose_generator_generator_service, compose_kafka_kafka_service, compose_kafka_schema_registry, compose_flink_flink_sql_submit [INFERRED 0.95]
 - **Beads Task Tracking System: Skill + Config + Orchestrator** — agents_skills_beads_skill_beads_skill, _beads_config_beads_config, _beads_orchestrator_beads_orchestrator, concept_beads_dolt_sync [EXTRACTED 1.00]
 
-## Communities (24 total, 13 thin omitted)
+## Communities (19 total, 12 thin omitted)
 
-### Community 0 - "Nessie Iceberg Catalog Service"
+### Community 0 - "Docker Service Orchestration"
 Cohesion: 0.18
 Nodes (21): Dremio Bootstrap Auto-Configuration Service, Dremio Query Engine Service, Flink JobManager Service, Flink SQL Submit Service (ingest.sql runner), Flink TaskManager Service, Shopify Data Generator Service, Kafka Topic Initialization Service, Kafka Broker Service (KRaft mode) (+13 more)
 
-### Community 1 - "Registry"
-Cohesion: 0.20
-Nodes (14): Faker, Generator, Registry, VariantRef, handle(), NewGenerator(), NewRegistry(), strPtr() (+6 more)
+### Community 1 - "Shopify Event Producer"
+Cohesion: 0.19
+Nodes (10): Client, encode(), Event, loadAndRegister(), New(), InventoryLevel, Product, Variant (+2 more)
 
-### Community 2 - "Load"
-Cohesion: 0.24
-Nodes (16): Config, InventoryConfig, KafkaConfig, OrderDetailsConfig, ProductsConfig, applyEnvOverrides(), applyNonZero(), defaults() (+8 more)
+### Community 2 - "Config & Kafka Settings"
+Cohesion: 0.26
+Nodes (15): Config, InventoryConfig, KafkaConfig, ProductsConfig, applyEnvOverrides(), applyNonZero(), defaults(), Load() (+7 more)
 
-### Community 3 - "Producer"
-Cohesion: 0.23
-Nodes (8): Client, encode(), Event, OrderDetail, loadAndRegister(), New(), Producer, Schema
-
-### Community 4 - "OrderDetailsConsumer"
+### Community 3 - "Data Generators & Faker"
 Cohesion: 0.21
-Nodes (5): Base, BaseConsumer, ApplicationConsumer, OrderDetailsConsumer, OrderDetail
+Nodes (10): Duration, Faker, Generator, Registry, VariantRef, handle(), shopifyTime(), strPtr() (+2 more)
 
-### Community 5 - ".NewOrderDetail"
-Cohesion: 0.20
-Nodes (8): Duration, OrderDetail, shopifyTime(), InventoryLevel, OrderDetail, Product, Variant, Time
+### Community 4 - "Generator CLI Entrypoint"
+Cohesion: 0.29
+Nodes (11): Event, logDeliveryEvents(), main(), NewGenerator(), NewRegistry(), T, TestNewInventoryLevelEmptyRegistry(), TestNewInventoryLevelReferencesKnownVariant() (+3 more)
 
-### Community 6 - "Agent Instructions (AGENTS.md)"
+### Community 5 - "Agent & Beads Workflow Config"
 Cohesion: 0.25
 Nodes (8): Beads Configuration, Beads Orchestrator Config, Beads Issue Tracker - AI-Native Issue Tracking, Agent Instructions (AGENTS.md), Beads Skill - Task Tracking Workflow, Project Instructions for AI Agents (CLAUDE.md), Beads Conservative Agent Profile, Beads Dolt Sync Architecture
 
-### Community 7 - "main"
-Cohesion: 0.50
-Nodes (4): Event, logDeliveryEvents(), main(), Int64
-
-### Community 8 - "compact.py"
+### Community 6 - "Spark Iceberg Compaction"
 Cohesion: 0.50
 Nodes (4): compact_table(), Spark compaction script for Iceberg/Nessie tables.  Runs three maintenance proce, Execute a SQL statement, print a summary, and return the result DataFrame., run_sql()
 
 ## Knowledge Gaps
-- **13 isolated node(s):** `generator`, `init-bucket.sh script`, `entrypoint.sh script`, `Beads OpenAI Agent Interface`, `Beads Issue Tracker - AI-Native Issue Tracking` (+8 more)
+- **12 isolated node(s):** `bootstrap.sh script`, `generator`, `init-topics.sh script`, `init-bucket.sh script`, `entrypoint.sh script` (+7 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `main()` connect `main` to `Registry`, `Load`, `Producer`?**
-  _High betweenness centrality (0.090) - this node is a cross-community bridge._
-- **Why does `New()` connect `Producer` to `Load`, `main`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
-- **Why does `Producer` connect `Producer` to `.NewOrderDetail`?**
-  _High betweenness centrality (0.050) - this node is a cross-community bridge._
+- **Why does `main()` connect `Generator CLI Entrypoint` to `Shopify Event Producer`, `Config & Kafka Settings`?**
+  _High betweenness centrality (0.120) - this node is a cross-community bridge._
+- **Why does `New()` connect `Shopify Event Producer` to `Config & Kafka Settings`, `Generator CLI Entrypoint`?**
+  _High betweenness centrality (0.073) - this node is a cross-community bridge._
+- **Why does `Load()` connect `Config & Kafka Settings` to `Generator CLI Entrypoint`?**
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `Load()` (e.g. with `main()` and `TestLoadDefaults()`) actually correct?**
   _`Load()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 5 inferred relationships involving `NewGenerator()` (e.g. with `main()` and `TestNewInventoryLevelEmptyRegistry()`) actually correct?**
   _`NewGenerator()` has 5 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `generator`, `init-bucket.sh script`, `entrypoint.sh script` to the rest of the system?**
-  _13 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `bootstrap.sh script`, `generator`, `init-topics.sh script` to the rest of the system?**
+  _12 weakly-connected nodes found - possible documentation gaps or missing edges._

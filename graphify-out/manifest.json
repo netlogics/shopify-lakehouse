@@ -35,9 +35,9 @@
     "semantic_hash": "357f71cd5e3346deb0eaf776f51b9d06"
   },
   ".claude/settings.local.json": {
-    "mtime": 1785531986.0844634,
-    "ast_hash": "9fead14ec2406f8a3e77ee9873931a64",
-    "semantic_hash": "9fead14ec2406f8a3e77ee9873931a64"
+    "mtime": 1784215596.5058568,
+    "ast_hash": "518e1905856d441121ef895351a14a43",
+    "semantic_hash": "518e1905856d441121ef895351a14a43"
   },
   ".codex/hooks.json": {
     "mtime": 1784071903.2732182,
@@ -45,19 +45,19 @@
     "semantic_hash": "6ab111cb0ebd91918bed9fa0805d8a31"
   },
   "dremio/bootstrap.sh": {
-    "mtime": 1784563031.7879424,
-    "ast_hash": "c2a79cf598ea0e351a6ad964cf4ef3e6",
-    "semantic_hash": "c2a79cf598ea0e351a6ad964cf4ef3e6"
+    "mtime": 1784400219.470404,
+    "ast_hash": "5e3491bf1a187dcb30f714ce49f96a56",
+    "semantic_hash": "5e3491bf1a187dcb30f714ce49f96a56"
   },
   "flink/sql/ingest.sql": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "b770de774b1db68f73799981db70d237",
-    "semantic_hash": "b770de774b1db68f73799981db70d237"
+    "mtime": 1784400219.470804,
+    "ast_hash": "1ae98631b9e6b95e4809483a64ab12e5",
+    "semantic_hash": "1ae98631b9e6b95e4809483a64ab12e5"
   },
   "generator/cmd/generator/main.go": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "9a36d9e7e4761210d12f837555b9f15d",
-    "semantic_hash": "9a36d9e7e4761210d12f837555b9f15d"
+    "mtime": 1784400219.4709277,
+    "ast_hash": "29ef305c9b2956ad81f59aa6dc5ee1b0",
+    "semantic_hash": "29ef305c9b2956ad81f59aa6dc5ee1b0"
   },
   "generator/go.mod": {
     "mtime": 1784400219.4709277,
@@ -65,9 +65,9 @@
     "semantic_hash": "01f249fed38db0cba5172a1270cec0f1"
   },
   "generator/internal/config/config.go": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "5ab1ee408d2aa386757a885f5c7de738",
-    "semantic_hash": "5ab1ee408d2aa386757a885f5c7de738"
+    "mtime": 1784400219.4710467,
+    "ast_hash": "5a13cc4538b4db44fddab508de00db45",
+    "semantic_hash": "5a13cc4538b4db44fddab508de00db45"
   },
   "generator/internal/config/config_test.go": {
     "mtime": 1784400219.4710808,
@@ -75,9 +75,9 @@
     "semantic_hash": "6baa43fa3f531a898011f0a3e1ad1082"
   },
   "generator/internal/gen/gen.go": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "4e4b212562785fa388dd34cf3db8551a",
-    "semantic_hash": "4e4b212562785fa388dd34cf3db8551a"
+    "mtime": 1784400219.4710808,
+    "ast_hash": "db6472ef2bacfd7c13dd45d2065876f0",
+    "semantic_hash": "db6472ef2bacfd7c13dd45d2065876f0"
   },
   "generator/internal/gen/gen_test.go": {
     "mtime": 1784400219.4711356,
@@ -85,19 +85,19 @@
     "semantic_hash": "de003f32e8b96b7841c964d8e127565b"
   },
   "generator/internal/model/model.go": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "6ecfac16d8e1b8311257ae4dcb781d5c",
-    "semantic_hash": "6ecfac16d8e1b8311257ae4dcb781d5c"
+    "mtime": 1784400219.4711356,
+    "ast_hash": "b8cac9ed30951d366a7626e13dc1e98e",
+    "semantic_hash": "b8cac9ed30951d366a7626e13dc1e98e"
   },
   "generator/internal/producer/producer.go": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "3f01c5d5c087127f165e14c76eae9fc5",
-    "semantic_hash": "3f01c5d5c087127f165e14c76eae9fc5"
+    "mtime": 1784400219.4711356,
+    "ast_hash": "418a32f0c8777cfcb412cea6db0043b6",
+    "semantic_hash": "418a32f0c8777cfcb412cea6db0043b6"
   },
   "kafka/init-topics.sh": {
-    "mtime": 1784856370.3661113,
-    "ast_hash": "39dceb7a86dabd9427ba9ae95598c884",
-    "semantic_hash": "39dceb7a86dabd9427ba9ae95598c884"
+    "mtime": 1784400219.4711356,
+    "ast_hash": "26a5f84f3c10846c1698b102e5926842",
+    "semantic_hash": "26a5f84f3c10846c1698b102e5926842"
   },
   "minio/init-bucket.sh": {
     "mtime": 1784400219.4711356,
@@ -105,9 +105,9 @@
     "semantic_hash": "256d4fb9eda16b19b06507b6b10599c7"
   },
   "spark/compact.py": {
-    "mtime": 1784856370.3682425,
-    "ast_hash": "8b8e169c29fd5cf1a1d7fd428b0334ca",
-    "semantic_hash": "8b8e169c29fd5cf1a1d7fd428b0334ca"
+    "mtime": 1784400219.471301,
+    "ast_hash": "1d9116067d005e50d26548491c6237a0",
+    "semantic_hash": "1d9116067d005e50d26548491c6237a0"
   },
   "spark/entrypoint.sh": {
     "mtime": 1784400219.471301,
@@ -203,35 +203,5 @@
     "mtime": 1784400219.4709277,
     "ast_hash": "1de8e86456ba9b0f54127c6266d71c20",
     "semantic_hash": "1de8e86456ba9b0f54127c6266d71c20"
-  },
-  "ruby-kafka-consumer/app/consumers/application_consumer.rb": {
-    "mtime": 1784856370.3680847,
-    "ast_hash": "45fc7475e43e31a32237be3346b676c4",
-    "semantic_hash": "45fc7475e43e31a32237be3346b676c4"
-  },
-  "ruby-kafka-consumer/app/consumers/order_details_consumer.rb": {
-    "mtime": 1785539229.8127604,
-    "ast_hash": "f1555f4be86eca93dc4c4fca0acf9b8d",
-    "semantic_hash": "f1555f4be86eca93dc4c4fca0acf9b8d"
-  },
-  "ruby-kafka-consumer/app/models/database.rb": {
-    "mtime": 1785539229.8127604,
-    "ast_hash": "7f9d143c5a2a17208b3e0353a5af0437",
-    "semantic_hash": "7f9d143c5a2a17208b3e0353a5af0437"
-  },
-  "ruby-kafka-consumer/app/models/order_detail.rb": {
-    "mtime": 1785539229.8127604,
-    "ast_hash": "32b6bc729e3c104c1a5fc008dd48317e",
-    "semantic_hash": "32b6bc729e3c104c1a5fc008dd48317e"
-  },
-  "ruby-kafka-consumer/karafka.rb": {
-    "mtime": 1785539229.8127604,
-    "ast_hash": "27aa45add1925af783aa7fa10a9997f8",
-    "semantic_hash": "27aa45add1925af783aa7fa10a9997f8"
-  },
-  "ruby-kafka-consumer/run.rb": {
-    "mtime": 1784856370.3682425,
-    "ast_hash": "f4636b65cbf38ce7c8cb4ad3f76ad8cd",
-    "semantic_hash": "f4636b65cbf38ce7c8cb4ad3f76ad8cd"
   }
 }
