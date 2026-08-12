@@ -18,6 +18,7 @@ import (
 
 	"generator/internal/config"
 	"generator/internal/gen"
+	"generator/internal/metrics"
 	"generator/internal/model"
 	"generator/internal/producer"
 )
@@ -74,6 +75,11 @@ func main() {
 	if schemasDir == "" {
 		schemasDir = "schemas"
 	}
+	metricsAddr := os.Getenv("GENERATOR_METRICS_ADDR")
+	if metricsAddr == "" {
+		metricsAddr = ":2112"
+	}
+	go metrics.Serve(metricsAddr)
 
 	cfg, err := config.Load(configPath)
 	if err != nil {
@@ -128,6 +134,7 @@ func main() {
 		p := generator.NewProduct()
 		if err := prod.PublishProduct(p); err != nil {
 			slog.Error("publishing seed product", "error", err)
+			metrics.DeliveryErrors.WithLabelValues(cfg.Products.Topic).Inc()
 			continue
 		}
 		for j := range p.Variants {
@@ -135,6 +142,7 @@ func main() {
 			variantMap[v.InventoryItemID] = v
 		}
 		productsSent.Add(1)
+		metrics.EventsProduced.WithLabelValues(cfg.Products.Topic).Inc()
 	}
 	prod.Flush(10_000)
 
@@ -181,6 +189,8 @@ func main() {
 			if pausedUntil.IsZero() && errorTracker.shouldPause() {
 				pausedUntil = time.Now().Add(5 * time.Second)
 				slog.Warn("backpressure: pausing due to delivery errors", "errors_in_window", errorTracker.count())
+				metrics.BackpressurePauses.Inc()
+				metrics.BackpressureActive.Set(1)
 				continue
 			}
 			if !pausedUntil.IsZero() && time.Now().Before(pausedUntil) {
@@ -189,11 +199,13 @@ func main() {
 			if !pausedUntil.IsZero() {
 				pausedUntil = time.Time{}
 				slog.Info("backpressure: resuming after cooldown")
+				metrics.BackpressureActive.Set(0)
 			}
 
 			p := generator.NewProduct()
 			if err := prod.PublishProduct(p); err != nil {
 				slog.Error("publishing product", "error", err)
+				metrics.DeliveryErrors.WithLabelValues(cfg.Products.Topic).Inc()
 				continue
 			}
 			for j := range p.Variants {
@@ -201,6 +213,7 @@ func main() {
 				variantMap[v.InventoryItemID] = v
 			}
 			productsSent.Add(1)
+			metrics.EventsProduced.WithLabelValues(cfg.Products.Topic).Inc()
 			// Prune map if it exceeds the limit (remove random entries to keep bounded).
 			if len(variantMap) > maxVariantMapSize {
 				toRemove := len(variantMap) - maxVariantMapSize
@@ -218,6 +231,8 @@ func main() {
 			if pausedUntil.IsZero() && errorTracker.shouldPause() {
 				pausedUntil = time.Now().Add(5 * time.Second)
 				slog.Warn("backpressure: pausing due to delivery errors", "errors_in_window", errorTracker.count())
+				metrics.BackpressurePauses.Inc()
+				metrics.BackpressureActive.Set(1)
 				continue
 			}
 			if !pausedUntil.IsZero() && time.Now().Before(pausedUntil) {
@@ -226,6 +241,7 @@ func main() {
 			if !pausedUntil.IsZero() {
 				pausedUntil = time.Time{}
 				slog.Info("backpressure: resuming after cooldown")
+				metrics.BackpressureActive.Set(0)
 			}
 
 			level, ok := generator.NewInventoryLevel(cfg.Inventory.Locations)
@@ -234,14 +250,18 @@ func main() {
 			}
 			if err := prod.PublishInventoryLevel(level); err != nil {
 				slog.Error("publishing inventory level", "error", err)
+				metrics.DeliveryErrors.WithLabelValues(cfg.Inventory.Topic).Inc()
 				continue
 			}
 			inventorySent.Add(1)
+			metrics.EventsProduced.WithLabelValues(cfg.Inventory.Topic).Inc()
 
 		case <-orderDetailsTicker.C:
 			if pausedUntil.IsZero() && errorTracker.shouldPause() {
 				pausedUntil = time.Now().Add(5 * time.Second)
 				slog.Warn("backpressure: pausing due to delivery errors", "errors_in_window", errorTracker.count())
+				metrics.BackpressurePauses.Inc()
+				metrics.BackpressureActive.Set(1)
 				continue
 			}
 			if !pausedUntil.IsZero() && time.Now().Before(pausedUntil) {
@@ -250,6 +270,7 @@ func main() {
 			if !pausedUntil.IsZero() {
 				pausedUntil = time.Time{}
 				slog.Info("backpressure: resuming after cooldown")
+				metrics.BackpressureActive.Set(0)
 			}
 
 			detail, ok := generator.NewOrderDetail(variantMap)
@@ -258,14 +279,18 @@ func main() {
 			}
 			if err := prod.PublishOrderDetail(detail); err != nil {
 				slog.Error("publishing order detail", "error", err)
+				metrics.DeliveryErrors.WithLabelValues(cfg.OrderDetails.Topic).Inc()
 				continue
 			}
 			orderDetailsSent.Add(1)
+			metrics.EventsProduced.WithLabelValues(cfg.OrderDetails.Topic).Inc()
 
 		case <-customersTicker.C:
 			if pausedUntil.IsZero() && errorTracker.shouldPause() {
 				pausedUntil = time.Now().Add(5 * time.Second)
 				slog.Warn("backpressure: pausing due to delivery errors", "errors_in_window", errorTracker.count())
+				metrics.BackpressurePauses.Inc()
+				metrics.BackpressureActive.Set(1)
 				continue
 			}
 			if !pausedUntil.IsZero() && time.Now().Before(pausedUntil) {
@@ -274,14 +299,17 @@ func main() {
 			if !pausedUntil.IsZero() {
 				pausedUntil = time.Time{}
 				slog.Info("backpressure: resuming after cooldown")
+				metrics.BackpressureActive.Set(0)
 			}
 
 			customer := generator.NewCustomer()
 			if err := prod.PublishCustomer(customer); err != nil {
 				slog.Error("publishing customer", "error", err)
+				metrics.DeliveryErrors.WithLabelValues(cfg.Customers.Topic).Inc()
 				continue
 			}
 			customersSent.Add(1)
+			metrics.EventsProduced.WithLabelValues(cfg.Customers.Topic).Inc()
 
 		case <-statsTicker.C:
 			slog.Info("emit counts",
@@ -307,6 +335,7 @@ func logDeliveryEvents(events chan kafka.Event, deliveryErrors *atomic.Int64, er
 			deliveryErrors.Add(1)
 			errorTracker.add()
 			slog.Error("delivery failed", "error", msg.TopicPartition.Error, "topic", *msg.TopicPartition.Topic)
+			metrics.DeliveryErrors.WithLabelValues(*msg.TopicPartition.Topic).Inc()
 		}
 	}
 }

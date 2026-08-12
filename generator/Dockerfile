@@ -25,5 +25,8 @@ COPY schemas ./schemas
 
 ENV GENERATOR_CONFIG_PATH=/app/config.yaml
 ENV GENERATOR_SCHEMAS_DIR=/app/schemas
+ENV GENERATOR_METRICS_ADDR=:2112
+
+EXPOSE 2112
 
 ENTRYPOINT ["/app/generator"]

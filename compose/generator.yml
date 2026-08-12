@@ -6,6 +6,8 @@ services:
     environment:
       KAFKA_BOOTSTRAP: ${KAFKA_BOOTSTRAP}
       SCHEMA_REGISTRY_URL: ${SCHEMA_REGISTRY_URL}
+    ports:
+      - "2112:2112"
     volumes:
       - ../generator/config.yaml:/app/config.yaml:ro
     depends_on:

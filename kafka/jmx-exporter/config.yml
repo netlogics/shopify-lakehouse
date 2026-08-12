@@ -1,0 +1,50 @@
+# jmx_exporter httpserver-mode config: connects to the Kafka broker's JMX
+# RMI endpoint (see KAFKA_JMX_PORT/KAFKA_JMX_HOSTNAME in compose/kafka.yml)
+# and re-exposes selected broker-internal MBeans in Prometheus format.
+startDelaySeconds: 0
+hostPort: kafka:9999
+ssl: false
+lowercaseOutputName: false
+lowercaseOutputLabelNames: false
+
+whitelistObjectNames:
+  - "kafka.server:*"
+  - "kafka.network:*"
+  - "kafka.controller:*"
+  - "kafka.log:*"
+
+rules:
+  # Per-topic broker throughput: kafka.server:type=BrokerTopicMetrics,name=*PerSec,topic=*
+  - pattern: "kafka.server<type=(.+), name=(.+)PerSec\\w*, topic=(.+)><>Count"
+    name: kafka_server_$1_$2_total
+    labels:
+      topic: "$3"
+    type: COUNTER
+
+  # Cluster-wide throughput: kafka.server:type=BrokerTopicMetrics,name=*PerSec
+  - pattern: "kafka.server<type=(.+), name=(.+)PerSec\\w*><>Count"
+    name: kafka_server_$1_$2_total
+    type: COUNTER
+
+  # Request handler / network processor idle ratios
+  - pattern: "kafka.network<type=(.+), name=(.+)>Value"
+    name: kafka_network_$1_$2
+    type: GAUGE
+
+  # Controller state: active controller count, unclean leader elections, etc.
+  - pattern: "kafka.controller<type=(.+), name=(.+)><>Value"
+    name: kafka_controller_$1_$2
+    type: GAUGE
+
+  # Broker-level gauges: under-replicated partitions, ISR shrink/expand rate, etc.
+  - pattern: "kafka.server<type=(.+), name=(.+)><>Value"
+    name: kafka_server_$1_$2
+    type: GAUGE
+
+  # Per-partition log metrics: size, log-start-offset, etc.
+  - pattern: "kafka.log<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value"
+    name: kafka_log_$1_$2
+    labels:
+      topic: "$3"
+      partition: "$4"
+    type: GAUGE

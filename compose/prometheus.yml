@@ -1,0 +1,36 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'webhook-service'
+    static_configs:
+      - targets: ['webhook-service:3456']
+    metrics_path: '/api/metrics'
+    scrape_interval: 10s
+
+  - job_name: 'flink-jobmanager'
+    static_configs:
+      - targets: ['flink-jobmanager:9249']
+
+  - job_name: 'flink-taskmanager'
+    static_configs:
+      - targets: ['flink-taskmanager:9249']
+
+  # Broker-internal metrics (throughput, request handler idle %, ISR churn, GC).
+  - job_name: 'kafka-jmx-exporter'
+    static_configs:
+      - targets: ['kafka-jmx-exporter:5556']
+
+  # Consumer-group lag/offsets (not derivable from JMX alone).
+  - job_name: 'kafka-exporter'
+    static_configs:
+      - targets: ['kafka-exporter:9308']
+
+  - job_name: 'generator'
+    static_configs:
+      - targets: ['generator:2112']

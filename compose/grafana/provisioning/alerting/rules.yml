@@ -1,0 +1,105 @@
+# Grafana unified alerting, provisioned as file-based alert rules (no
+# separate Alertmanager service — rules evaluate against the same
+# Prometheus datasource already provisioned in ../datasources/prometheus.yml).
+#
+# NOTE: no contact point/notification policy is provisioned here, so these
+# alerts fire and show up under Alerting > Alert rules but aren't routed
+# anywhere by default. See README.md's monitoring section for how to add a
+# contact point (email/webhook/Slack) via the Grafana UI or provisioning.
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: lakehouse-alerts
+    folder: Lakehouse
+    interval: 1m
+    rules:
+      - uid: flink-job-restarts
+        title: Flink job restarting repeatedly
+        condition: C
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Flink job has restarted in the last 5 minutes"
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: increase(flink_jobmanager_job_numRestarts[5m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+              refId: C
+
+      - uid: kafka-consumer-lag-high
+        title: Kafka consumer lag above 1000
+        condition: C
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Max consumer group lag exceeds 1000 messages"
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: max(kafka_consumergroup_lag)
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [1000]
+              refId: C
+
+      - uid: generator-backpressure-active
+        title: Generator backpressure active
+        condition: C
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Generator has been paused due to delivery-error backpressure for over 2 minutes"
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 120
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: max(generator_backpressure_active)
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+              refId: C
