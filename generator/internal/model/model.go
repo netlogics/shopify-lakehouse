@@ -2,8 +2,12 @@
 // Field names and types mirror the Shopify REST Admin API / webhook payloads.
 package model
 
+// EventID is a unique identifier for each emitted event, used for deduplication.
+type EventID string
+
 // Variant matches the "Variant" record nested in schemas/product.avsc.
 type Variant struct {
+	EventID             EventID `json:"event_id" avro:"event_id"`
 	ID                  int64   `json:"id" avro:"id"`
 	ProductID           int64   `json:"product_id" avro:"product_id"`
 	Title               string  `json:"title" avro:"title"`
@@ -31,6 +35,7 @@ type Variant struct {
 
 // Product matches schemas/product.avsc and the Shopify REST API product object.
 type Product struct {
+	EventID     EventID  `json:"event_id" avro:"event_id"`
 	ID          int64    `json:"id" avro:"id"`
 	Title       string   `json:"title" avro:"title"`
 	BodyHTML    string   `json:"body_html" avro:"body_html"`
@@ -48,6 +53,7 @@ type Product struct {
 // OrderDetail matches schemas/order_detail.avsc and the Shopify REST Admin API
 // Order resource line_items array member.
 type OrderDetail struct {
+	EventID                   EventID `json:"event_id" avro:"event_id"`
 	OrderID                   int64   `json:"order_id" avro:"order_id"`
 	ID                        int64   `json:"id" avro:"id"`
 	VariantID                 *int64  `json:"variant_id" avro:"variant_id"`
@@ -78,8 +84,24 @@ type OrderDetail struct {
 // inventory_level object. Note: sku and product_id are not part of the API
 // response — use a join with products/variants to enrich downstream.
 type InventoryLevel struct {
-	InventoryItemID int64  `json:"inventory_item_id" avro:"inventory_item_id"`
+	EventID         EventID `json:"event_id" avro:"event_id"`
+	InventoryItemID int64   `json:"inventory_item_id" avro:"inventory_item_id"`
 	LocationID      int64  `json:"location_id" avro:"location_id"`
 	Available       *int32 `json:"available" avro:"available"`
 	UpdatedAt       string `json:"updated_at" avro:"updated_at"`
+}
+
+// Customer matches schemas/customer.avsc and the Shopify REST Admin API Customer object.
+type Customer struct {
+	EventID      EventID `json:"event_id" avro:"event_id"`
+	ID           int64   `json:"id" avro:"id"`
+	Email        *string `json:"email" avro:"email"`
+	FirstName    *string `json:"first_name" avro:"first_name"`
+	LastName     *string `json:"last_name" avro:"last_name"`
+	Phone        *string `json:"phone" avro:"phone"`
+	State        string  `json:"state" avro:"state"`
+	VerifiedEmail bool   `json:"verified_email" avro:"verified_email"`
+	Tags         *string `json:"tags" avro:"tags"`
+	CreatedAt    string  `json:"created_at" avro:"created_at"`
+	UpdatedAt    string  `json:"updated_at" avro:"updated_at"`
 }

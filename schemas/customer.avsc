@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "Customer",
+  "namespace": "com.shopify.lakehouse",
+  "doc": "Shopify customer resource — aligned with the Shopify REST Admin API Customer object.",
+  "fields": [
+    { "name": "id", "type": "long" },
+    { "name": "email", "type": ["null", "string"], "default": null },
+    { "name": "first_name", "type": ["null", "string"], "default": null },
+    { "name": "last_name", "type": ["null", "string"], "default": null },
+    { "name": "phone", "type": ["null", "string"], "default": null },
+    { "name": "state", "type": "string" },
+    { "name": "verified_email", "type": "boolean" },
+    { "name": "tags", "type": ["null", "string"], "default": null },
+    { "name": "created_at", "type": "string" },
+    { "name": "updated_at", "type": "string" }
+  ]
+}

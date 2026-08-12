@@ -1,0 +1,117 @@
+// Shopify Lakehouse Webhook Service Schema
+// Aligned with existing Avro schemas: product.avsc, inventory_level.avsc, order_detail.avsc
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Webhook Audit ───────────────────────────────────────────────────────────
+
+model WebhookEvent {
+  id             String   @id @default(cuid())
+  topic          String   // Shopify webhook topic, e.g. "customers/create"
+  source_id      String   // Shopify event source ID
+  table_name     String   // Normalized table: products, product_variants, inventory_levels, order_details, customers
+  operation      String   // create, update, delete
+  payload_hash   String   @unique  // SHA-256 of normalized payload for dedup
+  created_at     DateTime @default(now())
+
+  @@index([topic, created_at])
+  @@index([table_name, created_at])
+  @@index([payload_hash])
+}
+
+// ─── Products ────────────────────────────────────────────────────────────────
+
+model Product {
+  id             String   @id @map("id")           // Shopify product ID
+  title          String
+  handle         String?  @unique
+  status         String   @default("active")
+  tags           String?  // CSV string, matches Flink STRING cast
+  created_at     DateTime @map("created_at")
+  updated_at     DateTime @map("updated_at")
+
+  variants       ProductVariant[]
+  order_details  OrderDetail[]
+
+  @@index([status])
+  @@index([updated_at])
+}
+
+// ─── Product Variants ────────────────────────────────────────────────────────
+
+model ProductVariant {
+  id             String   @id @map("id")
+  product_id     String   @map("product_id")
+  price          String   // DECIMAL(10,2) as string, matches Flink cast
+  sku            String?
+  created_at     DateTime @map("created_at")
+  updated_at     DateTime @map("updated_at")
+
+  product        Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  order_details  OrderDetail[]
+
+  @@index([product_id, updated_at])
+}
+
+// ─── Inventory Levels ────────────────────────────────────────────────────────
+
+model InventoryLevel {
+  id                     String   @id @map("id")
+  product_id             String   @map("product_id")
+  inventory_item_id      String   @map("inventory_item_id")
+  location_id            String   @map("location_id")
+  available              Int      @default(0)
+  updated_at             DateTime @map("updated_at")
+
+  @@unique([product_id, inventory_item_id, location_id])
+  @@index([product_id])
+  @@index([updated_at])
+}
+
+// ─── Order Details ───────────────────────────────────────────────────────────
+
+model OrderDetail {
+  id               String   @id @map("id")
+  order_id         String   @map("order_id")
+  product_id       String?  @map("product_id")
+  variant_id       String?  @map("variant_id")
+  title            String?  @map("title")
+  quantity         Int      @default(1)
+  price            String   // DECIMAL(10,2) as string, matches Flink cast
+  created_at       DateTime @map("created_at")
+  updated_at       DateTime @map("updated_at")
+
+  product          Product? @relation(fields: [product_id], references: [id])
+  variant          ProductVariant? @relation(fields: [variant_id], references: [id])
+
+  @@index([order_id])
+  @@index([product_id])
+  @@index([variant_id])
+  @@index([created_at])
+}
+
+// ─── Customers (NEW — aligned with Shopify customer webhook) ─────────────────
+
+model Customer {
+  id               String   @id @map("id")
+  email            String?  @unique @map("email")
+  first_name       String?  @map("first_name")
+  last_name        String?  @map("last_name")
+  phone            String?
+  state            String   @default("enabled")   // enabled, disabled, pending
+  verified_email   Boolean  @map("verified_email") @default(false)
+  tags             String?  // CSV string
+  created_at       DateTime @map("created_at")
+  updated_at       DateTime @map("updated_at")
+
+  @@index([email])
+  @@index([state])
+  @@index([updated_at])
+}
