@@ -1,0 +1,4 @@
+# dev-guards config -- created by /dev-guards:init
+# Each line toggles one guard module for this repo. enabled | disabled
+beads: enabled
+git-worktrees: enabled
