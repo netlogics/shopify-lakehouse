@@ -119,6 +119,18 @@ A self-contained reference implementation of a streaming ELT lakehouse pipeline 
 
 <img src="docs/screenshots/minio.png" width="700" alt="MinIO object browser showing warehouse bucket with 28,827 objects and 7.4 GiB">
 
+**Flink dashboard (Grafana)** — job uptime, checkpointing, and the pipeline-throughput panel (`:3000`)
+
+<img src="docs/screenshots/flink-dashboard.png" width="700" alt="Grafana Flink Job Health dashboard showing 4 jobs each with 1.18 hours uptime, 0 restarts, checkpoint duration, and checkpoints completed vs failed">
+
+**Kafka dashboard (Grafana)** — consumer lag, throughput, and messages per topic (`:3000`)
+
+<img src="docs/screenshots/kafka-dashboard.png" width="700" alt="Grafana Kafka Topic Lag & Throughput dashboard showing max consumer group lag of 197, 0 under-replicated partitions, per-topic lag over time, broker bytes in/out, and messages in per second">
+
+**Generator dashboard (Grafana)** — backpressure state and event throughput (`:3000`)
+
+<img src="docs/screenshots/generator-dashboard.png" width="700" alt="Grafana Generator Performance dashboard showing backpressure OK, 0 total pauses, and events produced per second by topic">
+
 ### Data flow summary
 
 1. **Generator** seeds 100 products on startup, then continuously emits events to **four Kafka topics** encoded as Avro using the Confluent wire format:
