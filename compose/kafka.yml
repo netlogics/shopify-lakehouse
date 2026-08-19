@@ -19,6 +19,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: kafka
     volumes:
       - kafka-data:/var/lib/kafka/data
     healthcheck:
@@ -68,11 +70,44 @@ services:
       KAFKA_TOPIC_PRODUCTS: ${KAFKA_TOPIC_PRODUCTS}
       KAFKA_TOPIC_INVENTORY: ${KAFKA_TOPIC_INVENTORY}
       KAFKA_TOPIC_ORDER_DETAILS: ${KAFKA_TOPIC_ORDER_DETAILS}
+      KAFKA_TOPIC_CUSTOMERS: ${KAFKA_TOPIC_CUSTOMERS}
       KAFKA_TOPIC_PARTITIONS: ${KAFKA_TOPIC_PARTITIONS}
       KAFKA_TOPIC_REPLICATION: ${KAFKA_TOPIC_REPLICATION}
       KAFKA_TOPIC_RETENTION_MS: ${KAFKA_TOPIC_RETENTION_MS}
     networks:
       - lakehouse
+
+  # JMX -> Prometheus bridge for broker-internal metrics (throughput, request
+  # handler idle %, ISR churn, GC, log size). Connects out to the broker's
+  # JMX RMI port; nothing is injected into Kafka's own JVM.
+  kafka-jmx-exporter:
+    build:
+      context: ../kafka/jmx-exporter
+    container_name: kafka-jmx-exporter
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "5556:5556"
+    networks:
+      - lakehouse
+    restart: unless-stopped
+
+  # Consumer-group lag/offsets exporter. Talks the Kafka admin protocol
+  # directly (no JMX), which is what actually derives lag correctly.
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:v1.7.0
+    container_name: kafka-exporter
+    command:
+      - "--kafka.server=kafka:9092"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "9308:9308"
+    networks:
+      - lakehouse
+    restart: unless-stopped
 
 volumes:
   kafka-data:

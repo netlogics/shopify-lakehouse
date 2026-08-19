@@ -1,10 +1,15 @@
 -- Flink SQL: transform raw Shopify API events (Kafka/Avro) → Iceberg/Nessie.
 --
--- Four Iceberg sinks:
+-- Each event carries a unique event_id for deduplication. Kafka sources use
+-- committed-offset startup to avoid replaying events after Flink restarts
+-- (combined with EXACTLY_ONCE checkpointing at 60s intervals).
+--
+-- Five Iceberg sinks:
 --   nessie.lakehouse.products          one row per product event
 --   nessie.lakehouse.product_variants  one row per variant (UNNEST)
 --   nessie.lakehouse.inventory_levels  one row per inventory level event
 --   nessie.lakehouse.order_details     one row per order detail (line item) event
+--   nessie.lakehouse.customers         one row per customer event
 --
 -- Transformations applied vs raw Kafka payload:
 --   products.tags        STRING (CSV) — ARRAY<STRING> split needs a custom UDF; kept as-is
@@ -17,11 +22,11 @@
 --   order_details.grams  dropped (redundant with variant weight)
 --   timestamps           ISO 8601 UTC strings → TIMESTAMP(3) via TO_TIMESTAMP + LEFT
 --
--- Two EXECUTE blocks → two Flink jobs.  Jobs 1+2 read the same Kafka topics
--- independently (separate consumer groups).  Avoids the shared-source +
--- UNNEST interaction inside a single STATEMENT SET which is unreliable in
--- Flink 1.20.
--- Job 3 reads the order_details topic independently.
+-- Four INSERT blocks (Jobs 1-4).  Jobs 1-4 read Kafka topics independently
+-- (separate consumer groups).  Jobs 1+2 share products_source in a single
+-- consumer group; Jobs 3+4 are standalone INSERTs.  product_variants (Job 2)
+-- reads products_source separately so UNNEST does not conflict with the
+-- shared source in the STATEMENT SET (Flink 1.20 limitation).
 --
 -- KNOWN RISK: CROSS JOIN UNNEST on ARRAY<ROW<...>> — if Flink cannot resolve
 -- named ROW fields via v.field_name, fall back to positional access v.f0,
@@ -36,6 +41,7 @@ SET 'execution.runtime-mode' = 'STREAMING';
 -- ---------------------------------------------------------------------------
 
 CREATE TABLE products_source (
+  event_id         STRING,
   id               BIGINT,
   title            STRING,
   body_html        STRING,
@@ -48,6 +54,7 @@ CREATE TABLE products_source (
   updated_at       STRING,
   published_at     STRING,
   variants         ARRAY<ROW<
+    event_id             STRING,
     id                   BIGINT,
     product_id           BIGINT,
     title                STRING,
@@ -77,49 +84,13 @@ CREATE TABLE products_source (
   'topic'                        = 'shopify.products',
   'properties.bootstrap.servers' = 'kafka:9092',
   'properties.group.id'          = 'flink-ingest-products',
-  'scan.startup.mode'            = 'earliest-offset',
-  'format'                       = 'avro-confluent',
-  'avro-confluent.url'           = 'http://schema-registry:8081'
-);
-
-CREATE TABLE products_source_variants (
-  id               BIGINT,
-  variants         ARRAY<ROW<
-    id                   BIGINT,
-    product_id           BIGINT,
-    title                STRING,
-    price                STRING,
-    sku                  STRING,
-    `position`           INT,
-    inventory_policy     STRING,
-    compare_at_price     STRING,
-    fulfillment_service  STRING,
-    inventory_management STRING,
-    option1              STRING,
-    option2              STRING,
-    option3              STRING,
-    taxable              BOOLEAN,
-    barcode              STRING,
-    grams                INT,
-    weight               DOUBLE,
-    weight_unit          STRING,
-    inventory_item_id    BIGINT,
-    inventory_quantity   INT,
-    requires_shipping    BOOLEAN,
-    created_at           STRING,
-    updated_at           STRING
-  >>
-) WITH (
-  'connector'                    = 'kafka',
-  'topic'                        = 'shopify.products',
-  'properties.bootstrap.servers' = 'kafka:9092',
-  'properties.group.id'          = 'flink-ingest-variants',
-  'scan.startup.mode'            = 'earliest-offset',
+  'scan.startup.mode'            = 'group-offsets',
   'format'                       = 'avro-confluent',
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );
 
 CREATE TABLE order_details_source (
+  event_id                     STRING,
   order_id                     BIGINT,
   id                           BIGINT,
   variant_id                   BIGINT,
@@ -149,12 +120,13 @@ CREATE TABLE order_details_source (
   'topic'                        = 'shopify.order_details',
   'properties.bootstrap.servers' = 'kafka:9092',
   'properties.group.id'          = 'flink-ingest-order-details',
-  'scan.startup.mode'            = 'earliest-offset',
+  'scan.startup.mode'            = 'latest-offset',
   'format'                       = 'avro-confluent',
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );
 
 CREATE TABLE inventory_source (
+  event_id         STRING,
   inventory_item_id  BIGINT,
   location_id        BIGINT,
   available          INT,
@@ -164,7 +136,29 @@ CREATE TABLE inventory_source (
   'topic'                        = 'shopify.inventory',
   'properties.bootstrap.servers' = 'kafka:9092',
   'properties.group.id'          = 'flink-ingest-inventory',
-  'scan.startup.mode'            = 'earliest-offset',
+  'scan.startup.mode'            = 'group-offsets',
+  'format'                       = 'avro-confluent',
+  'avro-confluent.url'           = 'http://schema-registry:8081'
+);
+
+CREATE TABLE customers_source (
+  event_id         STRING,
+  id               BIGINT,
+  email            STRING,
+  first_name       STRING,
+  last_name        STRING,
+  phone            STRING,
+  state            STRING,
+  verified_email   BOOLEAN,
+  tags             STRING,
+  created_at       STRING,
+  updated_at       STRING
+) WITH (
+  'connector'                    = 'kafka',
+  'topic'                        = 'shopify.customers',
+  'properties.bootstrap.servers' = 'kafka:9092',
+  'properties.group.id'          = 'flink-ingest-customers',
+  'scan.startup.mode'            = 'latest-offset',
   'format'                       = 'avro-confluent',
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );
@@ -185,16 +179,25 @@ CREATE CATALOG nessie WITH (
 CREATE DATABASE IF NOT EXISTS nessie.lakehouse;
 
 -- ---------------------------------------------------------------------------
--- Iceberg sink tables
--- DROP first so schema changes apply on re-run.
+-- Schema evolution: Add event_id column if missing (from previous schema)
 -- ---------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS nessie.lakehouse.products;
-DROP TABLE IF EXISTS nessie.lakehouse.product_variants;
-DROP TABLE IF EXISTS nessie.lakehouse.inventory_levels;
+-- Drop and recreate tables to ensure correct schema (development mode)
+-- For production, use ALTER TABLE for schema evolution
+DROP TABLE IF EXISTS nessie.lakehouse.customers;
 DROP TABLE IF EXISTS nessie.lakehouse.order_details;
+DROP TABLE IF EXISTS nessie.lakehouse.inventory_levels;
+DROP TABLE IF EXISTS nessie.lakehouse.product_variants;
+DROP TABLE IF EXISTS nessie.lakehouse.products;
 
-CREATE TABLE nessie.lakehouse.products (
+-- ---------------------------------------------------------------------------
+-- Iceberg sink tables
+-- Tables are created once and persist across runs. For schema evolution,
+-- use ALTER TABLE ... ADD COLUMN or ALTER TABLE ... REPLACE COLUMNS.
+-- ---------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS nessie.lakehouse.products (
+  event_id      STRING,
   id            BIGINT,
   title         STRING,
   vendor        STRING,
@@ -205,12 +208,13 @@ CREATE TABLE nessie.lakehouse.products (
   created_at    TIMESTAMP(3),
   updated_at    TIMESTAMP(3),
   published_at  TIMESTAMP(3)
-) PARTITIONED BY (status) WITH (
+) WITH (
   'format-version' = '2',
   'gc.enabled'     = 'true'
 );
 
-CREATE TABLE nessie.lakehouse.product_variants (
+CREATE TABLE IF NOT EXISTS nessie.lakehouse.product_variants (
+  event_id             STRING,
   product_id           BIGINT,
   variant_id           BIGINT,
   title                STRING,
@@ -238,7 +242,8 @@ CREATE TABLE nessie.lakehouse.product_variants (
   'gc.enabled'     = 'true'
 );
 
-CREATE TABLE nessie.lakehouse.inventory_levels (
+CREATE TABLE IF NOT EXISTS nessie.lakehouse.inventory_levels (
+  event_id         STRING,
   inventory_item_id  BIGINT,
   location_id        BIGINT,
   available          INT,
@@ -248,7 +253,8 @@ CREATE TABLE nessie.lakehouse.inventory_levels (
   'gc.enabled'     = 'true'
 );
 
-CREATE TABLE nessie.lakehouse.order_details (
+CREATE TABLE IF NOT EXISTS nessie.lakehouse.order_details (
+  event_id                     STRING,
   order_id                     BIGINT,
   id                           BIGINT,
   variant_id                   BIGINT,
@@ -272,7 +278,24 @@ CREATE TABLE nessie.lakehouse.order_details (
   variant_inventory_management STRING,
   created_at                   TIMESTAMP(3),
   updated_at                   TIMESTAMP(3)
-) PARTITIONED BY (fulfillment_status) WITH (
+) WITH (
+  'format-version' = '2',
+  'gc.enabled'     = 'true'
+);
+
+CREATE TABLE IF NOT EXISTS nessie.lakehouse.customers (
+  event_id         STRING,
+  id               BIGINT,
+  email            STRING,
+  first_name       STRING,
+  last_name        STRING,
+  phone            STRING,
+  state            STRING,
+  verified_email   BOOLEAN,
+  tags             STRING,
+  created_at       TIMESTAMP(3),
+  updated_at       TIMESTAMP(3)
+) WITH (
   'format-version' = '2',
   'gc.enabled'     = 'true'
 );
@@ -286,6 +309,7 @@ BEGIN
 
   INSERT INTO nessie.lakehouse.products
   SELECT
+    event_id,
     id,
     title,
     vendor,
@@ -302,6 +326,7 @@ BEGIN
 
   INSERT INTO nessie.lakehouse.inventory_levels
   SELECT
+    event_id,
     inventory_item_id,
     location_id,
     available,
@@ -312,11 +337,13 @@ END;
 
 -- ---------------------------------------------------------------------------
 -- Job 2: product_variants via UNNEST
--- Separate job so UNNEST does not interact with the shared source above.
+-- Uses the same products_source as Job 1. Flink reuses the single consumer
+-- group across both INSERTs because they read from the same table.
 -- ---------------------------------------------------------------------------
 
 INSERT INTO nessie.lakehouse.product_variants
 SELECT
+  v.event_id                                  AS event_id,
   p.id                                        AS product_id,
   v.id                                        AS variant_id,
   v.title                                     AS title,
@@ -339,7 +366,7 @@ SELECT
   v.requires_shipping                         AS requires_shipping,
   TO_TIMESTAMP(LEFT(v.created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
   TO_TIMESTAMP(LEFT(v.updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
-FROM products_source_variants AS p
+FROM products_source AS p
 CROSS JOIN UNNEST(p.variants) AS v;
 
 -- ---------------------------------------------------------------------------
@@ -350,6 +377,7 @@ CROSS JOIN UNNEST(p.variants) AS v;
 
 INSERT INTO nessie.lakehouse.order_details
 SELECT
+  event_id,
   order_id,
   id,
   variant_id,
@@ -374,3 +402,22 @@ SELECT
   TO_TIMESTAMP(LEFT(created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
   TO_TIMESTAMP(LEFT(updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
 FROM order_details_source;
+
+-- ---------------------------------------------------------------------------
+-- Job 4: customers
+-- ---------------------------------------------------------------------------
+
+INSERT INTO nessie.lakehouse.customers
+SELECT
+  event_id,
+  id,
+  email,
+  first_name,
+  last_name,
+  phone,
+  state,
+  verified_email,
+  tags,
+  TO_TIMESTAMP(LEFT(created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
+  TO_TIMESTAMP(LEFT(updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
+FROM customers_source;

@@ -29,6 +29,7 @@ type Producer struct {
 	productsTopic     string
 	inventoryTopic    string
 	orderDetailsTopic string
+	customersTopic    string
 
 	productSchema        avro.Schema
 	productSchemaID      int
@@ -36,6 +37,8 @@ type Producer struct {
 	inventorySchemaID    int
 	orderDetailSchema    avro.Schema
 	orderDetailSchemaID  int
+	customerSchema       avro.Schema
+	customerSchemaID     int
 }
 
 // New builds a Producer: it connects to Kafka and the Schema Registry,
@@ -77,18 +80,28 @@ func New(cfg *config.Config, schemasDir string) (*Producer, error) {
 		return nil, err
 	}
 
+	customerSchema, customerSchemaID, err := loadAndRegister(
+		srClient, filepath.Join(schemasDir, "customer.avsc"), cfg.Customers.Topic+"-value")
+	if err != nil {
+		kp.Close()
+		return nil, err
+	}
+
 	return &Producer{
 		kafka:               kp,
 		sr:                  srClient,
 		productsTopic:       cfg.Products.Topic,
 		inventoryTopic:      cfg.Inventory.Topic,
 		orderDetailsTopic:   cfg.OrderDetails.Topic,
+		customersTopic:      cfg.Customers.Topic,
 		productSchema:       productSchema,
 		productSchemaID:     productSchemaID,
 		inventorySchema:     inventorySchema,
 		inventorySchemaID:   inventorySchemaID,
 		orderDetailSchema:   orderDetailSchema,
 		orderDetailSchemaID: orderDetailSchemaID,
+		customerSchema:      customerSchema,
+		customerSchemaID:    customerSchemaID,
 	}, nil
 }
 
@@ -166,6 +179,22 @@ func (p *Producer) PublishInventoryLevel(level model.InventoryLevel) error {
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Key:            []byte(key),
 		Value:          encode(p.inventorySchemaID, avroBytes),
+	}, nil)
+}
+
+// PublishCustomer encodes and produces a customer event, keyed by customer ID.
+func (p *Producer) PublishCustomer(customer model.Customer) error {
+	avroBytes, err := avro.Marshal(p.customerSchema, customer)
+	if err != nil {
+		return fmt.Errorf("encoding customer: %w", err)
+	}
+
+	topic := p.customersTopic
+	key := strconv.FormatInt(customer.ID, 10)
+	return p.kafka.Produce(&kafka.Message{
+		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+		Key:            []byte(key),
+		Value:          encode(p.customerSchemaID, avroBytes),
 	}, nil)
 }
 

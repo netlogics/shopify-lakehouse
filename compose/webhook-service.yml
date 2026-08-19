@@ -1,0 +1,26 @@
+services:
+  webhook-service:
+    build:
+      context: ../webhook-service
+      dockerfile: Dockerfile
+    ports:
+      - "3456:3456"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/webhook.db
+      - SHOPIFY_API_KEY=${SHOPIFY_API_KEY:-}
+      - SHOPIFY_API_SECRET=${SHOPIFY_API_SECRET:-}
+    volumes:
+      - webhook-data:/app/data
+    networks:
+      - lakehouse
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3456/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  webhook-data:

@@ -82,6 +82,8 @@ RUN set -eux; \
       "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar"; \
     curl -fL -o /opt/flink/lib/aws-java-sdk-bundle-1.12.780.jar \
       "https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.780/aws-java-sdk-bundle-1.12.780.jar"; \
+    curl -fL -o /opt/flink/lib/iceberg-aws-bundle-${ICEBERG_VERSION}.jar \
+      "https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar"; \
     curl -fL -o /opt/flink/lib/commons-logging-1.2.jar \
       "https://repo1.maven.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"
 

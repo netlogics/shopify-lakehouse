@@ -15,3 +15,7 @@ inventory:
 order_details:
   topic: shopify.order_details
   rate: 2/s
+
+customers:
+  topic: shopify.customers
+  rate: 1/s

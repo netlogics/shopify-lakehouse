@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/brianvoe/gofakeit/v7"
+	"github.com/google/uuid"
 
 	"generator/internal/model"
 )
@@ -27,11 +28,15 @@ type Registry struct {
 	nextProductID       int64
 	nextVariantID       int64
 	nextInventoryItemID int64
+	nextCustomerID      int64
+	usedHandles         map[string]struct{}
 }
 
 // NewRegistry returns an empty, ready-to-use Registry.
 func NewRegistry() *Registry {
-	return &Registry{}
+	return &Registry{
+		usedHandles: make(map[string]struct{}),
+	}
 }
 
 // Len reports how many variants are currently known.
@@ -57,6 +62,24 @@ func (r *Registry) RandomVariant(f *gofakeit.Faker) (ref VariantRef, ok bool) {
 	}
 	idx := f.IntRange(0, len(r.variants)-1)
 	return r.variants[idx], true
+}
+
+// UniqueHandle ensures the given base handle is unique by appending a
+// numeric suffix if needed. Returns "base", "base-1", "base-2", ...
+func (r *Registry) UniqueHandle(base string) string {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if _, exists := r.usedHandles[base]; !exists {
+		r.usedHandles[base] = struct{}{}
+		return base
+	}
+	for i := 1; ; i++ {
+		candidate := fmt.Sprintf("%s-%d", base, i)
+		if _, exists := r.usedHandles[candidate]; !exists {
+			r.usedHandles[candidate] = struct{}{}
+			return candidate
+		}
+	}
 }
 
 func (r *Registry) nextIDs(n int) (productID int64, variantIDs, inventoryItemIDs []int64) {
@@ -92,6 +115,7 @@ var (
 	productStatuses    = []string{"active", "active", "active", "draft", "archived"}
 	inventoryMgmt      = "shopify"
 	fulfillmentService = "manual"
+	customerStates     = []string{"enabled", "enabled", "enabled", "disabled", "pending"}
 )
 
 func strPtr(s string) *string { return &s }
@@ -130,6 +154,7 @@ func (g *Generator) NewProduct() model.Product {
 	publishedAt := createdAt.Add(time.Duration(f.IntRange(0, 48)) * time.Hour)
 
 	title := f.ProductName()
+	productHandle := g.Registry.UniqueHandle(handle(title))
 	status := productStatuses[f.IntRange(0, len(productStatuses)-1)]
 
 	// Tags: 1-4 comma-separated words, matching Shopify REST format.
@@ -237,12 +262,13 @@ func (g *Generator) NewProduct() model.Product {
 	}
 
 	return model.Product{
+		EventID:     model.EventID(uuid.New().String()),
 		ID:          productID,
 		Title:       title,
 		BodyHTML:    fmt.Sprintf("<p>%s</p>", f.LoremIpsumSentence(8)),
 		Vendor:      f.Company(),
 		ProductType: f.ProductCategory(),
-		Handle:      handle(title),
+		Handle:      productHandle,
 		Status:      status,
 		Tags:        tagsStr,
 		CreatedAt:   shopifyTime(createdAt),
@@ -253,28 +279,16 @@ func (g *Generator) NewProduct() model.Product {
 }
 
 // NewOrderDetail picks a random known variant and emits an order detail (line
-// item) event for a fake order. ok is false if no variant has been registered
-// yet.
-func (g *Generator) NewOrderDetail(products []model.Product) (detail model.OrderDetail, ok bool) {
+// item) event for a fake order. The variantMap provides O(1) lookup by
+// inventory_item_id. ok is false if no variant has been registered yet.
+func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail model.OrderDetail, ok bool) {
 	ref, ok := g.Registry.RandomVariant(g.Faker)
 	if !ok {
 		return model.OrderDetail{}, false
 	}
 
-	// Find the matching variant to carry its fields through.
-	var variant *model.Variant
-	for i := range products {
-		for j := range products[i].Variants {
-			if products[i].Variants[j].InventoryItemID == ref.InventoryItemID {
-				v := products[i].Variants[j]
-				variant = &v
-				break
-			}
-		}
-		if variant != nil {
-			break
-		}
-	}
+	// O(1) lookup by inventory_item_id.
+	variant := variantMap[ref.InventoryItemID]
 
 	f := g.Faker
 	now := time.Now()
@@ -315,6 +329,7 @@ func (g *Generator) NewOrderDetail(products []model.Product) (detail model.Order
 	}
 
 	return model.OrderDetail{
+		EventID:                    model.EventID(uuid.New().String()),
 		OrderID:                    orderID,
 		ID:                         lineItemID,
 		VariantID:                  variantID,
@@ -354,9 +369,62 @@ func (g *Generator) NewInventoryLevel(locations int) (level model.InventoryLevel
 	available := int32(g.Faker.IntRange(0, 500))
 
 	return model.InventoryLevel{
+		EventID:         model.EventID(uuid.New().String()),
 		InventoryItemID: ref.InventoryItemID,
 		LocationID:      locationID,
 		Available:       &available,
 		UpdatedAt:       shopifyTime(time.Now()),
 	}, true
+}
+
+// NewCustomer creates a fake customer event. IDs are monotonically increasing
+// and independent of the product/variant registry.
+func (g *Generator) NewCustomer() model.Customer {
+	f := g.Faker
+	now := time.Now()
+	createdAt := now.Add(-time.Duration(f.IntRange(1, 365*24)) * time.Hour)
+	updatedAt := createdAt.Add(time.Duration(f.IntRange(0, 72)) * time.Hour)
+	if updatedAt.After(now) {
+		updatedAt = now
+	}
+
+	// Monotonically increasing customer ID using the dedicated customer counter.
+	g.Registry.nextCustomerID++
+	customerID := g.Registry.nextCustomerID
+
+	firstName := f.FirstName()
+	lastName := f.LastName()
+	email := strings.ToLower(fmt.Sprintf("%s.%s%d@example.com", firstName, lastName, customerID))
+	state := customerStates[f.IntRange(0, len(customerStates)-1)]
+
+	var phone *string
+	if f.Bool() {
+		p := fmt.Sprintf("+%d-%d-%d-%d", f.IntRange(1,9), f.IntRange(100,999), f.IntRange(100,999), f.IntRange(1000,9999))
+		phone = &p
+	}
+
+	var tags *string
+	if f.IntRange(0, 3) > 0 {
+		numTags := f.IntRange(1, 3)
+		tagWords := make([]string, numTags)
+		for i := range tagWords {
+			tagWords[i] = f.Word()
+		}
+		t := strings.Join(tagWords, ", ")
+		tags = &t
+	}
+
+	return model.Customer{
+		EventID:       model.EventID(uuid.New().String()),
+		ID:            customerID,
+		Email:         &email,
+		FirstName:     &firstName,
+		LastName:      &lastName,
+		Phone:         phone,
+		State:         state,
+		VerifiedEmail: f.Bool(),
+		Tags:          tags,
+		CreatedAt:     shopifyTime(createdAt),
+		UpdatedAt:     shopifyTime(updatedAt),
+	}
 }

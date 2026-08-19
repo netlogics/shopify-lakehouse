@@ -18,6 +18,7 @@ type Config struct {
 	Products     ProductsConfig     `yaml:"products"`
 	Inventory    InventoryConfig    `yaml:"inventory"`
 	OrderDetails OrderDetailsConfig `yaml:"order_details"`
+	Customers    CustomersConfig    `yaml:"customers"`
 }
 
 // KafkaConfig holds broker and schema registry connection settings.
@@ -46,6 +47,12 @@ type OrderDetailsConfig struct {
 	Rate  string `yaml:"rate"`
 }
 
+// CustomersConfig controls customer event emission.
+type CustomersConfig struct {
+	Topic string `yaml:"topic"`
+	Rate  string `yaml:"rate"`
+}
+
 func defaults() Config {
 	return Config{
 		Kafka: KafkaConfig{
@@ -65,6 +72,10 @@ func defaults() Config {
 		OrderDetails: OrderDetailsConfig{
 			Topic: "shopify.order_details",
 			Rate:  "2/s",
+		},
+		Customers: CustomersConfig{
+			Topic: "shopify.customers",
+			Rate:  "1/s",
 		},
 	}
 }
@@ -100,6 +111,9 @@ func Load(path string) (*Config, error) {
 	if _, err := ParseRate(cfg.OrderDetails.Rate); err != nil {
 		return nil, fmt.Errorf("order_details.rate: %w", err)
 	}
+	if _, err := ParseRate(cfg.Customers.Rate); err != nil {
+		return nil, fmt.Errorf("customers.rate: %w", err)
+	}
 
 	return &cfg, nil
 }
@@ -134,6 +148,12 @@ func applyNonZero(dst, src *Config) {
 	}
 	if src.OrderDetails.Rate != "" {
 		dst.OrderDetails.Rate = src.OrderDetails.Rate
+	}
+	if src.Customers.Topic != "" {
+		dst.Customers.Topic = src.Customers.Topic
+	}
+	if src.Customers.Rate != "" {
+		dst.Customers.Rate = src.Customers.Rate
 	}
 }
 
@@ -174,6 +194,12 @@ func applyEnvOverrides(cfg *Config) {
 	}
 	if v := os.Getenv("ORDER_DETAILS_RATE"); v != "" {
 		cfg.OrderDetails.Rate = v
+	}
+	if v := os.Getenv("CUSTOMERS_TOPIC"); v != "" {
+		cfg.Customers.Topic = v
+	}
+	if v := os.Getenv("CUSTOMERS_RATE"); v != "" {
+		cfg.Customers.Rate = v
 	}
 }
 
