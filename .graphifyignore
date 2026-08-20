@@ -1,0 +1,23 @@
+# graphify-specific exclusions (on top of .gitignore).
+# Vendored skill/tooling docs and generated config noise that don't
+# represent this project's own domain knowledge.
+
+# Vendored beads skill docs (not this project's code/docs)
+.agents/skills/
+
+# Repo tooling config (dev-guards, beads internals, codex/ruby-lsp scratch)
+.dev-guards/
+.beads/
+.codex/
+.ruby-lsp/
+
+# Generated/boilerplate config files that produce noisy per-key nodes
+# (every JSON/TS key gets extracted as its own graph node)
+webhook-service/tsconfig.json
+webhook-service/next-env.d.ts
+webhook-service/next.config.js
+webhook-service/postcss.config.js
+webhook-service/tailwind.config.ts
+webhook-service/components.json
+webhook-service/package.json
+webhook-service/package-lock.json

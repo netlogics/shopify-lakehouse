@@ -1,34 +1,4 @@
 {
-  ".beads/hooks/post-checkout": {
-    "mtime": 1784071903.2675946,
-    "ast_hash": "3544ca2ca545aee03375d2d09b02aabb",
-    "semantic_hash": "3544ca2ca545aee03375d2d09b02aabb"
-  },
-  ".beads/hooks/post-merge": {
-    "mtime": 1784071903.2675946,
-    "ast_hash": "e1c7845dcc73d1cf008d6546ad532faf",
-    "semantic_hash": "e1c7845dcc73d1cf008d6546ad532faf"
-  },
-  ".beads/hooks/pre-commit": {
-    "mtime": 1784071903.2675946,
-    "ast_hash": "5fe1bc25d249ee673378751351589b07",
-    "semantic_hash": "5fe1bc25d249ee673378751351589b07"
-  },
-  ".beads/hooks/pre-push": {
-    "mtime": 1784071903.2675946,
-    "ast_hash": "f2ba51d944c05470786df8b664aa0a69",
-    "semantic_hash": "f2ba51d944c05470786df8b664aa0a69"
-  },
-  ".beads/hooks/prepare-commit-msg": {
-    "mtime": 1784071903.2675946,
-    "ast_hash": "e414b7d865c0d03d952d78426d490445",
-    "semantic_hash": "e414b7d865c0d03d952d78426d490445"
-  },
-  ".beads/metadata.json": {
-    "mtime": 1784071903.2265956,
-    "ast_hash": "a0d753181d0dc833aea41fb00e3cf368",
-    "semantic_hash": "a0d753181d0dc833aea41fb00e3cf368"
-  },
   ".claude/settings.json": {
     "mtime": 1784071903.2715945,
     "ast_hash": "357f71cd5e3346deb0eaf776f51b9d06",
@@ -39,10 +9,25 @@
     "ast_hash": "619fe0204559a94380d5f7ca83c193ab",
     "semantic_hash": "619fe0204559a94380d5f7ca83c193ab"
   },
-  ".codex/hooks.json": {
-    "mtime": 1784071903.2732182,
-    "ast_hash": "6ab111cb0ebd91918bed9fa0805d8a31",
-    "semantic_hash": "6ab111cb0ebd91918bed9fa0805d8a31"
+  "compose/grafana/provisioning/dashboards/flink-dashboard.json": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "0d51155569760915dd5c97e5b56d7538",
+    "semantic_hash": "0d51155569760915dd5c97e5b56d7538"
+  },
+  "compose/grafana/provisioning/dashboards/generator-dashboard.json": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "57f8cdaf23e61859ecb58777a0f75460",
+    "semantic_hash": "57f8cdaf23e61859ecb58777a0f75460"
+  },
+  "compose/grafana/provisioning/dashboards/kafka-dashboard.json": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "417cfb57fe779777edf27b96a73f203b",
+    "semantic_hash": "417cfb57fe779777edf27b96a73f203b"
+  },
+  "compose/grafana/provisioning/dashboards/webhook-dashboard.json": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "b99dd6099fc60b50ab283097e6583b9f",
+    "semantic_hash": "b99dd6099fc60b50ab283097e6583b9f"
   },
   "dremio/bootstrap.sh": {
     "mtime": 1784563031.7879424,
@@ -84,6 +69,11 @@
     "ast_hash": "de003f32e8b96b7841c964d8e127565b",
     "semantic_hash": "de003f32e8b96b7841c964d8e127565b"
   },
+  "generator/internal/metrics/metrics.go": {
+    "mtime": 1787180102.1643047,
+    "ast_hash": "017f630d1eac730babbb80b6407d36f3",
+    "semantic_hash": "017f630d1eac730babbb80b6407d36f3"
+  },
   "generator/internal/model/model.go": {
     "mtime": 1787180102.1643047,
     "ast_hash": "d7c10d6c43f440eb6de5992764b0035e",
@@ -103,106 +93,6 @@
     "mtime": 1784400219.4711356,
     "ast_hash": "256d4fb9eda16b19b06507b6b10599c7",
     "semantic_hash": "256d4fb9eda16b19b06507b6b10599c7"
-  },
-  "spark/compact.py": {
-    "mtime": 1787180102.1659052,
-    "ast_hash": "e11cee8905af03b88c04ee43e66f600e",
-    "semantic_hash": "e11cee8905af03b88c04ee43e66f600e"
-  },
-  "spark/entrypoint.sh": {
-    "mtime": 1784400219.471301,
-    "ast_hash": "7ca5186609c5ffe952bbac19e4606b89",
-    "semantic_hash": "7ca5186609c5ffe952bbac19e4606b89"
-  },
-  ".agents/skills/beads/SKILL.md": {
-    "mtime": 1784071903.2729847,
-    "ast_hash": "4eba59bd27c18667fbbed3d5942b40ef",
-    "semantic_hash": "4eba59bd27c18667fbbed3d5942b40ef"
-  },
-  ".agents/skills/beads/agents/openai.yaml": {
-    "mtime": 1784071903.2730486,
-    "ast_hash": "075f32133b20f796e271f03cd50cd03e",
-    "semantic_hash": "075f32133b20f796e271f03cd50cd03e"
-  },
-  ".beads/README.md": {
-    "mtime": 1784071903.2345953,
-    "ast_hash": "7b562344dfbbf12388c3032ba0aa4d4e",
-    "semantic_hash": "7b562344dfbbf12388c3032ba0aa4d4e"
-  },
-  ".beads/config.yaml": {
-    "mtime": 1784071903.2345953,
-    "ast_hash": "3c94c1e569447dfbfcb9e71498b6cbc6",
-    "semantic_hash": "3c94c1e569447dfbfcb9e71498b6cbc6"
-  },
-  ".beads/orchestrator.yml": {
-    "mtime": 1784400219.4698627,
-    "ast_hash": "24a6ebc1cb626aaff60f295bb1562b17",
-    "semantic_hash": "24a6ebc1cb626aaff60f295bb1562b17"
-  },
-  "AGENTS.md": {
-    "mtime": 1784071903.2732182,
-    "ast_hash": "f560abcc9eddc9775a5099a1596698cb",
-    "semantic_hash": "f560abcc9eddc9775a5099a1596698cb"
-  },
-  "CLAUDE.md": {
-    "mtime": 1784071903.2715945,
-    "ast_hash": "6e3c092ad818b965525089a33a0924d0",
-    "semantic_hash": "6e3c092ad818b965525089a33a0924d0"
-  },
-  "README.md": {
-    "mtime": 1787180102.1538904,
-    "ast_hash": "f6fb8139f5bf451251b5fa4d5aa89cfb",
-    "semantic_hash": "f6fb8139f5bf451251b5fa4d5aa89cfb"
-  },
-  "compose/dremio.yml": {
-    "mtime": 1784562023.356276,
-    "ast_hash": "b2b6bc4971b5368321f21ff19045ffd2",
-    "semantic_hash": "b2b6bc4971b5368321f21ff19045ffd2"
-  },
-  "compose/flink.yml": {
-    "mtime": 1787180102.1538904,
-    "ast_hash": "618690712947d161429f05784f912dec",
-    "semantic_hash": "618690712947d161429f05784f912dec"
-  },
-  "compose/generator.yml": {
-    "mtime": 1787180102.1538904,
-    "ast_hash": "3d2a9b6e665fa0880c5c5f4d0cf1eb61",
-    "semantic_hash": "3d2a9b6e665fa0880c5c5f4d0cf1eb61"
-  },
-  "compose/kafka.yml": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "9723788a3b75016e9054d50cca80bb01",
-    "semantic_hash": "9723788a3b75016e9054d50cca80bb01"
-  },
-  "compose/minio.yml": {
-    "mtime": 1784400219.470404,
-    "ast_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4",
-    "semantic_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4"
-  },
-  "compose/nessie.yml": {
-    "mtime": 1784501760.043218,
-    "ast_hash": "ebae39858311063456241f9ff65881c6",
-    "semantic_hash": "ebae39858311063456241f9ff65881c6"
-  },
-  "compose/spark.yml": {
-    "mtime": 1784400219.470404,
-    "ast_hash": "42e92d2332d1005ce061fe9ca6053ccf",
-    "semantic_hash": "42e92d2332d1005ce061fe9ca6053ccf"
-  },
-  "docker-compose.yml": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "c1137d3efddb40d1f62c6dfb21751df8",
-    "semantic_hash": "c1137d3efddb40d1f62c6dfb21751df8"
-  },
-  "dremio/setup.md": {
-    "mtime": 1784400219.4706786,
-    "ast_hash": "b7152f11f33c3312a8d9290ac4cbdecd",
-    "semantic_hash": "b7152f11f33c3312a8d9290ac4cbdecd"
-  },
-  "generator/config.yaml": {
-    "mtime": 1787180102.1633048,
-    "ast_hash": "33b37186f5c961362b499de13b393c69",
-    "semantic_hash": "33b37186f5c961362b499de13b393c69"
   },
   "ruby-kafka-consumer/app/consumers/application_consumer.rb": {
     "mtime": 1784856370.3680847,
@@ -234,30 +124,15 @@
     "ast_hash": "f4636b65cbf38ce7c8cb4ad3f76ad8cd",
     "semantic_hash": "f4636b65cbf38ce7c8cb4ad3f76ad8cd"
   },
-  "compose/grafana/provisioning/dashboards/flink-dashboard.json": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "0d51155569760915dd5c97e5b56d7538",
-    "semantic_hash": "0d51155569760915dd5c97e5b56d7538"
+  "spark/compact.py": {
+    "mtime": 1787180102.1659052,
+    "ast_hash": "e11cee8905af03b88c04ee43e66f600e",
+    "semantic_hash": "e11cee8905af03b88c04ee43e66f600e"
   },
-  "compose/grafana/provisioning/dashboards/generator-dashboard.json": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "57f8cdaf23e61859ecb58777a0f75460",
-    "semantic_hash": "57f8cdaf23e61859ecb58777a0f75460"
-  },
-  "compose/grafana/provisioning/dashboards/kafka-dashboard.json": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "417cfb57fe779777edf27b96a73f203b",
-    "semantic_hash": "417cfb57fe779777edf27b96a73f203b"
-  },
-  "compose/grafana/provisioning/dashboards/webhook-dashboard.json": {
-    "mtime": 1787180102.1548467,
-    "ast_hash": "b99dd6099fc60b50ab283097e6583b9f",
-    "semantic_hash": "b99dd6099fc60b50ab283097e6583b9f"
-  },
-  "generator/internal/metrics/metrics.go": {
-    "mtime": 1787180102.1643047,
-    "ast_hash": "017f630d1eac730babbb80b6407d36f3",
-    "semantic_hash": "017f630d1eac730babbb80b6407d36f3"
+  "spark/entrypoint.sh": {
+    "mtime": 1784400219.471301,
+    "ast_hash": "7ca5186609c5ffe952bbac19e4606b89",
+    "semantic_hash": "7ca5186609c5ffe952bbac19e4606b89"
   },
   "webhook-service/app/api/explorer/data/route.ts": {
     "mtime": 1787180102.1666825,
@@ -299,11 +174,6 @@
     "ast_hash": "16974cd9f89be50654f81b997fda3eed",
     "semantic_hash": "16974cd9f89be50654f81b997fda3eed"
   },
-  "webhook-service/components.json": {
-    "mtime": 1787180102.1673045,
-    "ast_hash": "be259d28e89f6689df2ed0e7ca25e835",
-    "semantic_hash": "be259d28e89f6689df2ed0e7ca25e835"
-  },
   "webhook-service/components/ui/dialog.tsx": {
     "mtime": 1787180102.1681335,
     "ast_hash": "09419f6826f04d8aebe0323a8ffc75e6",
@@ -329,40 +199,35 @@
     "ast_hash": "ea1c194ee828369e6fcdde84b4d8b8ba",
     "semantic_hash": "ea1c194ee828369e6fcdde84b4d8b8ba"
   },
-  "webhook-service/next-env.d.ts": {
-    "mtime": 1787180102.1682334,
-    "ast_hash": "ba64ff7d54714a8f64db89b1003207d8",
-    "semantic_hash": "ba64ff7d54714a8f64db89b1003207d8"
+  "AGENTS.md": {
+    "mtime": 1784071903.2732182,
+    "ast_hash": "f560abcc9eddc9775a5099a1596698cb",
+    "semantic_hash": "f560abcc9eddc9775a5099a1596698cb"
   },
-  "webhook-service/next.config.js": {
-    "mtime": 1787180102.1682334,
-    "ast_hash": "d79643e68a9f23414b9a8a86e85553f4",
-    "semantic_hash": "d79643e68a9f23414b9a8a86e85553f4"
+  "CLAUDE.md": {
+    "mtime": 1784071903.2715945,
+    "ast_hash": "6e3c092ad818b965525089a33a0924d0",
+    "semantic_hash": "6e3c092ad818b965525089a33a0924d0"
   },
-  "webhook-service/package.json": {
-    "mtime": 1787180102.1683047,
-    "ast_hash": "aa78134baa3869c38ae65d29f128af7b",
-    "semantic_hash": "aa78134baa3869c38ae65d29f128af7b"
+  "README.md": {
+    "mtime": 1787180102.1538904,
+    "ast_hash": "f6fb8139f5bf451251b5fa4d5aa89cfb",
+    "semantic_hash": "f6fb8139f5bf451251b5fa4d5aa89cfb"
   },
-  "webhook-service/postcss.config.js": {
-    "mtime": 1787180102.1683047,
-    "ast_hash": "8640f9b2e6475cc3f5b1ff4548925765",
-    "semantic_hash": "8640f9b2e6475cc3f5b1ff4548925765"
+  "compose/dremio.yml": {
+    "mtime": 1784562023.356276,
+    "ast_hash": "b2b6bc4971b5368321f21ff19045ffd2",
+    "semantic_hash": "b2b6bc4971b5368321f21ff19045ffd2"
   },
-  "webhook-service/tailwind.config.ts": {
-    "mtime": 1787180102.1683047,
-    "ast_hash": "18aec846427f1c13e37bba97f0431a76",
-    "semantic_hash": "18aec846427f1c13e37bba97f0431a76"
+  "compose/flink.yml": {
+    "mtime": 1787180102.1538904,
+    "ast_hash": "618690712947d161429f05784f912dec",
+    "semantic_hash": "618690712947d161429f05784f912dec"
   },
-  "webhook-service/tsconfig.json": {
-    "mtime": 1787180102.1683047,
-    "ast_hash": "46caf341af077da571b958dff801be14",
-    "semantic_hash": "46caf341af077da571b958dff801be14"
-  },
-  ".dev-guards/config.yml": {
-    "mtime": 1786550973.6572506,
-    "ast_hash": "b9fee245b8d87ebaaf29b25bd8fb5911",
-    "semantic_hash": "b9fee245b8d87ebaaf29b25bd8fb5911"
+  "compose/generator.yml": {
+    "mtime": 1787180102.1538904,
+    "ast_hash": "3d2a9b6e665fa0880c5c5f4d0cf1eb61",
+    "semantic_hash": "3d2a9b6e665fa0880c5c5f4d0cf1eb61"
   },
   "compose/grafana.yml": {
     "mtime": 1787180102.1538904,
@@ -384,15 +249,50 @@
     "ast_hash": "48da9b55b9aa077a88de5029b4086548",
     "semantic_hash": "48da9b55b9aa077a88de5029b4086548"
   },
+  "compose/kafka.yml": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "9723788a3b75016e9054d50cca80bb01",
+    "semantic_hash": "9723788a3b75016e9054d50cca80bb01"
+  },
+  "compose/minio.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4",
+    "semantic_hash": "f4d5c3daf8f7bd93a6d17a8d8ba57fd4"
+  },
+  "compose/nessie.yml": {
+    "mtime": 1784501760.043218,
+    "ast_hash": "ebae39858311063456241f9ff65881c6",
+    "semantic_hash": "ebae39858311063456241f9ff65881c6"
+  },
   "compose/prometheus.yml": {
     "mtime": 1787180102.1548467,
     "ast_hash": "5b50c069353668b5eb7c1d5e55739cdf",
     "semantic_hash": "5b50c069353668b5eb7c1d5e55739cdf"
   },
+  "compose/spark.yml": {
+    "mtime": 1784400219.470404,
+    "ast_hash": "42e92d2332d1005ce061fe9ca6053ccf",
+    "semantic_hash": "42e92d2332d1005ce061fe9ca6053ccf"
+  },
   "compose/webhook-service.yml": {
     "mtime": 1787180102.1548467,
     "ast_hash": "19a7d7acb6b113c17dbf920e21a0567e",
     "semantic_hash": "19a7d7acb6b113c17dbf920e21a0567e"
+  },
+  "docker-compose.yml": {
+    "mtime": 1787180102.1548467,
+    "ast_hash": "c1137d3efddb40d1f62c6dfb21751df8",
+    "semantic_hash": "c1137d3efddb40d1f62c6dfb21751df8"
+  },
+  "dremio/setup.md": {
+    "mtime": 1784400219.4706786,
+    "ast_hash": "b7152f11f33c3312a8d9290ac4cbdecd",
+    "semantic_hash": "b7152f11f33c3312a8d9290ac4cbdecd"
+  },
+  "generator/config.yaml": {
+    "mtime": 1787180102.1633048,
+    "ast_hash": "33b37186f5c961362b499de13b393c69",
+    "semantic_hash": "33b37186f5c961362b499de13b393c69"
   },
   "kafka/jmx-exporter/config.yml": {
     "mtime": 1787180102.1659052,
