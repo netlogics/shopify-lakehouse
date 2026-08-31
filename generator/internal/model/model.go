@@ -35,49 +35,50 @@ type Variant struct {
 
 // Product matches schemas/product.avsc and the Shopify REST API product object.
 type Product struct {
-	EventID     EventID  `json:"event_id" avro:"event_id"`
-	ID          int64    `json:"id" avro:"id"`
-	Title       string   `json:"title" avro:"title"`
-	BodyHTML    string   `json:"body_html" avro:"body_html"`
-	Vendor      string   `json:"vendor" avro:"vendor"`
-	ProductType string   `json:"product_type" avro:"product_type"`
-	Handle      string   `json:"handle" avro:"handle"`
-	Status      string   `json:"status" avro:"status"`
-	Tags        string   `json:"tags" avro:"tags"`
-	CreatedAt   string   `json:"created_at" avro:"created_at"`
-	UpdatedAt   string   `json:"updated_at" avro:"updated_at"`
-	PublishedAt *string  `json:"published_at" avro:"published_at"`
+	EventID     EventID   `json:"event_id" avro:"event_id"`
+	ID          int64     `json:"id" avro:"id"`
+	Title       string    `json:"title" avro:"title"`
+	BodyHTML    string    `json:"body_html" avro:"body_html"`
+	Vendor      string    `json:"vendor" avro:"vendor"`
+	ProductType string    `json:"product_type" avro:"product_type"`
+	Handle      string    `json:"handle" avro:"handle"`
+	Status      string    `json:"status" avro:"status"`
+	Tags        string    `json:"tags" avro:"tags"`
+	CreatedAt   string    `json:"created_at" avro:"created_at"`
+	UpdatedAt   string    `json:"updated_at" avro:"updated_at"`
+	PublishedAt *string   `json:"published_at" avro:"published_at"`
 	Variants    []Variant `json:"variants" avro:"variants"`
 }
 
 // OrderDetail matches schemas/order_detail.avsc and the Shopify REST Admin API
 // Order resource line_items array member.
 type OrderDetail struct {
-	EventID                   EventID `json:"event_id" avro:"event_id"`
-	OrderID                   int64   `json:"order_id" avro:"order_id"`
-	ID                        int64   `json:"id" avro:"id"`
-	VariantID                 *int64  `json:"variant_id" avro:"variant_id"`
-	ProductID                 *int64  `json:"product_id" avro:"product_id"`
-	Title                     string  `json:"title" avro:"title"`
-	VariantTitle              *string `json:"variant_title" avro:"variant_title"`
-	Name                      string  `json:"name" avro:"name"`
-	SKU                       *string `json:"sku" avro:"sku"`
-	Vendor                    *string `json:"vendor" avro:"vendor"`
-	Quantity                  int32   `json:"quantity" avro:"quantity"`
-	FulfillableQuantity       int32   `json:"fulfillable_quantity" avro:"fulfillable_quantity"`
-	CurrentQuantity           int32   `json:"current_quantity" avro:"current_quantity"`
-	Price                     string  `json:"price" avro:"price"`
-	TotalDiscount             string  `json:"total_discount" avro:"total_discount"`
-	FulfillmentService        string  `json:"fulfillment_service" avro:"fulfillment_service"`
-	FulfillmentStatus         *string `json:"fulfillment_status" avro:"fulfillment_status"`
-	Grams                     int32   `json:"grams" avro:"grams"`
-	RequiresShipping          bool    `json:"requires_shipping" avro:"requires_shipping"`
-	Taxable                   bool    `json:"taxable" avro:"taxable"`
-	GiftCard                  bool    `json:"gift_card" avro:"gift_card"`
-	ProductExists             bool    `json:"product_exists" avro:"product_exists"`
+	EventID                    EventID `json:"event_id" avro:"event_id"`
+	OrderID                    int64   `json:"order_id" avro:"order_id"`
+	ID                         int64   `json:"id" avro:"id"`
+	VariantID                  *int64  `json:"variant_id" avro:"variant_id"`
+	ProductID                  *int64  `json:"product_id" avro:"product_id"`
+	CustomerID                 *int64  `json:"customer_id" avro:"customer_id"`
+	Title                      string  `json:"title" avro:"title"`
+	VariantTitle               *string `json:"variant_title" avro:"variant_title"`
+	Name                       string  `json:"name" avro:"name"`
+	SKU                        *string `json:"sku" avro:"sku"`
+	Vendor                     *string `json:"vendor" avro:"vendor"`
+	Quantity                   int32   `json:"quantity" avro:"quantity"`
+	FulfillableQuantity        int32   `json:"fulfillable_quantity" avro:"fulfillable_quantity"`
+	CurrentQuantity            int32   `json:"current_quantity" avro:"current_quantity"`
+	Price                      string  `json:"price" avro:"price"`
+	TotalDiscount              string  `json:"total_discount" avro:"total_discount"`
+	FulfillmentService         string  `json:"fulfillment_service" avro:"fulfillment_service"`
+	FulfillmentStatus          *string `json:"fulfillment_status" avro:"fulfillment_status"`
+	Grams                      int32   `json:"grams" avro:"grams"`
+	RequiresShipping           bool    `json:"requires_shipping" avro:"requires_shipping"`
+	Taxable                    bool    `json:"taxable" avro:"taxable"`
+	GiftCard                   bool    `json:"gift_card" avro:"gift_card"`
+	ProductExists              bool    `json:"product_exists" avro:"product_exists"`
 	VariantInventoryManagement *string `json:"variant_inventory_management" avro:"variant_inventory_management"`
-	CreatedAt                 string  `json:"created_at" avro:"created_at"`
-	UpdatedAt                 string  `json:"updated_at" avro:"updated_at"`
+	CreatedAt                  string  `json:"created_at" avro:"created_at"`
+	UpdatedAt                  string  `json:"updated_at" avro:"updated_at"`
 }
 
 // InventoryLevel matches schemas/inventory_level.avsc and the Shopify REST API
@@ -86,22 +87,22 @@ type OrderDetail struct {
 type InventoryLevel struct {
 	EventID         EventID `json:"event_id" avro:"event_id"`
 	InventoryItemID int64   `json:"inventory_item_id" avro:"inventory_item_id"`
-	LocationID      int64  `json:"location_id" avro:"location_id"`
-	Available       *int32 `json:"available" avro:"available"`
-	UpdatedAt       string `json:"updated_at" avro:"updated_at"`
+	LocationID      int64   `json:"location_id" avro:"location_id"`
+	Available       *int32  `json:"available" avro:"available"`
+	UpdatedAt       string  `json:"updated_at" avro:"updated_at"`
 }
 
 // Customer matches schemas/customer.avsc and the Shopify REST Admin API Customer object.
 type Customer struct {
-	EventID      EventID `json:"event_id" avro:"event_id"`
-	ID           int64   `json:"id" avro:"id"`
-	Email        *string `json:"email" avro:"email"`
-	FirstName    *string `json:"first_name" avro:"first_name"`
-	LastName     *string `json:"last_name" avro:"last_name"`
-	Phone        *string `json:"phone" avro:"phone"`
-	State        string  `json:"state" avro:"state"`
-	VerifiedEmail bool   `json:"verified_email" avro:"verified_email"`
-	Tags         *string `json:"tags" avro:"tags"`
-	CreatedAt    string  `json:"created_at" avro:"created_at"`
-	UpdatedAt    string  `json:"updated_at" avro:"updated_at"`
+	EventID       EventID `json:"event_id" avro:"event_id"`
+	ID            int64   `json:"id" avro:"id"`
+	Email         *string `json:"email" avro:"email"`
+	FirstName     *string `json:"first_name" avro:"first_name"`
+	LastName      *string `json:"last_name" avro:"last_name"`
+	Phone         *string `json:"phone" avro:"phone"`
+	State         string  `json:"state" avro:"state"`
+	VerifiedEmail bool    `json:"verified_email" avro:"verified_email"`
+	Tags          *string `json:"tags" avro:"tags"`
+	CreatedAt     string  `json:"created_at" avro:"created_at"`
+	UpdatedAt     string  `json:"updated_at" avro:"updated_at"`
 }

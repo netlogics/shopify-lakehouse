@@ -21,10 +21,11 @@ type VariantRef struct {
 	ProductID       int64
 }
 
-// Registry tracks every variant seen so far.
+// Registry tracks every variant and customer seen so far.
 type Registry struct {
 	mu                  sync.Mutex
 	variants            []VariantRef
+	customers           []int64
 	nextProductID       int64
 	nextVariantID       int64
 	nextInventoryItemID int64
@@ -62,6 +63,29 @@ func (r *Registry) RandomVariant(f *gofakeit.Faker) (ref VariantRef, ok bool) {
 	}
 	idx := f.IntRange(0, len(r.variants)-1)
 	return r.variants[idx], true
+}
+
+// nextCustomer allocates the next customer ID and registers it for later
+// random lookup by RandomCustomer, atomically under the registry lock.
+func (r *Registry) nextCustomer() int64 {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.nextCustomerID++
+	id := r.nextCustomerID
+	r.customers = append(r.customers, id)
+	return id
+}
+
+// RandomCustomer picks a uniformly random known customer ID. ok is false if
+// no customer has been registered yet.
+func (r *Registry) RandomCustomer(f *gofakeit.Faker) (id int64, ok bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if len(r.customers) == 0 {
+		return 0, false
+	}
+	idx := f.IntRange(0, len(r.customers)-1)
+	return r.customers[idx], true
 }
 
 // UniqueHandle ensures the given base handle is unique by appending a
@@ -278,11 +302,17 @@ func (g *Generator) NewProduct() model.Product {
 	}
 }
 
-// NewOrderDetail picks a random known variant and emits an order detail (line
-// item) event for a fake order. The variantMap provides O(1) lookup by
-// inventory_item_id. ok is false if no variant has been registered yet.
+// NewOrderDetail picks a random known variant and a random known customer,
+// and emits an order detail (line item) event for a fake order attributed to
+// that customer. The variantMap provides O(1) lookup by inventory_item_id.
+// ok is false if no variant or no customer has been registered yet.
 func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail model.OrderDetail, ok bool) {
 	ref, ok := g.Registry.RandomVariant(g.Faker)
+	if !ok {
+		return model.OrderDetail{}, false
+	}
+
+	customerID, ok := g.Registry.RandomCustomer(g.Faker)
 	if !ok {
 		return model.OrderDetail{}, false
 	}
@@ -334,6 +364,7 @@ func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail 
 		ID:                         lineItemID,
 		VariantID:                  variantID,
 		ProductID:                  productID,
+		CustomerID:                 &customerID,
 		Title:                      title,
 		VariantTitle:               &variantTitle,
 		Name:                       fmt.Sprintf("%s - %s", title, variantTitle),
@@ -378,7 +409,8 @@ func (g *Generator) NewInventoryLevel(locations int) (level model.InventoryLevel
 }
 
 // NewCustomer creates a fake customer event. IDs are monotonically increasing
-// and independent of the product/variant registry.
+// via a dedicated counter (independent of product/variant IDs), and each new
+// ID is registered so NewOrderDetail can later reference a real customer.
 func (g *Generator) NewCustomer() model.Customer {
 	f := g.Faker
 	now := time.Now()
@@ -388,9 +420,9 @@ func (g *Generator) NewCustomer() model.Customer {
 		updatedAt = now
 	}
 
-	// Monotonically increasing customer ID using the dedicated customer counter.
-	g.Registry.nextCustomerID++
-	customerID := g.Registry.nextCustomerID
+	// Monotonically increasing customer ID, registered for later random
+	// lookup by order-detail generation (see RandomCustomer).
+	customerID := g.Registry.nextCustomer()
 
 	firstName := f.FirstName()
 	lastName := f.LastName()
@@ -399,7 +431,7 @@ func (g *Generator) NewCustomer() model.Customer {
 
 	var phone *string
 	if f.Bool() {
-		p := fmt.Sprintf("+%d-%d-%d-%d", f.IntRange(1,9), f.IntRange(100,999), f.IntRange(100,999), f.IntRange(1000,9999))
+		p := fmt.Sprintf("+%d-%d-%d-%d", f.IntRange(1, 9), f.IntRange(100, 999), f.IntRange(100, 999), f.IntRange(1000, 9999))
 		phone = &p
 	}
 

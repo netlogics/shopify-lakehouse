@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/brianvoe/gofakeit/v7"
+
+	"generator/internal/model"
 )
 
 func TestNewProduct(t *testing.T) {
@@ -101,6 +103,57 @@ func TestNewInventoryLevelEmptyRegistry(t *testing.T) {
 	_, ok := g.NewInventoryLevel(3)
 	if ok {
 		t.Fatal("NewInventoryLevel: expected ok=false on empty registry")
+	}
+}
+
+func TestNewOrderDetailEmptyCustomerRegistry(t *testing.T) {
+	f := gofakeit.New(11)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	// Seed a variant so the only missing prerequisite is a customer.
+	p := g.NewProduct()
+	variantMap := map[int64]*model.Variant{}
+	for i := range p.Variants {
+		v := &p.Variants[i]
+		variantMap[v.InventoryItemID] = v
+	}
+
+	_, ok := g.NewOrderDetail(variantMap)
+	if ok {
+		t.Fatal("NewOrderDetail: expected ok=false with no customer registered")
+	}
+}
+
+func TestNewOrderDetailReferencesKnownCustomer(t *testing.T) {
+	f := gofakeit.New(11)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	p := g.NewProduct()
+	variantMap := map[int64]*model.Variant{}
+	for i := range p.Variants {
+		v := &p.Variants[i]
+		variantMap[v.InventoryItemID] = v
+	}
+
+	knownCustomerIDs := map[int64]bool{}
+	for i := 0; i < 5; i++ {
+		c := g.NewCustomer()
+		knownCustomerIDs[c.ID] = true
+	}
+
+	for i := 0; i < 50; i++ {
+		detail, ok := g.NewOrderDetail(variantMap)
+		if !ok {
+			t.Fatal("NewOrderDetail: expected ok=true with seeded variant and customer registries")
+		}
+		if detail.CustomerID == nil {
+			t.Fatal("OrderDetail.CustomerID is nil, want a known customer ID")
+		}
+		if !knownCustomerIDs[*detail.CustomerID] {
+			t.Fatalf("order detail references unknown customer_id %d", *detail.CustomerID)
+		}
 	}
 }
 

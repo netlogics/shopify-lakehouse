@@ -29,6 +29,7 @@ class OrderDetailsConsumer < ApplicationConsumer
         line_item_id:                 record['id'],
         variant_id:                   record['variant_id'],
         product_id:                   record['product_id'],
+        customer_id:                  record['customer_id'],
         title:                        record['title'],
         variant_title:                record['variant_title'],
         name:                         record['name'],
