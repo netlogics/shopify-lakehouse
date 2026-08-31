@@ -6,6 +6,13 @@
 # alerts fire and show up under Alerting > Alert rules but aren't routed
 # anywhere by default. See README.md's monitoring section for how to add a
 # contact point (email/webhook/Slack) via the Grafana UI or provisioning.
+#
+# Each rule pipes its raw Prometheus query (A) through a Reduce stage (B)
+# before the Threshold condition (C). Threshold expressions require a single
+# scalar per series, not raw range/time-series data — skipping the Reduce
+# stage produces a permanently erroring rule ("looks like time series data,
+# only reduced data can be alerted on" / duplicate-labels errors for
+# multi-series queries), not a real threshold breach.
 apiVersion: 1
 
 groups:
@@ -33,11 +40,18 @@ groups:
               intervalMs: 1000
               maxDataPoints: 43200
               refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
           - refId: C
             datasourceUid: __expr__
             model:
               type: threshold
-              expression: A
+              expression: B
               conditions:
                 - evaluator:
                     type: gt
@@ -63,11 +77,18 @@ groups:
               intervalMs: 1000
               maxDataPoints: 43200
               refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
           - refId: C
             datasourceUid: __expr__
             model:
               type: threshold
-              expression: A
+              expression: B
               conditions:
                 - evaluator:
                     type: gt
@@ -93,11 +114,18 @@ groups:
               intervalMs: 1000
               maxDataPoints: 43200
               refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: reduce
+              expression: A
+              reducer: last
+              refId: B
           - refId: C
             datasourceUid: __expr__
             model:
               type: threshold
-              expression: A
+              expression: B
               conditions:
                 - evaluator:
                     type: gt
