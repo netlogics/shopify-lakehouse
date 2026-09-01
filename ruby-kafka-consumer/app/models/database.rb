@@ -45,6 +45,11 @@ ActiveRecord::Schema.define do
       t.string   :variant_inventory_management
       t.datetime :shopify_created_at
       t.datetime :shopify_updated_at
+
+      # Synthetic fraud ground-truth labels injected by the generator (not
+      # part of the real Shopify API) for validating downstream detection.
+      t.boolean  :is_synthetic_fraud,           null: false, default: false
+      t.string   :fraud_pattern
     end
 
     add_index :order_details, [:topic, :partition, :offset], unique: true
@@ -53,5 +58,6 @@ ActiveRecord::Schema.define do
     add_index :order_details, :fulfillment_status
     add_index :order_details, :shopify_created_at
     add_index :order_details, :consumed_at
+    add_index :order_details, :is_synthetic_fraud
   end
 end

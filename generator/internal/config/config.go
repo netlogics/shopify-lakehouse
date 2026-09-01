@@ -19,6 +19,7 @@ type Config struct {
 	Inventory    InventoryConfig    `yaml:"inventory"`
 	OrderDetails OrderDetailsConfig `yaml:"order_details"`
 	Customers    CustomersConfig    `yaml:"customers"`
+	Fraud        FraudConfig        `yaml:"fraud"`
 }
 
 // KafkaConfig holds broker and schema registry connection settings.
@@ -53,6 +54,19 @@ type CustomersConfig struct {
 	Rate  string `yaml:"rate"`
 }
 
+// FraudConfig controls synthetic, ground-truth-labeled fraud injection into
+// order_details. When no fraud episode is currently active, each
+// order-detail tick has InjectionProbability chance of starting a new one
+// on a randomly chosen customer for EpisodeDuration. While a customer's
+// episode is active, TargetWeight is the chance that a given order-detail
+// tick is attributed to them instead of a uniformly random customer,
+// concentrating order volume into a detectable velocity burst.
+type FraudConfig struct {
+	InjectionProbability float64 `yaml:"injection_probability"`
+	EpisodeDuration      string  `yaml:"episode_duration"`
+	TargetWeight         float64 `yaml:"target_weight"`
+}
+
 func defaults() Config {
 	return Config{
 		Kafka: KafkaConfig{
@@ -76,6 +90,11 @@ func defaults() Config {
 		Customers: CustomersConfig{
 			Topic: "shopify.customers",
 			Rate:  "1/s",
+		},
+		Fraud: FraudConfig{
+			InjectionProbability: 0.01,
+			EpisodeDuration:      "20s",
+			TargetWeight:         0.7,
 		},
 	}
 }
@@ -113,6 +132,15 @@ func Load(path string) (*Config, error) {
 	}
 	if _, err := ParseRate(cfg.Customers.Rate); err != nil {
 		return nil, fmt.Errorf("customers.rate: %w", err)
+	}
+	if _, err := time.ParseDuration(cfg.Fraud.EpisodeDuration); err != nil {
+		return nil, fmt.Errorf("fraud.episode_duration: %w", err)
+	}
+	if cfg.Fraud.InjectionProbability < 0 || cfg.Fraud.InjectionProbability > 1 {
+		return nil, fmt.Errorf("fraud.injection_probability: must be in [0,1], got %v", cfg.Fraud.InjectionProbability)
+	}
+	if cfg.Fraud.TargetWeight < 0 || cfg.Fraud.TargetWeight > 1 {
+		return nil, fmt.Errorf("fraud.target_weight: must be in [0,1], got %v", cfg.Fraud.TargetWeight)
 	}
 
 	return &cfg, nil
@@ -154,6 +182,15 @@ func applyNonZero(dst, src *Config) {
 	}
 	if src.Customers.Rate != "" {
 		dst.Customers.Rate = src.Customers.Rate
+	}
+	if src.Fraud.InjectionProbability != 0 {
+		dst.Fraud.InjectionProbability = src.Fraud.InjectionProbability
+	}
+	if src.Fraud.EpisodeDuration != "" {
+		dst.Fraud.EpisodeDuration = src.Fraud.EpisodeDuration
+	}
+	if src.Fraud.TargetWeight != 0 {
+		dst.Fraud.TargetWeight = src.Fraud.TargetWeight
 	}
 }
 
@@ -200,6 +237,19 @@ func applyEnvOverrides(cfg *Config) {
 	}
 	if v := os.Getenv("CUSTOMERS_RATE"); v != "" {
 		cfg.Customers.Rate = v
+	}
+	if v := os.Getenv("FRAUD_INJECTION_PROBABILITY"); v != "" {
+		if p, err := strconv.ParseFloat(v, 64); err == nil {
+			cfg.Fraud.InjectionProbability = p
+		}
+	}
+	if v := os.Getenv("FRAUD_EPISODE_DURATION"); v != "" {
+		cfg.Fraud.EpisodeDuration = v
+	}
+	if v := os.Getenv("FRAUD_TARGET_WEIGHT"); v != "" {
+		if w, err := strconv.ParseFloat(v, 64); err == nil {
+			cfg.Fraud.TargetWeight = w
+		}
 	}
 }
 

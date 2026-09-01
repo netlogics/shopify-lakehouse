@@ -31,12 +31,14 @@ type Registry struct {
 	nextInventoryItemID int64
 	nextCustomerID      int64
 	usedHandles         map[string]struct{}
+	fraudUntil          map[int64]time.Time
 }
 
 // NewRegistry returns an empty, ready-to-use Registry.
 func NewRegistry() *Registry {
 	return &Registry{
 		usedHandles: make(map[string]struct{}),
+		fraudUntil:  make(map[int64]time.Time),
 	}
 }
 
@@ -86,6 +88,50 @@ func (r *Registry) RandomCustomer(f *gofakeit.Faker) (id int64, ok bool) {
 	}
 	idx := f.IntRange(0, len(r.customers)-1)
 	return r.customers[idx], true
+}
+
+// TriggerFraud marks customerID as being in an active synthetic-fraud
+// episode until duration from now. Concentrating subsequent order-detail
+// generation onto this one customer (see RandomFraudulentCustomer) produces
+// a detectable velocity burst rather than an isolated, unlabeled anomaly.
+func (r *Registry) TriggerFraud(customerID int64, duration time.Duration) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.fraudUntil[customerID] = time.Now().Add(duration)
+}
+
+// HasActiveFraud reports whether any customer is currently within an active
+// synthetic-fraud episode. Used to avoid starting overlapping episodes,
+// which would dilute the velocity signal across multiple customers.
+func (r *Registry) HasActiveFraud() bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	now := time.Now()
+	for _, until := range r.fraudUntil {
+		if now.Before(until) {
+			return true
+		}
+	}
+	return false
+}
+
+// RandomFraudulentCustomer picks a uniformly random customer currently
+// within an active fraud episode. ok is false if none is active.
+func (r *Registry) RandomFraudulentCustomer(f *gofakeit.Faker) (id int64, ok bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	now := time.Now()
+	var active []int64
+	for cid, until := range r.fraudUntil {
+		if now.Before(until) {
+			active = append(active, cid)
+		}
+	}
+	if len(active) == 0 {
+		return 0, false
+	}
+	idx := f.IntRange(0, len(active)-1)
+	return active[idx], true
 }
 
 // UniqueHandle ensures the given base handle is unique by appending a
@@ -302,17 +348,68 @@ func (g *Generator) NewProduct() model.Product {
 	}
 }
 
-// NewOrderDetail picks a random known variant and a random known customer,
-// and emits an order detail (line item) event for a fake order attributed to
-// that customer. The variantMap provides O(1) lookup by inventory_item_id.
-// ok is false if no variant or no customer has been registered yet.
-func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail model.OrderDetail, ok bool) {
+// FraudParams controls synthetic fraud injection for NewOrderDetail. See
+// generator/internal/config.FraudConfig for the YAML/env-configurable
+// source of these values.
+type FraudParams struct {
+	// InjectionProbability is the chance, per call, of starting a new fraud
+	// episode when none is currently active.
+	InjectionProbability float64
+	// EpisodeDuration is how long a triggered episode concentrates order
+	// volume onto its target customer.
+	EpisodeDuration time.Duration
+	// TargetWeight is the chance a call is attributed to a customer with an
+	// active episode rather than a uniformly random customer.
+	TargetWeight float64
+}
+
+const fraudPatternVelocityBurst = "velocity_burst"
+
+// maybeTriggerFraud starts a new fraud episode on a random known customer
+// with probability fraud.InjectionProbability, but only if no episode is
+// currently active (overlapping episodes would dilute the velocity signal
+// across multiple customers instead of producing one detectable burst).
+func (g *Generator) maybeTriggerFraud(fraud FraudParams) {
+	if fraud.InjectionProbability <= 0 || g.Registry.HasActiveFraud() {
+		return
+	}
+	if g.Faker.Float64Range(0, 1) >= fraud.InjectionProbability {
+		return
+	}
+	if customerID, ok := g.Registry.RandomCustomer(g.Faker); ok {
+		g.Registry.TriggerFraud(customerID, fraud.EpisodeDuration)
+	}
+}
+
+// selectOrderCustomer decides which customer an order-detail should be
+// attributed to. With probability fraud.TargetWeight it targets a customer
+// currently in an active fraud episode, concentrating volume onto them;
+// otherwise (or if none is active) it falls back to a uniformly random
+// known customer. ok is false if no customer has been registered yet.
+func (g *Generator) selectOrderCustomer(fraud FraudParams) (customerID int64, isFraud bool, ok bool) {
+	if fraud.TargetWeight > 0 && g.Faker.Float64Range(0, 1) < fraud.TargetWeight {
+		if id, active := g.Registry.RandomFraudulentCustomer(g.Faker); active {
+			return id, true, true
+		}
+	}
+	id, ok := g.Registry.RandomCustomer(g.Faker)
+	return id, false, ok
+}
+
+// NewOrderDetail picks a random known variant and a customer (see
+// selectOrderCustomer), and emits an order detail (line item) event for a
+// fake order attributed to that customer. The variantMap provides O(1)
+// lookup by inventory_item_id. ok is false if no variant or no customer has
+// been registered yet. fraud controls synthetic fraud injection; pass a
+// zero-value FraudParams to disable it entirely.
+func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant, fraud FraudParams) (detail model.OrderDetail, ok bool) {
 	ref, ok := g.Registry.RandomVariant(g.Faker)
 	if !ok {
 		return model.OrderDetail{}, false
 	}
 
-	customerID, ok := g.Registry.RandomCustomer(g.Faker)
+	g.maybeTriggerFraud(fraud)
+	customerID, isFraud, ok := g.selectOrderCustomer(fraud)
 	if !ok {
 		return model.OrderDetail{}, false
 	}
@@ -358,6 +455,16 @@ func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail 
 		}
 	}
 
+	var fraudPattern *string
+	if isFraud {
+		// Anomalously large quantity (vs. the normal 1-10 range) at the
+		// variant's real price, so both a per-customer order-count velocity
+		// query and a per-customer SUM(quantity*price) query can catch it.
+		quantity = int32(f.IntRange(50, 200))
+		pattern := fraudPatternVelocityBurst
+		fraudPattern = &pattern
+	}
+
 	return model.OrderDetail{
 		EventID:                    model.EventID(uuid.New().String()),
 		OrderID:                    orderID,
@@ -385,6 +492,8 @@ func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant) (detail 
 		VariantInventoryManagement: &variantInvMgmt,
 		CreatedAt:                  shopifyTime(createdAt),
 		UpdatedAt:                  shopifyTime(updatedAt),
+		IsSyntheticFraud:           isFraud,
+		FraudPattern:               fraudPattern,
 	}, true
 }
 

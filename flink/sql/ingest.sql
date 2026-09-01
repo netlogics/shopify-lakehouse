@@ -115,7 +115,9 @@ CREATE TABLE order_details_source (
   product_exists               BOOLEAN,
   variant_inventory_management STRING,
   created_at                   STRING,
-  updated_at                   STRING
+  updated_at                   STRING,
+  is_synthetic_fraud           BOOLEAN,
+  fraud_pattern                STRING
 ) WITH (
   'connector'                    = 'kafka',
   'topic'                        = 'shopify.order_details',
@@ -279,7 +281,9 @@ CREATE TABLE IF NOT EXISTS nessie.lakehouse.order_details (
   product_exists               BOOLEAN,
   variant_inventory_management STRING,
   created_at                   TIMESTAMP(3),
-  updated_at                   TIMESTAMP(3)
+  updated_at                   TIMESTAMP(3),
+  is_synthetic_fraud           BOOLEAN,
+  fraud_pattern                STRING
 ) WITH (
   'format-version' = '2',
   'gc.enabled'     = 'true'
@@ -403,7 +407,9 @@ SELECT
   product_exists,
   variant_inventory_management,
   TO_TIMESTAMP(LEFT(created_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
-  TO_TIMESTAMP(LEFT(updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss')
+  TO_TIMESTAMP(LEFT(updated_at, 19), 'yyyy-MM-dd''T''HH:mm:ss'),
+  is_synthetic_fraud,
+  fraud_pattern
 FROM order_details_source;
 
 -- ---------------------------------------------------------------------------

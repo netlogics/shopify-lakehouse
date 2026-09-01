@@ -79,6 +79,13 @@ type OrderDetail struct {
 	VariantInventoryManagement *string `json:"variant_inventory_management" avro:"variant_inventory_management"`
 	CreatedAt                  string  `json:"created_at" avro:"created_at"`
 	UpdatedAt                  string  `json:"updated_at" avro:"updated_at"`
+
+	// IsSyntheticFraud and FraudPattern are ground-truth labels injected by
+	// the generator itself (not part of the real Shopify API shape) so a
+	// downstream fraud detector's precision/recall can be validated against
+	// a known answer key. See generator/internal/gen's fraud injection.
+	IsSyntheticFraud bool    `json:"is_synthetic_fraud" avro:"is_synthetic_fraud"`
+	FraudPattern     *string `json:"fraud_pattern" avro:"fraud_pattern"`
 }
 
 // InventoryLevel matches schemas/inventory_level.avsc and the Shopify REST API

@@ -49,7 +49,9 @@ class OrderDetailsConsumer < ApplicationConsumer
         product_exists:               record['product_exists'],
         variant_inventory_management: record['variant_inventory_management'],
         shopify_created_at:           parse_timestamp(record['created_at']),
-        shopify_updated_at:           parse_timestamp(record['updated_at'])
+        shopify_updated_at:           parse_timestamp(record['updated_at']),
+        is_synthetic_fraud:           record['is_synthetic_fraud'],
+        fraud_pattern:                record['fraud_pattern']
       )
     end
   end
