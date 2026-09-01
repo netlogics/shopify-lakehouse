@@ -24,6 +24,7 @@ ActiveRecord::Schema.define do
       t.integer  :line_item_id,                 null: false  # Avro field: id
       t.integer  :variant_id
       t.integer  :product_id
+      t.integer  :customer_id
       t.string   :title,                        null: false
       t.string   :variant_title
       t.string   :name,                         null: false
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define do
 
     add_index :order_details, [:topic, :partition, :offset], unique: true
     add_index :order_details, :order_id
+    add_index :order_details, :customer_id
     add_index :order_details, :fulfillment_status
     add_index :order_details, :shopify_created_at
     add_index :order_details, :consumed_at

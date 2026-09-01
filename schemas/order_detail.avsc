@@ -8,6 +8,7 @@
     { "name": "id",                          "type": "long",                      "doc": "ID of the line item." },
     { "name": "variant_id",                  "type": ["null", "long"],            "doc": "ID of the product variant.", "default": null },
     { "name": "product_id",                  "type": ["null", "long"],            "doc": "ID of the product.", "default": null },
+    { "name": "customer_id",                 "type": ["null", "long"],            "doc": "ID of the customer who placed the order.", "default": null },
     { "name": "title",                       "type": "string",                    "doc": "Product title at time of purchase." },
     { "name": "variant_title",               "type": ["null", "string"],          "doc": "Variant title at time of purchase.", "default": null },
     { "name": "name",                        "type": "string",                    "doc": "Full product+variant name, e.g. 'T-Shirt - Blue / Large'." },
