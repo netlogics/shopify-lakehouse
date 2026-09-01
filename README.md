@@ -304,6 +304,23 @@ The custom Flink image (`flink/Dockerfile`) extends the stock `flink:1.20.1` ima
 
 ---
 
+## Resetting the pipeline
+
+After changing the Avro schemas, the generator, or `flink/sql/ingest.sql`, use `scripts/reset-pipeline.sh` to get a clean run rather than restarting services by hand. Both modes also recreate the `flink-jobmanager`/`flink-taskmanager` containers, which works around a real issue where a long-running Flink TaskManager JVM can develop classloader corruption on in-place job cancel/resubmit.
+
+```bash
+./scripts/reset-pipeline.sh          # default: additive, backward-compatible schema changes
+./scripts/reset-pipeline.sh --full   # breaking schema changes (renamed/retyped/removed fields)
+```
+
+**Default mode** — safe for a new nullable field with a default (Avro schema evolution handles old messages, and `ingest.sql` already does `DROP TABLE IF EXISTS` + `CREATE TABLE IF NOT EXISTS` on every resubmit). Cancels running Flink jobs, recreates the Flink containers, then re-runs `kafka-init`, resubmits the Flink SQL, and restarts the generator all in one `docker compose up` command. Kafka topics, Iceberg/Nessie/MinIO data, and the webhook-service DB are left untouched.
+
+**`--full` mode** — for breaking changes. Additionally deletes and recreates every Kafka topic, deletes the `ruby-kafka-consumer`'s consumer group, wipes the Iceberg/Nessie/MinIO data volumes, and wipes + re-migrates webhook-service's SQLite DB. This is destructive to all pipeline data (not your git history or code) — confirm you're OK losing it before running against a stack you care about.
+
+> The three steps in default mode (`kafka-init`, `flink-sql-submit`, `generator`) are restarted together in a single command deliberately: `customers_source`/`order_details_source` use `scan.startup.mode=latest-offset`, so if the generator starts producing before Flink's jobs finish subscribing, those early events are silently skipped.
+
+---
+
 ## Project structure
 
 ```
