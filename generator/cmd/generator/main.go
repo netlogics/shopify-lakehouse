@@ -107,6 +107,16 @@ func main() {
 		slog.Error("parsing customers rate", "error", err)
 		os.Exit(1)
 	}
+	fraudEpisodeDuration, err := time.ParseDuration(cfg.Fraud.EpisodeDuration)
+	if err != nil {
+		slog.Error("parsing fraud episode duration", "error", err)
+		os.Exit(1)
+	}
+	fraudParams := gen.FraudParams{
+		InjectionProbability: cfg.Fraud.InjectionProbability,
+		EpisodeDuration:      fraudEpisodeDuration,
+		TargetWeight:         cfg.Fraud.TargetWeight,
+	}
 
 	prod, err := producer.New(cfg, schemasDir)
 	if err != nil {
@@ -273,7 +283,7 @@ func main() {
 				metrics.BackpressureActive.Set(0)
 			}
 
-			detail, ok := generator.NewOrderDetail(variantMap)
+			detail, ok := generator.NewOrderDetail(variantMap, fraudParams)
 			if !ok {
 				continue
 			}

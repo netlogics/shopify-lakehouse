@@ -28,6 +28,8 @@
     { "name": "product_exists",              "type": "boolean",                   "doc": "Whether the product still exists in the store." },
     { "name": "variant_inventory_management","type": ["null", "string"],          "doc": "Inventory management system, e.g. 'shopify'.", "default": null },
     { "name": "created_at",                  "type": "string",                    "doc": "ISO 8601 UTC timestamp when the order was created." },
-    { "name": "updated_at",                  "type": "string",                    "doc": "ISO 8601 UTC timestamp when the order was last updated." }
+    { "name": "updated_at",                  "type": "string",                    "doc": "ISO 8601 UTC timestamp when the order was last updated." },
+    { "name": "is_synthetic_fraud",          "type": "boolean",                   "doc": "Ground-truth label injected by the generator (not part of the real Shopify API) for validating downstream fraud detection.", "default": false },
+    { "name": "fraud_pattern",               "type": ["null", "string"],          "doc": "Which synthetic fraud pattern was injected, e.g. 'velocity_burst'. Null unless is_synthetic_fraud is true.", "default": null }
   ]
 }

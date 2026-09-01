@@ -119,7 +119,7 @@ func TestNewOrderDetailEmptyCustomerRegistry(t *testing.T) {
 		variantMap[v.InventoryItemID] = v
 	}
 
-	_, ok := g.NewOrderDetail(variantMap)
+	_, ok := g.NewOrderDetail(variantMap, FraudParams{})
 	if ok {
 		t.Fatal("NewOrderDetail: expected ok=false with no customer registered")
 	}
@@ -144,7 +144,7 @@ func TestNewOrderDetailReferencesKnownCustomer(t *testing.T) {
 	}
 
 	for i := 0; i < 50; i++ {
-		detail, ok := g.NewOrderDetail(variantMap)
+		detail, ok := g.NewOrderDetail(variantMap, FraudParams{})
 		if !ok {
 			t.Fatal("NewOrderDetail: expected ok=true with seeded variant and customer registries")
 		}
@@ -154,6 +154,106 @@ func TestNewOrderDetailReferencesKnownCustomer(t *testing.T) {
 		if !knownCustomerIDs[*detail.CustomerID] {
 			t.Fatalf("order detail references unknown customer_id %d", *detail.CustomerID)
 		}
+	}
+}
+
+func TestFraudEpisodeConcentratesOrdersOnTargetCustomer(t *testing.T) {
+	f := gofakeit.New(3)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	p := g.NewProduct()
+	variantMap := map[int64]*model.Variant{}
+	for i := range p.Variants {
+		v := &p.Variants[i]
+		variantMap[v.InventoryItemID] = v
+	}
+
+	other := g.NewCustomer()
+	target := g.NewCustomer()
+	reg.TriggerFraud(target.ID, time.Minute)
+
+	fraud := FraudParams{TargetWeight: 1} // always target the active episode
+	sawFraud := false
+	for i := 0; i < 20; i++ {
+		detail, ok := g.NewOrderDetail(variantMap, fraud)
+		if !ok {
+			t.Fatal("NewOrderDetail: expected ok=true")
+		}
+		if detail.CustomerID == nil || *detail.CustomerID != target.ID {
+			t.Fatalf("order attributed to customer %v, want the fraud target %d (other known customer: %d)", detail.CustomerID, target.ID, other.ID)
+		}
+		if !detail.IsSyntheticFraud {
+			t.Fatal("IsSyntheticFraud = false, want true for an order attributed to an active fraud episode")
+		}
+		if detail.FraudPattern == nil || *detail.FraudPattern != fraudPatternVelocityBurst {
+			t.Fatalf("FraudPattern = %v, want %q", detail.FraudPattern, fraudPatternVelocityBurst)
+		}
+		if detail.Quantity < 50 || detail.Quantity > 200 {
+			t.Fatalf("Quantity = %d, want anomalous range [50,200]", detail.Quantity)
+		}
+		sawFraud = true
+	}
+	if !sawFraud {
+		t.Fatal("no fraud-labeled orders generated")
+	}
+}
+
+func TestNewOrderDetailFraudDisabledByDefault(t *testing.T) {
+	f := gofakeit.New(5)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	p := g.NewProduct()
+	variantMap := map[int64]*model.Variant{}
+	for i := range p.Variants {
+		v := &p.Variants[i]
+		variantMap[v.InventoryItemID] = v
+	}
+	g.NewCustomer()
+
+	for i := 0; i < 50; i++ {
+		detail, ok := g.NewOrderDetail(variantMap, FraudParams{})
+		if !ok {
+			t.Fatal("NewOrderDetail: expected ok=true")
+		}
+		if detail.IsSyntheticFraud {
+			t.Fatal("IsSyntheticFraud = true with zero-value FraudParams, want fraud injection disabled")
+		}
+		if detail.FraudPattern != nil {
+			t.Fatalf("FraudPattern = %v, want nil with fraud injection disabled", *detail.FraudPattern)
+		}
+	}
+	if reg.HasActiveFraud() {
+		t.Fatal("HasActiveFraud() = true with zero-value FraudParams, want no episode ever triggered")
+	}
+}
+
+func TestMaybeTriggerFraudDoesNotOverlapEpisodes(t *testing.T) {
+	f := gofakeit.New(9)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	for i := 0; i < 10; i++ {
+		g.NewCustomer()
+	}
+	reg.TriggerFraud(1, time.Minute)
+
+	fraud := FraudParams{InjectionProbability: 1, EpisodeDuration: time.Minute}
+	for i := 0; i < 20; i++ {
+		g.maybeTriggerFraud(fraud)
+	}
+
+	active := 0
+	reg.mu.Lock()
+	for _, until := range reg.fraudUntil {
+		if time.Now().Before(until) {
+			active++
+		}
+	}
+	reg.mu.Unlock()
+	if active != 1 {
+		t.Fatalf("active fraud episodes = %d, want exactly 1 (no overlapping episodes)", active)
 	}
 }
 

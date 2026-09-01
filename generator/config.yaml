@@ -19,3 +19,14 @@ order_details:
 customers:
   topic: shopify.customers
   rate: 1/s
+
+fraud:
+  # Chance, per order-detail tick, of starting a new synthetic-fraud episode
+  # when none is currently active.
+  injection_probability: 0.01
+  # How long a triggered episode concentrates order volume onto its target
+  # customer (a detectable velocity burst).
+  episode_duration: 20s
+  # Chance an order-detail tick targets the customer with an active episode
+  # instead of a uniformly random customer.
+  target_weight: 0.7
