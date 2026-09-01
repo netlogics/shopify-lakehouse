@@ -100,12 +100,14 @@ See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 1. **Generator** seeds 100 products on startup, then continuously emits events to **four Kafka topics** encoded as Avro using the Confluent wire format:
    - `shopify.products` (1/s) — products with embedded variants
    - `shopify.inventory` (10/s) — inventory level updates
-   - `shopify.order_details` (2/s) — order line items
+   - `shopify.order_details` (2/s) — order line items, each referencing a `customer_id` drawn from the customer registry
    - `shopify.customers` (1/s) — customer records
-   
+
    All events carry a unique `event_id` (UUID v4) for deduplication. Schemas are registered with Schema Registry on first run.
-   
+
    **Note**: `order_details` and `customers` sources use `latest-offset` startup mode to handle first-run offset discovery. Existing consumer groups will use committed offsets if available.
+
+   **Synthetic fraud injection**: the generator periodically triggers ground-truth-labeled fraud episodes — see [Fraud injection](#fraud-injection) below.
 
 2. **Flink** runs **four streaming jobs** that read from Kafka, apply transformations, and sink to **five Iceberg tables** via the Nessie catalog:
    - `nessie.lakehouse.products` — one row per product event
@@ -264,6 +266,22 @@ All tuneable parameters live in `.env`. Key values:
 | `inventory.locations` | `3` | Number of simulated warehouse locations |
 | `order_details.rate` | `2/s` | Order detail events per second |
 | `customers.rate` | `1/s` | Customer events per second |
+
+### Fraud injection
+
+Configured in `generator/config.yaml`.
+
+The generator injects ground-truth-labeled synthetic fraud episodes into `order_details` for testing downstream fraud detection: a random customer is chosen, order volume concentrates onto that customer for the episode duration with abnormally high per-order quantities (a detectable velocity burst), and every affected row is labeled `is_synthetic_fraud=true` / `fraud_pattern="velocity_burst"` so precision/recall can be measured against ground truth.
+
+| Key | Default | Description |
+|---|---|---|
+| `fraud.injection_probability` | `0.01` | Chance, per order-detail tick, of starting a new episode when none is active |
+| `fraud.episode_duration` | `20s` | How long a triggered episode concentrates volume onto its target customer |
+| `fraud.target_weight` | `0.7` | Chance an order-detail tick targets the active episode's customer instead of a uniformly random one |
+
+These can also be overridden via environment variables `FRAUD_INJECTION_PROBABILITY`, `FRAUD_EPISODE_DURATION`, and `FRAUD_TARGET_WEIGHT`.
+
+The three fields land in both `shopify.order_details` and `nessie.lakehouse.order_details`: `customer_id` (nullable int, referential link to `shopify.customers`), `is_synthetic_fraud` (boolean, default `false`), and `fraud_pattern` (nullable string, `"velocity_burst"` or `null`).
 
 | Variable | Default | Description |
 |---|---|---|

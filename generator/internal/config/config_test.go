@@ -74,6 +74,15 @@ func TestLoadDefaults(t *testing.T) {
 	if cfg.Inventory.Locations != 3 {
 		t.Errorf("Inventory.Locations = %d", cfg.Inventory.Locations)
 	}
+	if cfg.Fraud.InjectionProbability != 0.01 {
+		t.Errorf("Fraud.InjectionProbability = %v, want 0.01", cfg.Fraud.InjectionProbability)
+	}
+	if cfg.Fraud.EpisodeDuration != "20s" {
+		t.Errorf("Fraud.EpisodeDuration = %q, want %q", cfg.Fraud.EpisodeDuration, "20s")
+	}
+	if cfg.Fraud.TargetWeight != 0.7 {
+		t.Errorf("Fraud.TargetWeight = %v, want 0.7", cfg.Fraud.TargetWeight)
+	}
 }
 
 func TestLoadFromFile(t *testing.T) {
@@ -172,5 +181,58 @@ func TestLoadInvalidRate(t *testing.T) {
 	}
 	if _, err := Load(path); err == nil {
 		t.Fatal("Load: expected error for invalid rate, got nil")
+	}
+}
+
+func TestLoadFraudEnvOverrides(t *testing.T) {
+	t.Setenv("FRAUD_INJECTION_PROBABILITY", "0.5")
+	t.Setenv("FRAUD_EPISODE_DURATION", "5s")
+	t.Setenv("FRAUD_TARGET_WEIGHT", "0.9")
+
+	cfg, err := Load("")
+	if err != nil {
+		t.Fatalf("Load(\"\"): unexpected error: %v", err)
+	}
+	if cfg.Fraud.InjectionProbability != 0.5 {
+		t.Errorf("Fraud.InjectionProbability = %v, want 0.5", cfg.Fraud.InjectionProbability)
+	}
+	if cfg.Fraud.EpisodeDuration != "5s" {
+		t.Errorf("Fraud.EpisodeDuration = %q, want %q", cfg.Fraud.EpisodeDuration, "5s")
+	}
+	if cfg.Fraud.TargetWeight != 0.9 {
+		t.Errorf("Fraud.TargetWeight = %v, want 0.9", cfg.Fraud.TargetWeight)
+	}
+}
+
+func TestLoadInvalidFraudEpisodeDuration(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "config.yaml")
+	if err := os.WriteFile(path, []byte("fraud:\n  episode_duration: bogus\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if _, err := Load(path); err == nil {
+		t.Fatal("Load: expected error for invalid fraud.episode_duration, got nil")
+	}
+}
+
+func TestLoadInvalidFraudInjectionProbability(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "config.yaml")
+	if err := os.WriteFile(path, []byte("fraud:\n  injection_probability: 1.5\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if _, err := Load(path); err == nil {
+		t.Fatal("Load: expected error for out-of-range fraud.injection_probability, got nil")
+	}
+}
+
+func TestLoadInvalidFraudTargetWeight(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "config.yaml")
+	if err := os.WriteFile(path, []byte("fraud:\n  target_weight: -0.1\n"), 0o644); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+	if _, err := Load(path); err == nil {
+		t.Fatal("Load: expected error for out-of-range fraud.target_weight, got nil")
 	}
 }
