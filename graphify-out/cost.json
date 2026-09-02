@@ -18,8 +18,14 @@
       "output_tokens": 0,
       "files": 0,
       "note": "pruned .graphifyignore-excluded nodes, no new extraction"
+    },
+    {
+      "date": "2026-09-02T01:31:25.304768+00:00",
+      "input_tokens": 84916,
+      "output_tokens": 0,
+      "files": 42
     }
   ],
-  "total_input_tokens": 327233,
+  "total_input_tokens": 412149,
   "total_output_tokens": 0
 }
