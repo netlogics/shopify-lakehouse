@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_product_variants
+    columns:
+      - name: variant_id
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+
+  - name: stg_inventory_levels
+    columns:
+      - name: inventory_item_id
+        tests:
+          - not_null
+      - name: location_id
+        tests:
+          - not_null
+
+  - name: stg_order_details
+    columns:
+      - name: line_item_id
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        tests:
+          - not_null
+      - name: customer_id
+        # Always populated by the generator (unlike product_id/variant_id,
+        # which are legitimately null for ~36% of rows -- see
+        # mart_top_products_by_revenue's "Unknown Product" bucket).
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+              # order_details and customers are independent Kafka streams
+              # (see README's "Note" on latest-offset startup mode) -- a
+              # small number of order lines can reference a customer_id
+              # whose own customer event hasn't landed yet. Warn, don't
+              # fail: this is expected eventual-consistency lag, not
+              # corrupt data.
+              config:
+                severity: warn
+      - name: product_id
+        tests:
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: variant_id
+        tests:
+          - relationships:
+              to: ref('stg_product_variants')
+              field: variant_id
+
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique

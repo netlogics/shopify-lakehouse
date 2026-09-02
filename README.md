@@ -156,6 +156,9 @@ See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 | `grafana` | `grafana/grafana` | `3000` | Dashboards + alerting (admin/admin) — webhook, Flink, Kafka, generator |
 | `kafka-jmx-exporter` | `shopify-lakehouse/kafka-jmx-exporter` | `5556` | Bridges Kafka broker JMX metrics (throughput, ISR churn, GC) to Prometheus |
 | `kafka-exporter` | `danielqsj/kafka-exporter` | `9308` | Consumer-group lag/offsets via the Kafka admin protocol (not derivable from JMX) |
+| `dbt` | `shopify-lakehouse/dbt:latest` | — | One-shot container: runs dbt against Dremio (staging models, marts, tests, docs) |
+| `dbt-docs` | `nginx:1.27-alpine` | `8095` | Serves the static `dbt docs generate` site |
+| `airflow` | `shopify-lakehouse/airflow:latest` | `8090` | `airflow standalone` + astronomer-cosmos DAG, orchestrates the dbt project hourly |
 
 ---
 
@@ -181,11 +184,65 @@ Access: Grafana at `http://localhost:3000` (`admin`/`admin`), Prometheus at `htt
 
 ---
 
+## Batch Reporting (dbt + Airflow)
+
+A standalone dbt project transforms the raw `nessie.lakehouse.*` Iceberg tables into a `nessie.marts` space of reporting tables, orchestrated hourly by a standalone Airflow instance via [astronomer-cosmos](https://astronomer.github.io/astronomer-cosmos/) — one Airflow task per dbt model, not a single opaque `dbt build` task.
+
+```
+┌──────────────┐  @hourly   ┌────────────────────┐  SQL via   ┌─────────────────┐
+│   Airflow    │───────────▶│  dbt (13 models)   │───────────▶│  Dremio :9047   │
+│  standalone  │  cosmos     │  5 staging + 8     │  profiles  │  nessie.marts.* │
+│  :8090       │  DbtDag     │  data marts + 44   │  .yml      │  (new space,    │
+│              │  (1 task/   │  schema tests      │            │   separate from │
+│              │   model)    │                    │            │   lakehouse.*)  │
+└──────────────┘             └──────────┬─────────┘            └─────────────────┘
+                                         │ dbt docs generate
+                                         ▼
+                              ┌────────────────────┐
+                              │  dbt-docs (nginx)  │
+                              │       :8095        │
+                              └────────────────────┘
+```
+
+**Staging layer** (`dbt/models/staging/`) — one thin, deduplicated model per source table: `stg_products`, `stg_product_variants`, `stg_inventory_levels`, `stg_order_details`, `stg_customers`. `products` and `product_variants` are append-only event logs (every update lands as a new row with the same id), so their staging models deduplicate to the latest event per entity.
+
+**Marts** (`dbt/models/marts/`):
+
+| Mart | Covers |
+|---|---|
+| `mart_product_catalog` | Product summary with variant-count/price/inventory rollups |
+| `mart_revenue_daily` | Daily order count, units sold, gross/net revenue |
+| `mart_top_products_by_revenue` | Per-product revenue ranking |
+| `mart_revenue_by_customer_segment` | Revenue by RFM-lite segment (VIP/High/Medium/Low) |
+| `mart_order_fulfillment_rate` | Daily fulfillment rate (see note below) |
+| `mart_inventory_stock_levels_daily` | Daily stock-level snapshot per item/location |
+| `mart_low_stock_alerts` | Current out_of_stock / low_stock / healthy status |
+| `mart_inventory_turnover` | Units sold vs. average on-hand stock, by product |
+| `mart_customer_lifetime_value` | Per-customer order count, lifetime revenue, AOV |
+| `mart_customer_repeat_purchase_rate` | Repeat-purchase rate by acquisition cohort |
+| `mart_customer_cohort_retention` | Monthly cohort retention matrix |
+
+All revenue/customer marts exclude synthetic-fraud-flagged order lines (see [Fraud injection](#fraud-injection)) so fraud-injected bulk orders don't distort real figures. `mart_order_fulfillment_rate` is built to spec, but the generator currently always emits `fulfillment_status = null` — every row will show `unknown_count` until that generator field is populated with variety.
+
+**Tests**: 44 schema tests (`not_null`, `unique`, `relationships`, `accepted_values`) across staging and mart models, run automatically as part of `docker compose up dbt`. Two `relationships` tests are configured at `warn` severity rather than hard failure: `order_details` and `customers` are independent Kafka streams, so a small number of order lines can reference a customer whose own customer event hasn't landed yet — expected eventual-consistency lag, not corrupt data.
+
+<!-- TODO: screenshot of the dbt docs site (http://localhost:8095), e.g. the mart_revenue_daily model page or the lineage graph -->
+
+**dbt docs** — generated on every `docker compose up dbt` run and served statically at `http://localhost:8095` by the `dbt-docs` nginx container.
+
+<!-- TODO: screenshot of the Airflow DAG graph view (http://localhost:8090) showing the per-model task graph -->
+
+**Airflow** — UI at `http://localhost:8090` (default `admin`/`airflow123`, override via `AIRFLOW_ADMIN_USER`/`AIRFLOW_ADMIN_PASSWORD`). The `dbt_shopify_lakehouse` DAG runs `@hourly`; trigger it manually from the UI ("Trigger DAG") or via `docker exec airflow airflow dags trigger dbt_shopify_lakehouse`. Metadata (DAG run history, users) persists across container restarts in a named volume.
+
+Neither `dbt` nor `airflow` depends on `flink-sql-submit` in compose — see the comment in `compose/dbt.yml` for why (re-running it on every dbt/Airflow invocation would resubmit the Flink job and wipe the Iceberg tables).
+
+---
+
 ## Prerequisites
 
 - Docker with Compose V2 (`docker compose`)
 - ~8 GB of available RAM (Dremio alone uses 4 GB by default)
-- Ports `8081`, `8082`, `9000`, `9001`, `9047`, `19120`, `29092`, `3000`, `3456`, `9090`, `9249`, `9250`, `9308`, `5556`, `2112` free on the host
+- Ports `8081`, `8082`, `8090`, `8095`, `9000`, `9001`, `9047`, `19120`, `29092`, `3000`, `3456`, `9090`, `9249`, `9250`, `9308`, `5556`, `2112` free on the host
 
 ---
 
@@ -350,7 +407,9 @@ After changing the Avro schemas, the generator, or `flink/sql/ingest.sql`, use `
 │   ├── minio.yml
 │   ├── nessie.yml
 │   ├── spark.yml
-│   └── dremio.yml
+│   ├── dremio.yml
+│   ├── dbt.yml
+│   └── airflow.yml
 ├── docker-compose.yml    # Root compose — includes all of the above
 ├── .env                  # All tuneable config
 ├── flink/
@@ -379,9 +438,20 @@ After changing the Avro schemas, the generator, or `flink/sql/ingest.sql`, use `
 │   └── init-topics.sh    # Creates shopify.products and shopify.inventory
 ├── minio/
 │   └── init-bucket.sh    # Creates the warehouse bucket
-└── dremio/
-    ├── bootstrap.sh      # Automated Nessie source registration (best-effort)
-    └── setup.md          # Manual Dremio setup guide
+├── dremio/
+│   ├── bootstrap.sh      # Automated Nessie source registration (best-effort)
+│   └── setup.md          # Manual Dremio setup guide
+├── dbt/                  # dbt project: transforms nessie.lakehouse.* into nessie.marts
+│   ├── models/
+│   │   ├── staging/      # One deduplicated model per source table + schema tests
+│   │   └── marts/        # 11 reporting marts + schema tests
+│   ├── profiles.yml      # Dremio connection (env_var-driven)
+│   └── entrypoint.sh     # dbt debug/run/test/docs generate, one-shot
+├── airflow/              # Standalone Airflow + astronomer-cosmos DAG
+│   ├── dags/dbt_dag.py   # Cosmos DbtDag: one Airflow task per dbt model, hourly
+│   └── entrypoint.sh     # Pinned admin creds, SQLite bootstrap fix, then `airflow standalone`
+├── scripts/
+│   └── reset-pipeline.sh # Reset Kafka/Iceberg/Flink state after a schema change
 ├── webhook-service/      # Next.js Shopify webhook receiver + dashboard
 │   ├── app/
 │   │   ├── api/webhooks/ # HMAC-verified webhook receiver

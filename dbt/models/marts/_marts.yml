@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: mart_product_catalog
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_top_products_by_revenue
+    columns:
+      - name: product_id
+        # Nullable: order lines with no product reference at all are
+        # grouped into a single "Unknown Product" row (product_id = null).
+        tests:
+          - unique
+      - name: revenue_rank
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_revenue_daily
+    columns:
+      - name: order_date
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_order_fulfillment_rate
+    columns:
+      - name: order_date
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_revenue_by_customer_segment
+    columns:
+      - name: revenue_segment
+        tests:
+          - not_null
+          - unique
+          - accepted_values:
+              values: ["VIP", "High", "Medium", "Low"]
+
+  - name: mart_inventory_stock_levels_daily
+    columns:
+      - name: inventory_item_id
+        tests:
+          - not_null
+      - name: location_id
+        tests:
+          - not_null
+      - name: stock_date
+        tests:
+          - not_null
+
+  - name: mart_low_stock_alerts
+    columns:
+      - name: inventory_item_id
+        tests:
+          - not_null
+      - name: location_id
+        tests:
+          - not_null
+      - name: stock_status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["out_of_stock", "low_stock", "healthy"]
+
+  - name: mart_inventory_turnover
+    columns:
+      - name: product_id
+        # Nullable: some order_details rows reference no product at all
+        # (see stg_order_details.product_id); those still contribute a
+        # turnover row so their sales aren't silently dropped.
+        tests:
+          - unique
+
+  - name: mart_customer_lifetime_value
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+              # Same eventual-consistency caveat as
+              # stg_order_details.customer_id -- see that test's comment.
+              config:
+                severity: warn
+
+  - name: mart_customer_repeat_purchase_rate
+    columns:
+      - name: cohort_month
+        tests:
+          - not_null
+          - unique
+
+  - name: mart_customer_cohort_retention
+    columns:
+      - name: cohort_month
+        tests:
+          - not_null
+      - name: period_number
+        tests:
+          - not_null

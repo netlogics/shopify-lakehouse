@@ -23,9 +23,25 @@ services:
       DREMIO_PORT: "9047"
       DREMIO_ADMIN_USER: ${DREMIO_ADMIN_USER:-admin}
       DREMIO_ADMIN_PASSWORD: ${DREMIO_ADMIN_PASSWORD:-dremio123}
+    volumes:
+      - dbt-docs:/usr/app/docs_output
     networks:
       - lakehouse
     restart: "no"
+
+  dbt-docs:
+    image: nginx:1.27-alpine
+    container_name: dbt-docs
+    ports:
+      - "${DBT_DOCS_HOST_PORT:-8095}:80"
+    volumes:
+      - dbt-docs:/usr/share/nginx/html:ro
+    networks:
+      - lakehouse
+    restart: unless-stopped
+
+volumes:
+  dbt-docs:
 
 networks:
   lakehouse:

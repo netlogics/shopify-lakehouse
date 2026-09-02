@@ -2,6 +2,20 @@
 
 Notable changes to shopify-lakehouse. Moved out of README.md, which should describe what the project is rather than track recent activity.
 
+## Referential integrity, fraud injection, and batch reporting (dbt + Airflow)
+
+- **Generator referential integrity + fraud injection** (see [Fraud injection](README.md#fraud-injection)):
+  - `order_details.customer_id` now links to a real customer registry (previously two independent random streams with no shared key)
+  - Ground-truth-labeled synthetic fraud episodes (`is_synthetic_fraud`, `fraud_pattern`): a random customer's order volume spikes for a configurable window, giving downstream fraud detection a known answer key
+  - `scripts/reset-pipeline.sh`: reusable Kafka/Iceberg/Flink reset procedure for schema changes (default mode for additive changes, `--full` for breaking ones)
+
+- **Batch reporting: dbt + Airflow** (see [Batch Reporting](README.md#batch-reporting-dbt--airflow)):
+  - Standalone `dbt` service (dbt-core + dbt-dremio) against the existing Dremio/Nessie source: 5 deduplicated staging models + 11 marts (revenue, inventory health, customer analytics) in a new `nessie.marts` space, kept separate from Flink-owned `nessie.lakehouse.*`
+  - 44 schema tests (`not_null`, `unique`, `relationships`, `accepted_values`), two configured at `warn` severity for expected eventual-consistency lag between the independent `order_details`/`customers` Kafka streams
+  - `dbt docs generate` output served statically via a small `dbt-docs` nginx container (`:8095`)
+  - Standalone Airflow (`airflow standalone`, `:8090`) with an [astronomer-cosmos](https://astronomer.github.io/astronomer-cosmos/) DAG running the dbt project hourly, one Airflow task per dbt model
+  - Fixed a real Docker Compose dependency pitfall: a one-shot dependency (`flink-sql-submit`) gets re-run on every invocation of a service that depends on it, which would otherwise wipe/recreate the Iceberg tables before every dbt/Airflow run — neither service depends on it
+
 ## Monitoring stack, webhook-service, generator hardening
 
 - **Monitoring stack** — Prometheus + Grafana now cover the full pipeline (see [Monitoring](README.md#monitoring)):
