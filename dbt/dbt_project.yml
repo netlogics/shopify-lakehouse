@@ -10,6 +10,11 @@ macro-paths: ["macros"]
 clean-targets:
   - target
 
+vars:
+  # Units on hand at or below this in any single location count as
+  # low_stock in mart_low_stock_alerts (0 or below is always out_of_stock).
+  low_stock_threshold: 10
+
 models:
   shopify_lakehouse:
     staging:
