@@ -1,0 +1,24 @@
+shopify_lakehouse:
+  target: dev
+  outputs:
+    dev:
+      type: dremio
+      software_host: "{{ env_var('DREMIO_HOST', 'dremio') }}"
+      port: "{{ env_var('DREMIO_PORT', '9047') | as_number }}"
+      user: "{{ env_var('DREMIO_ADMIN_USER', 'admin') }}"
+      password: "{{ env_var('DREMIO_ADMIN_PASSWORD', 'dremio123') }}"
+      use_ssl: false
+      verify_ssl: false
+      # Top-level Dremio space that dbt writes into. Kept separate from the
+      # nessie.lakehouse space that Flink owns, so dbt never touches raw
+      # ingested tables and Flink's DROP TABLE IF EXISTS / CREATE TABLE IF
+      # NOT EXISTS resubmit cycle never collides with dbt's output.
+      dremio_space: nessie
+      dremio_space_folder: marts
+      # Physical (table-materialized) models CTAS into an object storage
+      # source rather than the dremio_space above -- without this, dbt-dremio
+      # silently falls back to Dremio's ephemeral $scratch source instead of
+      # nessie.marts. Views are unaffected; they use dremio_space directly.
+      object_storage_source: nessie
+      object_storage_path: marts
+      threads: 4

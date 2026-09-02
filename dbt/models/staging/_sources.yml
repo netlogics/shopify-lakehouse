@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: lakehouse
+    database: nessie
+    schema: lakehouse
+    description: >
+      Raw Iceberg tables written by Flink from the generator's Kafka topics.
+      Read-only from dbt's perspective -- Flink owns this space and
+      unconditionally drops/recreates these tables on every
+      flink-sql-submit run (see flink/sql/ingest.sql), so nothing here
+      should ever be written to from dbt.
+    tables:
+      - name: products
+      - name: product_variants
+      - name: inventory_levels
+      - name: order_details
+      - name: customers

@@ -1,0 +1,19 @@
+name: shopify_lakehouse
+version: "1.0.0"
+config-version: 2
+
+profile: shopify_lakehouse
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - target
+
+models:
+  shopify_lakehouse:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +materialized: table

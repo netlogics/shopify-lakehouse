@@ -1,0 +1,32 @@
+services:
+  dbt:
+    build:
+      context: ../dbt
+    image: shopify-lakehouse/dbt:latest
+    container_name: dbt
+    # Deliberately does NOT depend on flink-sql-submit. Docker Compose
+    # re-runs a one-shot dependency (even one that already exited 0) on
+    # every `docker compose run/up dbt` invocation of a service that
+    # depends on it -- which would resubmit the Flink SQL job (wiping and
+    # recreating the Iceberg tables per ingest.sql's DROP TABLE IF EXISTS +
+    # CREATE TABLE IF NOT EXISTS) immediately before every single dbt run,
+    # guaranteeing dbt reads empty tables until the next ~60s checkpoint
+    # lands. dbt only needs Dremio's Nessie source registered (dremio-
+    # bootstrap) to query whatever data the already-running pipeline has
+    # currently committed -- it has no need to trigger a fresh Flink
+    # resubmission of its own.
+    depends_on:
+      dremio-bootstrap:
+        condition: service_completed_successfully
+    environment:
+      DREMIO_HOST: dremio
+      DREMIO_PORT: "9047"
+      DREMIO_ADMIN_USER: ${DREMIO_ADMIN_USER:-admin}
+      DREMIO_ADMIN_PASSWORD: ${DREMIO_ADMIN_PASSWORD:-dremio123}
+    networks:
+      - lakehouse
+    restart: "no"
+
+networks:
+  lakehouse:
+    external: true
