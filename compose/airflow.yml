@@ -1,0 +1,48 @@
+services:
+  airflow:
+    build:
+      # Repo root, not ../airflow -- this image needs to COPY both airflow/
+      # and dbt/ (see airflow/Dockerfile).
+      context: ..
+      dockerfile: airflow/Dockerfile
+    image: shopify-lakehouse/airflow:latest
+    container_name: airflow
+    ports:
+      - "${AIRFLOW_UI_HOST_PORT:-8090}:8080"
+    environment:
+      # Same Dremio connection info as the dbt service (compose/dbt.yml) --
+      # profiles.yml is baked into this image at the same path and reads
+      # these via env_var().
+      DREMIO_HOST: dremio
+      DREMIO_PORT: "9047"
+      DREMIO_ADMIN_USER: ${DREMIO_ADMIN_USER:-admin}
+      DREMIO_ADMIN_PASSWORD: ${DREMIO_ADMIN_PASSWORD:-dremio123}
+      # Fixed, reproducible admin login (see airflow/entrypoint.sh) instead
+      # of `airflow standalone`'s default random-password-to-stdout.
+      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USER:-admin}
+      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-airflow123}
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__WEB_SERVER_PORT: "8080"
+      # Metadata DB + logs live under a dedicated, volume-backed subpath so
+      # they persist across container restarts without a volume masking
+      # the dags/dbt/ content baked into the image at build time.
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/state/airflow.db
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/state/logs
+      AIRFLOW__LOGGING__DAG_PROCESSOR_MANAGER_LOG_LOCATION: /opt/airflow/state/logs/dag_processor_manager/dag_processor_manager.log
+    volumes:
+      - airflow-state:/opt/airflow/state
+    # Deliberately does NOT depend on flink-sql-submit -- see the identical
+    # note in compose/dbt.yml. Only needs Dremio's Nessie source registered.
+    depends_on:
+      dremio-bootstrap:
+        condition: service_completed_successfully
+    networks:
+      - lakehouse
+    restart: unless-stopped
+
+volumes:
+  airflow-state:
+
+networks:
+  lakehouse:
+    external: true
