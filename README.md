@@ -69,6 +69,24 @@ See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+Batch reporting (dbt + Airflow) sits downstream of Dremio — see [Batch Reporting](#batch-reporting-dbt--airflow) below:
+
+```
+┌──────────────┐  @hourly   ┌────────────────────┐  SQL via   ┌─────────────────┐
+│   Airflow    │───────────▶│  dbt (13 models)   │───────────▶│  Dremio :9047   │
+│  standalone  │  cosmos     │  5 staging + 8     │  profiles  │  nessie.marts.* │
+│  :8090       │  DbtDag     │  data marts + 44   │  .yml      │  (new space,    │
+│              │  (1 task/   │  schema tests      │            │   separate from │
+│              │   model)    │                    │            │   lakehouse.*)  │
+└──────────────┘             └──────────┬─────────┘            └─────────────────┘
+                                         │ dbt docs generate
+                                         ▼
+                              ┌────────────────────┐
+                              │  dbt-docs (nginx)  │
+                              │       :8095        │
+                              └────────────────────┘
+```
+
 > **Interactive graph:** [Explore the codebase knowledge graph](https://netlogics.github.io/shopify-lakehouse/graphify-out/graph.html) — nodes, communities, and cross-cutting connections, powered by [graphify](https://pypi.org/project/graphifyy/).
 
 **Dremio** — ad-hoc SQL over Iceberg tables (`:9047`)
@@ -186,23 +204,7 @@ Access: Grafana at `http://localhost:3000` (`admin`/`admin`), Prometheus at `htt
 
 ## Batch Reporting (dbt + Airflow)
 
-A standalone dbt project transforms the raw `nessie.lakehouse.*` Iceberg tables into a `nessie.marts` space of reporting tables, orchestrated hourly by a standalone Airflow instance via [astronomer-cosmos](https://astronomer.github.io/astronomer-cosmos/) — one Airflow task per dbt model, not a single opaque `dbt build` task.
-
-```
-┌──────────────┐  @hourly   ┌────────────────────┐  SQL via   ┌─────────────────┐
-│   Airflow    │───────────▶│  dbt (13 models)   │───────────▶│  Dremio :9047   │
-│  standalone  │  cosmos     │  5 staging + 8     │  profiles  │  nessie.marts.* │
-│  :8090       │  DbtDag     │  data marts + 44   │  .yml      │  (new space,    │
-│              │  (1 task/   │  schema tests      │            │   separate from │
-│              │   model)    │                    │            │   lakehouse.*)  │
-└──────────────┘             └──────────┬─────────┘            └─────────────────┘
-                                         │ dbt docs generate
-                                         ▼
-                              ┌────────────────────┐
-                              │  dbt-docs (nginx)  │
-                              │       :8095        │
-                              └────────────────────┘
-```
+A standalone dbt project transforms the raw `nessie.lakehouse.*` Iceberg tables into a `nessie.marts` space of reporting tables, orchestrated hourly by a standalone Airflow instance via [astronomer-cosmos](https://astronomer.github.io/astronomer-cosmos/) — one Airflow task per dbt model, not a single opaque `dbt build` task. See the [Architecture](#architecture) diagram above for how this fits downstream of Dremio.
 
 **Staging layer** (`dbt/models/staging/`) — one thin, deduplicated model per source table: `stg_products`, `stg_product_variants`, `stg_inventory_levels`, `stg_order_details`, `stg_customers`. `products` and `product_variants` are append-only event logs (every update lands as a new row with the same id), so their staging models deduplicate to the latest event per entity.
 
