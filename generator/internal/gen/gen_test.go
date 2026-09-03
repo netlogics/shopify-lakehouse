@@ -157,6 +157,35 @@ func TestNewOrderDetailReferencesKnownCustomer(t *testing.T) {
 	}
 }
 
+func TestNewOrderDetailUniqueLineItemIDsAcrossCalls(t *testing.T) {
+	f := gofakeit.New(12)
+	reg := NewRegistry()
+	g := NewGenerator(f, reg)
+
+	p := g.NewProduct()
+	variantMap := map[int64]*model.Variant{}
+	for i := range p.Variants {
+		v := &p.Variants[i]
+		variantMap[v.InventoryItemID] = v
+	}
+	g.NewCustomer()
+
+	seen := map[int64]bool{}
+	for i := 0; i < 500; i++ {
+		detail, ok := g.NewOrderDetail(variantMap, FraudParams{})
+		if !ok {
+			t.Fatal("NewOrderDetail: expected ok=true with seeded variant and customer registries")
+		}
+		if detail.ID == 0 {
+			t.Fatal("OrderDetail.ID = 0, want nonzero")
+		}
+		if seen[detail.ID] {
+			t.Fatalf("duplicate line_item_id %d", detail.ID)
+		}
+		seen[detail.ID] = true
+	}
+}
+
 func TestFraudEpisodeConcentratesOrdersOnTargetCustomer(t *testing.T) {
 	f := gofakeit.New(3)
 	reg := NewRegistry()
