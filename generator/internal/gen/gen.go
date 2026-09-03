@@ -306,6 +306,7 @@ func (g *Generator) NewProduct() model.Product {
 		}
 
 		variants[i] = model.Variant{
+			EventID:             model.EventID(uuid.New().String()),
 			ID:                  variantIDs[i],
 			ProductID:           productID,
 			Title:               varTitle,

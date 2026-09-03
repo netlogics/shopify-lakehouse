@@ -75,6 +75,7 @@ func TestNewProductUniqueIDsAcrossCalls(t *testing.T) {
 	seenProducts := map[int64]bool{}
 	seenVariants := map[int64]bool{}
 	seenInvItems := map[int64]bool{}
+	seenEventIDs := map[model.EventID]bool{}
 
 	for i := 0; i < 20; i++ {
 		p := g.NewProduct()
@@ -82,6 +83,13 @@ func TestNewProductUniqueIDsAcrossCalls(t *testing.T) {
 			t.Fatalf("duplicate product ID %d", p.ID)
 		}
 		seenProducts[p.ID] = true
+		if p.EventID == "" {
+			t.Fatal("Product.EventID is empty, want a UUID")
+		}
+		if seenEventIDs[p.EventID] {
+			t.Fatalf("duplicate event_id %q on product %d", p.EventID, p.ID)
+		}
+		seenEventIDs[p.EventID] = true
 		for _, v := range p.Variants {
 			if seenVariants[v.ID] {
 				t.Fatalf("duplicate variant ID %d", v.ID)
@@ -91,6 +99,13 @@ func TestNewProductUniqueIDsAcrossCalls(t *testing.T) {
 				t.Fatalf("duplicate inventory item ID %d", v.InventoryItemID)
 			}
 			seenInvItems[v.InventoryItemID] = true
+			if v.EventID == "" {
+				t.Fatalf("Variant.EventID is empty on variant %d, want a UUID", v.ID)
+			}
+			if seenEventIDs[v.EventID] {
+				t.Fatalf("duplicate event_id %q on variant %d", v.EventID, v.ID)
+			}
+			seenEventIDs[v.EventID] = true
 		}
 	}
 }
