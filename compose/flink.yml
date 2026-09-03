@@ -22,7 +22,10 @@ services:
       AWS_REGION: ${AWS_REGION:-us-east-1}
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: flink-jobmanager
-        taskmanager.numberOfTaskSlots: 4
+        # 4 ingest jobs (products+inventory, product_variants, order_details,
+        # customers) + fraud_detection.sql's job, with one slot of headroom
+        # for e6i.2's follow-on sink job.
+        taskmanager.numberOfTaskSlots: 6
         state.checkpoints.dir: file:///tmp/flink-checkpoints
         metrics.reporters: prom
         metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
@@ -53,7 +56,7 @@ services:
       AWS_REGION: ${AWS_REGION:-us-east-1}
       FLINK_PROPERTIES: |
         jobmanager.rpc.address: flink-jobmanager
-        taskmanager.numberOfTaskSlots: 4
+        taskmanager.numberOfTaskSlots: 6
         metrics.reporters: prom
         metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
         metrics.reporter.prom.port: 9249
@@ -81,6 +84,36 @@ services:
     networks:
       - lakehouse
     entrypoint: ["/docker-entrypoint.sh", "/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/ingest.sql"]
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      FLINK_PROPERTIES: |
+        rest.address: flink-jobmanager
+        rest.port: 8081
+    restart: "no"
+
+  # Submits fraud_detection.sql as its own Flink SQL client session/job,
+  # independent of ingest.sql's STATEMENT SET -- see that file's header
+  # comment for why (own consumer group, own source table, easier to
+  # iterate on without touching the core ingest pipeline).
+  flink-fraud-sql-submit:
+    image: shopify-lakehouse/flink:${FLINK_VERSION:-1.20.1}
+    container_name: flink-fraud-sql-submit
+    depends_on:
+      flink-jobmanager:
+        condition: service_healthy
+      flink-taskmanager:
+        condition: service_started
+      kafka-init:
+        condition: service_completed_successfully
+      schema-registry:
+        condition: service_healthy
+    volumes:
+      - ../flink/sql:/opt/flink/usrlib/sql:ro
+    networks:
+      - lakehouse
+    entrypoint: ["/docker-entrypoint.sh", "/opt/flink/bin/sql-client.sh", "-f", "/opt/flink/usrlib/sql/fraud_detection.sql"]
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
