@@ -30,6 +30,7 @@ type Registry struct {
 	nextVariantID       int64
 	nextInventoryItemID int64
 	nextCustomerID      int64
+	nextLineItemID      int64
 	usedHandles         map[string]struct{}
 	fraudUntil          map[int64]time.Time
 }
@@ -76,6 +77,17 @@ func (r *Registry) nextCustomer() int64 {
 	id := r.nextCustomerID
 	r.customers = append(r.customers, id)
 	return id
+}
+
+// nextLineItem allocates the next order_details line_item_id, atomically
+// under the registry lock. line_item_id is the primary key of order_details
+// (see dbt's unique_stg_order_details_line_item_id test) -- it must never
+// collide, unlike order_id, which multiple line items are expected to share.
+func (r *Registry) nextLineItem() int64 {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	r.nextLineItemID++
+	return r.nextLineItemID
 }
 
 // RandomCustomer picks a uniformly random known customer ID. ok is false if
@@ -427,7 +439,7 @@ func (g *Generator) NewOrderDetail(variantMap map[int64]*model.Variant, fraud Fr
 
 	quantity := int32(f.IntRange(1, 10))
 	orderID := int64(f.IntRange(1_000_000, 9_999_999))
-	lineItemID := int64(f.IntRange(1_000_000_000, 9_999_999_999))
+	lineItemID := g.Registry.nextLineItem()
 
 	price := fmt.Sprintf("%.2f", f.Price(5, 500))
 	grams := int32(f.IntRange(100, 5000))
