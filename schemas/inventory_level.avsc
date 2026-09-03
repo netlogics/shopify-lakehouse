@@ -3,6 +3,7 @@
   "name": "InventoryLevel",
   "namespace": "com.shopify.lakehouse",
   "fields": [
+    { "name": "event_id", "type": "string", "doc": "UUID v4, unique per emitted event, for downstream deduplication.", "default": "" },
     { "name": "inventory_item_id", "type": "long" },
     { "name": "location_id", "type": "long" },
     { "name": "available", "type": ["null", "int"], "default": null },

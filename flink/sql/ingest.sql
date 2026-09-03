@@ -85,6 +85,17 @@ CREATE TABLE products_source (
   'properties.bootstrap.servers' = 'kafka:9092',
   'properties.group.id'          = 'flink-ingest-products',
   'scan.startup.mode'            = 'group-offsets',
+  -- group-offsets has no fallback of its own: on a genuinely cold start (no
+  -- committed offset for this group -- e.g. right after
+  -- scripts/reset-pipeline.sh --full deletes and recreates the topic) it
+  -- throws NoOffsetForPartitionException instead of picking a position.
+  -- This was never caught before because the Kafka data volume had never
+  -- actually been wiped end-to-end until --full mode was exercised for the
+  -- first time. Falls back to latest so a from-scratch start behaves the
+  -- same as customers_source/order_details_source's latest-offset mode,
+  -- while every subsequent restart still resumes from the real committed
+  -- offset as intended.
+  'properties.auto.offset.reset' = 'latest',
   'format'                       = 'avro-confluent',
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );
@@ -140,6 +151,9 @@ CREATE TABLE inventory_source (
   'properties.bootstrap.servers' = 'kafka:9092',
   'properties.group.id'          = 'flink-ingest-inventory',
   'scan.startup.mode'            = 'group-offsets',
+  -- Same cold-start gap as products_source above -- see that table's
+  -- comment.
+  'properties.auto.offset.reset' = 'latest',
   'format'                       = 'avro-confluent',
   'avro-confluent.url'           = 'http://schema-registry:8081'
 );

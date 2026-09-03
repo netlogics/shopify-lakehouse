@@ -4,6 +4,7 @@
   "namespace": "com.shopify.lakehouse",
   "doc": "A single line item as it appears on a Shopify order, matching the Shopify REST Admin API Order resource line_items array member.",
   "fields": [
+    { "name": "event_id",                    "type": "string",                    "doc": "UUID v4, unique per emitted event, for downstream deduplication.", "default": "" },
     { "name": "order_id",                    "type": "long",                      "doc": "ID of the parent order." },
     { "name": "id",                          "type": "long",                      "doc": "ID of the line item." },
     { "name": "variant_id",                  "type": ["null", "long"],            "doc": "ID of the product variant.", "default": null },

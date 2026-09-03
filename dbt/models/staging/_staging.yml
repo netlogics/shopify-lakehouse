@@ -61,11 +61,20 @@ models:
           - relationships:
               to: ref('stg_products')
               field: product_id
+              # Same eventual-consistency caveat as customer_id above:
+              # order_details references the generator's in-memory product/
+              # variant registry, which can run ahead of what Flink has
+              # actually checkpointed into nessie.lakehouse.products yet
+              # (independent jobs, independent checkpoint cycles).
+              config:
+                severity: warn
       - name: variant_id
         tests:
           - relationships:
               to: ref('stg_product_variants')
               field: variant_id
+              config:
+                severity: warn
 
   - name: stg_customers
     columns:

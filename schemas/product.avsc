@@ -3,6 +3,7 @@
   "name": "Product",
   "namespace": "com.shopify.lakehouse",
   "fields": [
+    { "name": "event_id", "type": "string", "doc": "UUID v4, unique per emitted event, for downstream deduplication.", "default": "" },
     { "name": "id", "type": "long" },
     { "name": "title", "type": "string" },
     { "name": "body_html", "type": "string" },
@@ -22,6 +23,7 @@
           "type": "record",
           "name": "Variant",
           "fields": [
+            { "name": "event_id", "type": "string", "doc": "UUID v4, unique per emitted event, for downstream deduplication.", "default": "" },
             { "name": "id", "type": "long" },
             { "name": "product_id", "type": "long" },
             { "name": "title", "type": "string" },

@@ -4,6 +4,7 @@
   "namespace": "com.shopify.lakehouse",
   "doc": "Shopify customer resource — aligned with the Shopify REST Admin API Customer object.",
   "fields": [
+    { "name": "event_id", "type": "string", "doc": "UUID v4, unique per emitted event, for downstream deduplication.", "default": "" },
     { "name": "id", "type": "long" },
     { "name": "email", "type": ["null", "string"], "default": null },
     { "name": "first_name", "type": ["null", "string"], "default": null },

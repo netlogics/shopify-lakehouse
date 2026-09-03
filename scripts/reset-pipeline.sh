@@ -102,7 +102,11 @@ if $FULL; then
 
   echo "==> [--full] Wiping Iceberg/Nessie/MinIO data (stop containers, remove containers + named volumes)"
   docker compose stop minio nessie
-  docker compose rm -f minio nessie
+  # Also remove the one-shot minio-init/nessie-init sidecars: they've
+  # already exited, but Docker still holds their volume references open,
+  # which makes the volume rm below fail with "volume is in use" even
+  # though minio/nessie themselves were just removed.
+  docker compose rm -f minio nessie minio-init nessie-init
   docker volume rm -f shopify-lakehouse_minio-data shopify-lakehouse_nessie-data
 
   echo "==> [--full] Wiping webhook-service's SQLite DB (stop container, remove container + named volume)"
